@@ -1,0 +1,960 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		E1949FB3790749BA835B6336 /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 87C50678D4B140A88A4DB8EC /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				454AC5EBBECC4A5B98D4C1FD /* CMake Rules */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+		E659B5840AE8452A9192F199 /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 2B436827CC174D069A60D624 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				C6C006C3995C4D36835A8207 /* CMake Rules */,
+			);
+			dependencies = (
+				F4201C54EB5842A3B6802B4F /* PBXTargetDependency */,
+				C18CE748091443A3BD95649C /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		0797667303D74690B5995220 /* /Users/goodleon/Downloads/20200624/build/i64lib.c */ = {isa = PBXBuildFile; fileRef = E42B376541644B19869E57A9 /* /Users/goodleon/Downloads/20200624/build/i64lib.c */; };
+		0BE027864B8842038B54137F /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstring.c */ = {isa = PBXBuildFile; fileRef = 12C2CD412F684AF486F9E13D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstring.c */; };
+		0D8D0C9253234B0099DE32D0 /* /Users/goodleon/Downloads/20200624/build/luasocket/udp.c */ = {isa = PBXBuildFile; fileRef = BC575EC914284133952FDAE4 /* /Users/goodleon/Downloads/20200624/build/luasocket/udp.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		13D9E2A2B1964E3193FA2ED0 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loslib.c */ = {isa = PBXBuildFile; fileRef = 739ECFABFE8449348F3F46B6 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loslib.c */; };
+		17DE3C5CFDC746EBA5D6C4E6 /* /Users/goodleon/Downloads/20200624/build/lpeg/lptree.c */ = {isa = PBXBuildFile; fileRef = AE7E4E860EDA4312BDB0630F /* /Users/goodleon/Downloads/20200624/build/lpeg/lptree.c */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		18436FF9FE194B4FB1FFB2DF /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lctype.c */ = {isa = PBXBuildFile; fileRef = 3F8848ED248940A1BAF4B8BB /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lctype.c */; };
+		1C48FB1C994B47CF9E909F35 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lopcodes.c */ = {isa = PBXBuildFile; fileRef = 5AF70143BF4C44BF8469CFD8 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lopcodes.c */; };
+		1EE9DAE953674934BC5A9749 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcorolib.c */ = {isa = PBXBuildFile; fileRef = 92A5D8A43FF242DCABDE4CF7 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcorolib.c */; };
+		23FC194D91F8492DB3C996D8 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcap.c */ = {isa = PBXBuildFile; fileRef = 0B0A6C51F3FC4F879185FC91 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcap.c */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		245A15EFAC234050A48369D9 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loadlib.c */ = {isa = PBXBuildFile; fileRef = 64580AE8B0DF4893A1AFF971 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loadlib.c */; };
+		2CF011092AC140C08BE3E11A /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lvm.c */ = {isa = PBXBuildFile; fileRef = 7CA83C19C5B1475F8A9D3751 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lvm.c */; };
+		305A2285106B45A0A683C2AF /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldebug.c */ = {isa = PBXBuildFile; fileRef = D40B49F927624FA3AB723F5A /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldebug.c */; };
+		35ECCA081D7047488BBAD020 /* /Users/goodleon/Downloads/20200624/build/luasocket/select.c */ = {isa = PBXBuildFile; fileRef = 6709EABC8C3E4E51B773B31C /* /Users/goodleon/Downloads/20200624/build/luasocket/select.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		39571795A190470D9D51BC5E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lobject.c */ = {isa = PBXBuildFile; fileRef = 4FAD7E2221F44076A723E2EB /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lobject.c */; };
+		3F3A3C12BC40478798703DBE /* /Users/goodleon/Downloads/20200624/build/lpeg/lpvm.c */ = {isa = PBXBuildFile; fileRef = AE48E1B584C54C70A09FB140 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpvm.c */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		41AB3A775352495781DA7AFC /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcode.c */ = {isa = PBXBuildFile; fileRef = 34F2062B67D24B93A071C601 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcode.c */; };
+		41FAB6DE53AC43BF883C350A /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltm.c */ = {isa = PBXBuildFile; fileRef = A37650DB27904311A1990F8E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltm.c */; };
+		4722CB1A06B144FA9EF13072 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lfunc.c */ = {isa = PBXBuildFile; fileRef = BEAA09D71C3941599901F1A2 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lfunc.c */; };
+		4A1D888D2D864ADE83F25DD5 /* /Users/goodleon/Downloads/20200624/build/lua-rapidjson/source/rapidjson.cpp */ = {isa = PBXBuildFile; fileRef = 6C3690D4F87E4A48B7EE3ED9 /* /Users/goodleon/Downloads/20200624/build/lua-rapidjson/source/rapidjson.cpp */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		5103457BBD4B4055A88EA9DD /* /Users/goodleon/Downloads/20200624/build/luasocket/timeout.c */ = {isa = PBXBuildFile; fileRef = E9249922449A4785B9A0A734 /* /Users/goodleon/Downloads/20200624/build/luasocket/timeout.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		513F3990864447FE85C659A3 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/linit.c */ = {isa = PBXBuildFile; fileRef = 49D72E74AB2E4B01A4F50A35 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/linit.c */; };
+		54A0A8DA7D914BD5A22DD52D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lutf8lib.c */ = {isa = PBXBuildFile; fileRef = 5FEAF5551EF6402E8FE573A6 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lutf8lib.c */; };
+		5DD2B66CB63942FD830A0728 /* /Users/goodleon/Downloads/20200624/build/luasocket/auxiliar.c */ = {isa = PBXBuildFile; fileRef = 91EA1BFE94E64DA0A61E41A8 /* /Users/goodleon/Downloads/20200624/build/luasocket/auxiliar.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		5F6EF456B7AE4A47B5E0AD37 /* /Users/goodleon/Downloads/20200624/build/luasocket/buffer.c */ = {isa = PBXBuildFile; fileRef = BB227CCB2F2947E68341FC9F /* /Users/goodleon/Downloads/20200624/build/luasocket/buffer.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		64E1DC9527EC45F08C6CBF29 /* /Users/goodleon/Downloads/20200624/build/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = C01A355AF668445B9EBABA83 /* /Users/goodleon/Downloads/20200624/build/CMakeLists.txt */; };
+		6A1DDDC42372474ABF0B17AB /* /Users/goodleon/Downloads/20200624/build/lpeg/lpprint.c */ = {isa = PBXBuildFile; fileRef = 7A9990CCBA0249ECA8770468 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpprint.c */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		6E37E0AA067B4270BA51A875 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldblib.c */ = {isa = PBXBuildFile; fileRef = 39CE6827923E4C85B4A8E1F1 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldblib.c */; };
+		6E4BE8E4922645DCBCC4FA3C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/llex.c */ = {isa = PBXBuildFile; fileRef = 90AA5EFCE7D24FE9BA569E0C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/llex.c */; };
+		709BE2028D2046CE9091573B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbaselib.c */ = {isa = PBXBuildFile; fileRef = 6D4F474A4F3949B7BC8629AB /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbaselib.c */; };
+		75812ACCCEB640B2B5FCB024 /* /Users/goodleon/Downloads/20200624/build/luasocket/except.c */ = {isa = PBXBuildFile; fileRef = C3DA3962C5134501BB8EEF57 /* /Users/goodleon/Downloads/20200624/build/luasocket/except.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		76E1E103544E438FA8EAF27C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbitlib.c */ = {isa = PBXBuildFile; fileRef = D9D7327E13984FD48AFAB905 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbitlib.c */; };
+		7979ECF848234665A050749D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lgc.c */ = {isa = PBXBuildFile; fileRef = 12440663DB194BC78C4B381E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lgc.c */; };
+		8300C8457BEC4847A73C9D63 /* /Users/goodleon/Downloads/20200624/build/luasocket/tcp.c */ = {isa = PBXBuildFile; fileRef = 92263D1CB7D046AFBC88C28C /* /Users/goodleon/Downloads/20200624/build/luasocket/tcp.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		84E11C3746804CC6A92FBA92 /* /Users/goodleon/Downloads/20200624/build/luasocket/mime.c */ = {isa = PBXBuildFile; fileRef = DFB8B0C81A164030829EE1A9 /* /Users/goodleon/Downloads/20200624/build/luasocket/mime.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		8808B23A7DAF4F4FA3554FD9 /* /Users/goodleon/Downloads/20200624/build/lua-protobuf/pb.c */ = {isa = PBXBuildFile; fileRef = 81DA90E1699F478F8278EE1D /* /Users/goodleon/Downloads/20200624/build/lua-protobuf/pb.c */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		88AE19C2E2254A578D7A80DD /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lzio.c */ = {isa = PBXBuildFile; fileRef = 36AAD02F029A482E9C8DE0DC /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lzio.c */; };
+		8CD2419B6C9946EA9C429B72 /* /Users/goodleon/Downloads/20200624/build/luasocket/luasocket.c */ = {isa = PBXBuildFile; fileRef = 663346C82A684990A5E97537 /* /Users/goodleon/Downloads/20200624/build/luasocket/luasocket.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		8F6203F178FA4480A863BDA8 /* /Users/goodleon/Downloads/20200624/build/perflib.c */ = {isa = PBXBuildFile; fileRef = 9F4B7FDF7A6A493C96C0192B /* /Users/goodleon/Downloads/20200624/build/perflib.c */; };
+		966614A51601475AB720880C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lapi.c */ = {isa = PBXBuildFile; fileRef = BC10F1FDBE0044F6ADECBC51 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lapi.c */; };
+		9A5E4FBBC8E4423E84A21B54 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/liolib.c */ = {isa = PBXBuildFile; fileRef = E644D57278004F60BA021394 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/liolib.c */; };
+		9C945D6574004C35B3DB088D /* /Users/goodleon/Downloads/20200624/build/memory_leak_checker.c */ = {isa = PBXBuildFile; fileRef = 2AA420E05CD54C2CAE73F3AC /* /Users/goodleon/Downloads/20200624/build/memory_leak_checker.c */; };
+		A07092BB1F774D1B9D3266E7 /* /Users/goodleon/Downloads/20200624/build/luasocket/inet.c */ = {isa = PBXBuildFile; fileRef = 792B0BDA891E4E5D86D96403 /* /Users/goodleon/Downloads/20200624/build/luasocket/inet.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		ACE531188B5346CCA425C731 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lparser.c */ = {isa = PBXBuildFile; fileRef = 643B5F45141F4D72BECED39D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lparser.c */; };
+		B2873A1B79A843098C2BA1BB /* /Users/goodleon/Downloads/20200624/build/xlua.c */ = {isa = PBXBuildFile; fileRef = 6AC30471F33C45AB87AE2696 /* /Users/goodleon/Downloads/20200624/build/xlua.c */; };
+		B3E4A9562B28441C8E920158 /* /Users/goodleon/Downloads/20200624/build/luasocket/options.c */ = {isa = PBXBuildFile; fileRef = 7C4BEFC1D7774126BC8717E4 /* /Users/goodleon/Downloads/20200624/build/luasocket/options.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		B70B08C604C845FBB234184E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmathlib.c */ = {isa = PBXBuildFile; fileRef = DC0F62DA66324385A3A59AB2 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmathlib.c */; };
+		C07E1C2DF5D34F4DA29F1271 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcode.c */ = {isa = PBXBuildFile; fileRef = 092EA2D9A3294AE9974D502B /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcode.c */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		C2191BECD2064ECFA076FDE7 /* /Users/goodleon/Downloads/20200624/build/ffi/ctype.c */ = {isa = PBXBuildFile; fileRef = FD4A215F8BAF472BA665797D /* /Users/goodleon/Downloads/20200624/build/ffi/ctype.c */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		C3975E6562B145D991C8D4D1 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lauxlib.c */ = {isa = PBXBuildFile; fileRef = 91CC0FD2612E4BC0A89595D4 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lauxlib.c */; };
+		D44A0D069DD54F11BC94596B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltablib.c */ = {isa = PBXBuildFile; fileRef = 877340BCA08E422796281941 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltablib.c */; };
+		D60C77D73C9840008CE585C6 /* /Users/goodleon/Downloads/20200624/build/ffi/ffi.c */ = {isa = PBXBuildFile; fileRef = AE3CE75AA68E45558C8A99A4 /* /Users/goodleon/Downloads/20200624/build/ffi/ffi.c */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		DDC4813400D44DEBA7BD375B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldump.c */ = {isa = PBXBuildFile; fileRef = BB25264D972542F689A0609B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldump.c */; };
+		DF278874BB8849AAB1E4A92B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldo.c */ = {isa = PBXBuildFile; fileRef = 6042978220EB4A6A81B10272 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldo.c */; };
+		E4F8A5ED46204FBD89FDC2D4 /* /Users/goodleon/Downloads/20200624/build/luasocket/usocket.c */ = {isa = PBXBuildFile; fileRef = AA6862FCB4234ECFAC98C614 /* /Users/goodleon/Downloads/20200624/build/luasocket/usocket.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		EC87CDF437724520AF622656 /* /Users/goodleon/Downloads/20200624/build/luasocket/io.c */ = {isa = PBXBuildFile; fileRef = 168201570C944C7F9BEDDEAB /* /Users/goodleon/Downloads/20200624/build/luasocket/io.c */; settings = {COMPILER_FLAGS = "-DLUA_COMPAT_APIINTCASTS -DLUA_LIB -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS "; }; };
+		F2D45B97F08848288CC3D1CA /* /Users/goodleon/Downloads/20200624/build/ffi/parser.c */ = {isa = PBXBuildFile; fileRef = AE95DBEB0F2441FBA13356E4 /* /Users/goodleon/Downloads/20200624/build/ffi/parser.c */; settings = {COMPILER_FLAGS = "-DLUA_LIB "; }; };
+		F37B78755AD7466CAFED0F8C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltable.c */ = {isa = PBXBuildFile; fileRef = 60DD0E18CE7F4E83B1C8DCE4 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltable.c */; };
+		F4E7B261C8AB43D5A58CA338 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstrlib.c */ = {isa = PBXBuildFile; fileRef = 90C42BEF1D854E66BBAF2DB3 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstrlib.c */; };
+		F4F4FF1282CD429F8331414D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lundump.c */ = {isa = PBXBuildFile; fileRef = F1C867CE905F467EA11CEFBD /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lundump.c */; };
+		F91B9F42B78F41C7A9836D1A /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstate.c */ = {isa = PBXBuildFile; fileRef = B60E9F4E63F840EC957FFCD0 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstate.c */; };
+		FF36C92807E1417DB5559746 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmem.c */ = {isa = PBXBuildFile; fileRef = A62E11BA41044E3184D08298 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmem.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		21EBC26879BF49539B5CA8FC /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+		29369C8D078046C6ABFBCF88 /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		496A76D9D099413584932EA0 /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+		603D9036292540AC81EFD2FA /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		F4F56FEC4A964EEBA8E9FBF0 = {
+			isa = PBXBuildStyle;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		2AFFEF93DC47468682D5050E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4976F009F0BF48519016E62D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1949FB3790749BA835B6336;
+			remoteInfo = ZERO_CHECK;
+		};
+		D4F662F6CC064C55AA7F32D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4976F009F0BF48519016E62D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1949FB3790749BA835B6336;
+			remoteInfo = ZERO_CHECK;
+		};
+		F0391478FB4D4129965F3B70 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4976F009F0BF48519016E62D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 89E911FDF389456CBC853A1A;
+			remoteInfo = xlua;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		092EA2D9A3294AE9974D502B /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcode.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lpcode.c; path = lpeg/lpcode.c; sourceTree = SOURCE_ROOT; };
+		0B0A6C51F3FC4F879185FC91 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcap.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lpcap.c; path = lpeg/lpcap.c; sourceTree = SOURCE_ROOT; };
+		12440663DB194BC78C4B381E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lgc.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lgc.c; path = "lua-5.3.5/src/lgc.c"; sourceTree = SOURCE_ROOT; };
+		12C2CD412F684AF486F9E13D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstring.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lstring.c; path = "lua-5.3.5/src/lstring.c"; sourceTree = SOURCE_ROOT; };
+		168201570C944C7F9BEDDEAB /* /Users/goodleon/Downloads/20200624/build/luasocket/io.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = io.c; path = luasocket/io.c; sourceTree = SOURCE_ROOT; };
+		2AA420E05CD54C2CAE73F3AC /* /Users/goodleon/Downloads/20200624/build/memory_leak_checker.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = memory_leak_checker.c; path = memory_leak_checker.c; sourceTree = SOURCE_ROOT; };
+		34F2062B67D24B93A071C601 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcode.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lcode.c; path = "lua-5.3.5/src/lcode.c"; sourceTree = SOURCE_ROOT; };
+		36AAD02F029A482E9C8DE0DC /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lzio.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lzio.c; path = "lua-5.3.5/src/lzio.c"; sourceTree = SOURCE_ROOT; };
+		39CE6827923E4C85B4A8E1F1 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldblib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ldblib.c; path = "lua-5.3.5/src/ldblib.c"; sourceTree = SOURCE_ROOT; };
+		3F8848ED248940A1BAF4B8BB /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lctype.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lctype.c; path = "lua-5.3.5/src/lctype.c"; sourceTree = SOURCE_ROOT; };
+		49D72E74AB2E4B01A4F50A35 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/linit.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = linit.c; path = "lua-5.3.5/src/linit.c"; sourceTree = SOURCE_ROOT; };
+		4FAD7E2221F44076A723E2EB /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lobject.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lobject.c; path = "lua-5.3.5/src/lobject.c"; sourceTree = SOURCE_ROOT; };
+		5AF70143BF4C44BF8469CFD8 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lopcodes.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lopcodes.c; path = "lua-5.3.5/src/lopcodes.c"; sourceTree = SOURCE_ROOT; };
+		5FEAF5551EF6402E8FE573A6 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lutf8lib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lutf8lib.c; path = "lua-5.3.5/src/lutf8lib.c"; sourceTree = SOURCE_ROOT; };
+		6042978220EB4A6A81B10272 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldo.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ldo.c; path = "lua-5.3.5/src/ldo.c"; sourceTree = SOURCE_ROOT; };
+		60DD0E18CE7F4E83B1C8DCE4 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltable.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ltable.c; path = "lua-5.3.5/src/ltable.c"; sourceTree = SOURCE_ROOT; };
+		643B5F45141F4D72BECED39D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lparser.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lparser.c; path = "lua-5.3.5/src/lparser.c"; sourceTree = SOURCE_ROOT; };
+		64580AE8B0DF4893A1AFF971 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loadlib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = loadlib.c; path = "lua-5.3.5/src/loadlib.c"; sourceTree = SOURCE_ROOT; };
+		663346C82A684990A5E97537 /* /Users/goodleon/Downloads/20200624/build/luasocket/luasocket.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = luasocket.c; path = luasocket/luasocket.c; sourceTree = SOURCE_ROOT; };
+		6709EABC8C3E4E51B773B31C /* /Users/goodleon/Downloads/20200624/build/luasocket/select.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = select.c; path = luasocket/select.c; sourceTree = SOURCE_ROOT; };
+		6AC30471F33C45AB87AE2696 /* /Users/goodleon/Downloads/20200624/build/xlua.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = xlua.c; path = xlua.c; sourceTree = SOURCE_ROOT; };
+		6C3690D4F87E4A48B7EE3ED9 /* /Users/goodleon/Downloads/20200624/build/lua-rapidjson/source/rapidjson.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = rapidjson.cpp; path = "lua-rapidjson/source/rapidjson.cpp"; sourceTree = SOURCE_ROOT; };
+		6D4F474A4F3949B7BC8629AB /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbaselib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lbaselib.c; path = "lua-5.3.5/src/lbaselib.c"; sourceTree = SOURCE_ROOT; };
+		739ECFABFE8449348F3F46B6 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loslib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = loslib.c; path = "lua-5.3.5/src/loslib.c"; sourceTree = SOURCE_ROOT; };
+		792B0BDA891E4E5D86D96403 /* /Users/goodleon/Downloads/20200624/build/luasocket/inet.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = inet.c; path = luasocket/inet.c; sourceTree = SOURCE_ROOT; };
+		7A9990CCBA0249ECA8770468 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpprint.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lpprint.c; path = lpeg/lpprint.c; sourceTree = SOURCE_ROOT; };
+		7C4BEFC1D7774126BC8717E4 /* /Users/goodleon/Downloads/20200624/build/luasocket/options.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = options.c; path = luasocket/options.c; sourceTree = SOURCE_ROOT; };
+		7CA83C19C5B1475F8A9D3751 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lvm.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lvm.c; path = "lua-5.3.5/src/lvm.c"; sourceTree = SOURCE_ROOT; };
+		81DA90E1699F478F8278EE1D /* /Users/goodleon/Downloads/20200624/build/lua-protobuf/pb.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = pb.c; path = "lua-protobuf/pb.c"; sourceTree = SOURCE_ROOT; };
+		877340BCA08E422796281941 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltablib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ltablib.c; path = "lua-5.3.5/src/ltablib.c"; sourceTree = SOURCE_ROOT; };
+		90AA5EFCE7D24FE9BA569E0C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/llex.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = llex.c; path = "lua-5.3.5/src/llex.c"; sourceTree = SOURCE_ROOT; };
+		90C42BEF1D854E66BBAF2DB3 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstrlib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lstrlib.c; path = "lua-5.3.5/src/lstrlib.c"; sourceTree = SOURCE_ROOT; };
+		91CC0FD2612E4BC0A89595D4 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lauxlib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lauxlib.c; path = "lua-5.3.5/src/lauxlib.c"; sourceTree = SOURCE_ROOT; };
+		91EA1BFE94E64DA0A61E41A8 /* /Users/goodleon/Downloads/20200624/build/luasocket/auxiliar.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = auxiliar.c; path = luasocket/auxiliar.c; sourceTree = SOURCE_ROOT; };
+		92263D1CB7D046AFBC88C28C /* /Users/goodleon/Downloads/20200624/build/luasocket/tcp.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = tcp.c; path = luasocket/tcp.c; sourceTree = SOURCE_ROOT; };
+		92A5D8A43FF242DCABDE4CF7 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcorolib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lcorolib.c; path = "lua-5.3.5/src/lcorolib.c"; sourceTree = SOURCE_ROOT; };
+		9F4B7FDF7A6A493C96C0192B /* /Users/goodleon/Downloads/20200624/build/perflib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = perflib.c; path = perflib.c; sourceTree = SOURCE_ROOT; };
+		A37650DB27904311A1990F8E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltm.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ltm.c; path = "lua-5.3.5/src/ltm.c"; sourceTree = SOURCE_ROOT; };
+		A62E11BA41044E3184D08298 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmem.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lmem.c; path = "lua-5.3.5/src/lmem.c"; sourceTree = SOURCE_ROOT; };
+		AA6862FCB4234ECFAC98C614 /* /Users/goodleon/Downloads/20200624/build/luasocket/usocket.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = usocket.c; path = luasocket/usocket.c; sourceTree = SOURCE_ROOT; };
+		AE3CE75AA68E45558C8A99A4 /* /Users/goodleon/Downloads/20200624/build/ffi/ffi.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ffi.c; path = ffi/ffi.c; sourceTree = SOURCE_ROOT; };
+		AE48E1B584C54C70A09FB140 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpvm.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lpvm.c; path = lpeg/lpvm.c; sourceTree = SOURCE_ROOT; };
+		AE7E4E860EDA4312BDB0630F /* /Users/goodleon/Downloads/20200624/build/lpeg/lptree.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lptree.c; path = lpeg/lptree.c; sourceTree = SOURCE_ROOT; };
+		AE95DBEB0F2441FBA13356E4 /* /Users/goodleon/Downloads/20200624/build/ffi/parser.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = parser.c; path = ffi/parser.c; sourceTree = SOURCE_ROOT; };
+		B2C7B6C41BAA43DCAC9CB2A7 /* /Users/goodleon/Downloads/20200624/build/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		B60E9F4E63F840EC957FFCD0 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstate.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lstate.c; path = "lua-5.3.5/src/lstate.c"; sourceTree = SOURCE_ROOT; };
+		BB227CCB2F2947E68341FC9F /* /Users/goodleon/Downloads/20200624/build/luasocket/buffer.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = buffer.c; path = luasocket/buffer.c; sourceTree = SOURCE_ROOT; };
+		BB25264D972542F689A0609B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldump.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ldump.c; path = "lua-5.3.5/src/ldump.c"; sourceTree = SOURCE_ROOT; };
+		BC10F1FDBE0044F6ADECBC51 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lapi.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lapi.c; path = "lua-5.3.5/src/lapi.c"; sourceTree = SOURCE_ROOT; };
+		BC575EC914284133952FDAE4 /* /Users/goodleon/Downloads/20200624/build/luasocket/udp.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = udp.c; path = luasocket/udp.c; sourceTree = SOURCE_ROOT; };
+		BEAA09D71C3941599901F1A2 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lfunc.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lfunc.c; path = "lua-5.3.5/src/lfunc.c"; sourceTree = SOURCE_ROOT; };
+		BEB7E4E04C9447D8970E4453 /* /Users/goodleon/Downloads/20200624/build/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		C01A355AF668445B9EBABA83 /* /Users/goodleon/Downloads/20200624/build/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		C3DA3962C5134501BB8EEF57 /* /Users/goodleon/Downloads/20200624/build/luasocket/except.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = except.c; path = luasocket/except.c; sourceTree = SOURCE_ROOT; };
+		D40B49F927624FA3AB723F5A /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldebug.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ldebug.c; path = "lua-5.3.5/src/ldebug.c"; sourceTree = SOURCE_ROOT; };
+		D9D7327E13984FD48AFAB905 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbitlib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lbitlib.c; path = "lua-5.3.5/src/lbitlib.c"; sourceTree = SOURCE_ROOT; };
+		DC0F62DA66324385A3A59AB2 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmathlib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lmathlib.c; path = "lua-5.3.5/src/lmathlib.c"; sourceTree = SOURCE_ROOT; };
+		DFB8B0C81A164030829EE1A9 /* /Users/goodleon/Downloads/20200624/build/luasocket/mime.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = mime.c; path = luasocket/mime.c; sourceTree = SOURCE_ROOT; };
+		E42B376541644B19869E57A9 /* /Users/goodleon/Downloads/20200624/build/i64lib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = i64lib.c; path = i64lib.c; sourceTree = SOURCE_ROOT; };
+		E644D57278004F60BA021394 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/liolib.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = liolib.c; path = "lua-5.3.5/src/liolib.c"; sourceTree = SOURCE_ROOT; };
+		E9249922449A4785B9A0A734 /* /Users/goodleon/Downloads/20200624/build/luasocket/timeout.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = timeout.c; path = luasocket/timeout.c; sourceTree = SOURCE_ROOT; };
+		F1C867CE905F467EA11CEFBD /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lundump.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = lundump.c; path = "lua-5.3.5/src/lundump.c"; sourceTree = SOURCE_ROOT; };
+		F58A63567FF94E3A80B5E846 /* xlua */ = {isa = PBXFileReference; explicitFileType = "wrapper.plug-in"; path = xlua.bundle/Contents/MacOS/xlua; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD4A215F8BAF472BA665797D /* /Users/goodleon/Downloads/20200624/build/ffi/ctype.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = ctype.c; path = ffi/ctype.c; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		05A6D80BA8D24912AC8558BC /* luasocket */ = {
+			isa = PBXGroup;
+			children = (
+				91EA1BFE94E64DA0A61E41A8 /* /Users/goodleon/Downloads/20200624/build/luasocket/auxiliar.c */,
+				BB227CCB2F2947E68341FC9F /* /Users/goodleon/Downloads/20200624/build/luasocket/buffer.c */,
+				C3DA3962C5134501BB8EEF57 /* /Users/goodleon/Downloads/20200624/build/luasocket/except.c */,
+				792B0BDA891E4E5D86D96403 /* /Users/goodleon/Downloads/20200624/build/luasocket/inet.c */,
+				168201570C944C7F9BEDDEAB /* /Users/goodleon/Downloads/20200624/build/luasocket/io.c */,
+				663346C82A684990A5E97537 /* /Users/goodleon/Downloads/20200624/build/luasocket/luasocket.c */,
+				DFB8B0C81A164030829EE1A9 /* /Users/goodleon/Downloads/20200624/build/luasocket/mime.c */,
+				7C4BEFC1D7774126BC8717E4 /* /Users/goodleon/Downloads/20200624/build/luasocket/options.c */,
+				6709EABC8C3E4E51B773B31C /* /Users/goodleon/Downloads/20200624/build/luasocket/select.c */,
+				92263D1CB7D046AFBC88C28C /* /Users/goodleon/Downloads/20200624/build/luasocket/tcp.c */,
+				E9249922449A4785B9A0A734 /* /Users/goodleon/Downloads/20200624/build/luasocket/timeout.c */,
+				BC575EC914284133952FDAE4 /* /Users/goodleon/Downloads/20200624/build/luasocket/udp.c */,
+				AA6862FCB4234ECFAC98C614 /* /Users/goodleon/Downloads/20200624/build/luasocket/usocket.c */,
+			);
+			name = luasocket;
+			sourceTree = "<group>";
+		};
+		0A9F283B4A4D426D9BE7B8C2 /* lua-5.3.5 */ = {
+			isa = PBXGroup;
+			children = (
+				6A84A27CA8604AB88BD24BE4 /* src */,
+			);
+			name = "lua-5.3.5";
+			sourceTree = "<group>";
+		};
+		2DD07277EDC941F1953A48D3 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		59D0E7E71F304FE5AD4659BC /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				DFD8332AC55940D3B2239E44 /* xlua */,
+				6461AAAF9F01450EA803974D /* ALL_BUILD */,
+				6F6E2A8445A74DE985ED1439 /* ZERO_CHECK */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		5AA517AD51ED41128A0CB826 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		6461AAAF9F01450EA803974D /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				2DD07277EDC941F1953A48D3 /* CMake Rules */,
+				BEB7E4E04C9447D8970E4453 /* /Users/goodleon/Downloads/20200624/build/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		6A84A27CA8604AB88BD24BE4 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				BC10F1FDBE0044F6ADECBC51 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lapi.c */,
+				91CC0FD2612E4BC0A89595D4 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lauxlib.c */,
+				6D4F474A4F3949B7BC8629AB /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbaselib.c */,
+				D9D7327E13984FD48AFAB905 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbitlib.c */,
+				34F2062B67D24B93A071C601 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcode.c */,
+				92A5D8A43FF242DCABDE4CF7 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcorolib.c */,
+				3F8848ED248940A1BAF4B8BB /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lctype.c */,
+				39CE6827923E4C85B4A8E1F1 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldblib.c */,
+				D40B49F927624FA3AB723F5A /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldebug.c */,
+				6042978220EB4A6A81B10272 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldo.c */,
+				BB25264D972542F689A0609B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldump.c */,
+				BEAA09D71C3941599901F1A2 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lfunc.c */,
+				12440663DB194BC78C4B381E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lgc.c */,
+				49D72E74AB2E4B01A4F50A35 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/linit.c */,
+				E644D57278004F60BA021394 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/liolib.c */,
+				90AA5EFCE7D24FE9BA569E0C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/llex.c */,
+				DC0F62DA66324385A3A59AB2 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmathlib.c */,
+				A62E11BA41044E3184D08298 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmem.c */,
+				64580AE8B0DF4893A1AFF971 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loadlib.c */,
+				4FAD7E2221F44076A723E2EB /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lobject.c */,
+				5AF70143BF4C44BF8469CFD8 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lopcodes.c */,
+				739ECFABFE8449348F3F46B6 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loslib.c */,
+				643B5F45141F4D72BECED39D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lparser.c */,
+				B60E9F4E63F840EC957FFCD0 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstate.c */,
+				12C2CD412F684AF486F9E13D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstring.c */,
+				90C42BEF1D854E66BBAF2DB3 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstrlib.c */,
+				60DD0E18CE7F4E83B1C8DCE4 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltable.c */,
+				877340BCA08E422796281941 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltablib.c */,
+				A37650DB27904311A1990F8E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltm.c */,
+				F1C867CE905F467EA11CEFBD /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lundump.c */,
+				5FEAF5551EF6402E8FE573A6 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lutf8lib.c */,
+				7CA83C19C5B1475F8A9D3751 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lvm.c */,
+				36AAD02F029A482E9C8DE0DC /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lzio.c */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		6F6E2A8445A74DE985ED1439 /* ZERO_CHECK */ = {
+			isa = PBXGroup;
+			children = (
+				F87E9C9B853E4F27B4958B9D /* CMake Rules */,
+				B2C7B6C41BAA43DCAC9CB2A7 /* /Users/goodleon/Downloads/20200624/build/CMakeLists.txt */,
+			);
+			name = ZERO_CHECK;
+			sourceTree = "<group>";
+		};
+		809A582AEB9646CFBFB8DF33 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				FD4A215F8BAF472BA665797D /* /Users/goodleon/Downloads/20200624/build/ffi/ctype.c */,
+				AE3CE75AA68E45558C8A99A4 /* /Users/goodleon/Downloads/20200624/build/ffi/ffi.c */,
+				AE95DBEB0F2441FBA13356E4 /* /Users/goodleon/Downloads/20200624/build/ffi/parser.c */,
+				0B0A6C51F3FC4F879185FC91 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcap.c */,
+				092EA2D9A3294AE9974D502B /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcode.c */,
+				7A9990CCBA0249ECA8770468 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpprint.c */,
+				AE7E4E860EDA4312BDB0630F /* /Users/goodleon/Downloads/20200624/build/lpeg/lptree.c */,
+				AE48E1B584C54C70A09FB140 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpvm.c */,
+				81DA90E1699F478F8278EE1D /* /Users/goodleon/Downloads/20200624/build/lua-protobuf/pb.c */,
+				6C3690D4F87E4A48B7EE3ED9 /* /Users/goodleon/Downloads/20200624/build/lua-rapidjson/source/rapidjson.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		A5B3630F82C74F00B451FDD4 = {
+			isa = PBXGroup;
+			children = (
+				59D0E7E71F304FE5AD4659BC /* Sources */,
+				5AA517AD51ED41128A0CB826 /* Resources */,
+				CE3D0CDEA12D4D5B9CF5C436 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CE3D0CDEA12D4D5B9CF5C436 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F58A63567FF94E3A80B5E846 /* xlua */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DFD8332AC55940D3B2239E44 /* xlua */ = {
+			isa = PBXGroup;
+			children = (
+				0A9F283B4A4D426D9BE7B8C2 /* lua-5.3.5 */,
+				05A6D80BA8D24912AC8558BC /* luasocket */,
+				809A582AEB9646CFBFB8DF33 /* Source Files */,
+				C01A355AF668445B9EBABA83 /* /Users/goodleon/Downloads/20200624/build/CMakeLists.txt */,
+				E42B376541644B19869E57A9 /* /Users/goodleon/Downloads/20200624/build/i64lib.c */,
+				2AA420E05CD54C2CAE73F3AC /* /Users/goodleon/Downloads/20200624/build/memory_leak_checker.c */,
+				9F4B7FDF7A6A493C96C0192B /* /Users/goodleon/Downloads/20200624/build/perflib.c */,
+				6AC30471F33C45AB87AE2696 /* /Users/goodleon/Downloads/20200624/build/xlua.c */,
+			);
+			name = xlua;
+			sourceTree = "<group>";
+		};
+		F87E9C9B853E4F27B4958B9D /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		89E911FDF389456CBC853A1A /* xlua */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 12A9B7F8CF804005B51A9BFB /* Build configuration list for PBXNativeTarget "xlua" */;
+			buildPhases = (
+				6FE37AC27E984E0E996D021A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE7E29B65A584F339AFD3DC1 /* PBXTargetDependency */,
+			);
+			name = xlua;
+			productName = xlua;
+			productReference = F58A63567FF94E3A80B5E846 /* xlua */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4976F009F0BF48519016E62D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1150;
+			};
+			buildConfigurationList = BCA19942E7684B13A9B1F312 /* Build configuration list for PBXProject "XLua" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				603D9036292540AC81EFD2FA /* Debug */,
+				496A76D9D099413584932EA0 /* Release */,
+				29369C8D078046C6ABFBCF88 /* MinSizeRel */,
+				21EBC26879BF49539B5CA8FC /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = A5B3630F82C74F00B451FDD4;
+			projectDirPath = ../;
+			projectRoot = "";
+			targets = (
+				E659B5840AE8452A9192F199 /* ALL_BUILD */,
+				E1949FB3790749BA835B6336 /* ZERO_CHECK */,
+				89E911FDF389456CBC853A1A /* xlua */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		143AE7A884254D8183F97DC5 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		454AC5EBBECC4A5B98D4C1FD /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/goodleon/Downloads/20200624/build/build_osx -f /Users/goodleon/Downloads/20200624/build/build_osx/CMakeScripts/ZERO_CHECK_cmakeRulesBuildPhase.make$CONFIGURATION all";
+			showEnvVarsInLog = 0;
+		};
+		7A4865CE8B764728A8E1A938 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		C6C006C3995C4D36835A8207 /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/goodleon/Downloads/20200624/build/build_osx -f /Users/goodleon/Downloads/20200624/build/build_osx/CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION all";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6FE37AC27E984E0E996D021A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2191BECD2064ECFA076FDE7 /* /Users/goodleon/Downloads/20200624/build/ffi/ctype.c */,
+				D60C77D73C9840008CE585C6 /* /Users/goodleon/Downloads/20200624/build/ffi/ffi.c */,
+				F2D45B97F08848288CC3D1CA /* /Users/goodleon/Downloads/20200624/build/ffi/parser.c */,
+				0797667303D74690B5995220 /* /Users/goodleon/Downloads/20200624/build/i64lib.c */,
+				23FC194D91F8492DB3C996D8 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcap.c */,
+				C07E1C2DF5D34F4DA29F1271 /* /Users/goodleon/Downloads/20200624/build/lpeg/lpcode.c */,
+				6A1DDDC42372474ABF0B17AB /* /Users/goodleon/Downloads/20200624/build/lpeg/lpprint.c */,
+				17DE3C5CFDC746EBA5D6C4E6 /* /Users/goodleon/Downloads/20200624/build/lpeg/lptree.c */,
+				3F3A3C12BC40478798703DBE /* /Users/goodleon/Downloads/20200624/build/lpeg/lpvm.c */,
+				966614A51601475AB720880C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lapi.c */,
+				C3975E6562B145D991C8D4D1 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lauxlib.c */,
+				709BE2028D2046CE9091573B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbaselib.c */,
+				76E1E103544E438FA8EAF27C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lbitlib.c */,
+				41AB3A775352495781DA7AFC /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcode.c */,
+				1EE9DAE953674934BC5A9749 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lcorolib.c */,
+				18436FF9FE194B4FB1FFB2DF /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lctype.c */,
+				6E37E0AA067B4270BA51A875 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldblib.c */,
+				305A2285106B45A0A683C2AF /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldebug.c */,
+				DF278874BB8849AAB1E4A92B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldo.c */,
+				DDC4813400D44DEBA7BD375B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ldump.c */,
+				4722CB1A06B144FA9EF13072 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lfunc.c */,
+				7979ECF848234665A050749D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lgc.c */,
+				513F3990864447FE85C659A3 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/linit.c */,
+				9A5E4FBBC8E4423E84A21B54 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/liolib.c */,
+				6E4BE8E4922645DCBCC4FA3C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/llex.c */,
+				B70B08C604C845FBB234184E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmathlib.c */,
+				FF36C92807E1417DB5559746 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lmem.c */,
+				245A15EFAC234050A48369D9 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loadlib.c */,
+				39571795A190470D9D51BC5E /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lobject.c */,
+				1C48FB1C994B47CF9E909F35 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lopcodes.c */,
+				13D9E2A2B1964E3193FA2ED0 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/loslib.c */,
+				ACE531188B5346CCA425C731 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lparser.c */,
+				F91B9F42B78F41C7A9836D1A /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstate.c */,
+				0BE027864B8842038B54137F /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstring.c */,
+				F4E7B261C8AB43D5A58CA338 /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lstrlib.c */,
+				F37B78755AD7466CAFED0F8C /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltable.c */,
+				D44A0D069DD54F11BC94596B /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltablib.c */,
+				41FAB6DE53AC43BF883C350A /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/ltm.c */,
+				F4F4FF1282CD429F8331414D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lundump.c */,
+				54A0A8DA7D914BD5A22DD52D /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lutf8lib.c */,
+				2CF011092AC140C08BE3E11A /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lvm.c */,
+				88AE19C2E2254A578D7A80DD /* /Users/goodleon/Downloads/20200624/build/lua-5.3.5/src/lzio.c */,
+				8808B23A7DAF4F4FA3554FD9 /* /Users/goodleon/Downloads/20200624/build/lua-protobuf/pb.c */,
+				4A1D888D2D864ADE83F25DD5 /* /Users/goodleon/Downloads/20200624/build/lua-rapidjson/source/rapidjson.cpp */,
+				5DD2B66CB63942FD830A0728 /* /Users/goodleon/Downloads/20200624/build/luasocket/auxiliar.c */,
+				5F6EF456B7AE4A47B5E0AD37 /* /Users/goodleon/Downloads/20200624/build/luasocket/buffer.c */,
+				75812ACCCEB640B2B5FCB024 /* /Users/goodleon/Downloads/20200624/build/luasocket/except.c */,
+				A07092BB1F774D1B9D3266E7 /* /Users/goodleon/Downloads/20200624/build/luasocket/inet.c */,
+				EC87CDF437724520AF622656 /* /Users/goodleon/Downloads/20200624/build/luasocket/io.c */,
+				8CD2419B6C9946EA9C429B72 /* /Users/goodleon/Downloads/20200624/build/luasocket/luasocket.c */,
+				84E11C3746804CC6A92FBA92 /* /Users/goodleon/Downloads/20200624/build/luasocket/mime.c */,
+				B3E4A9562B28441C8E920158 /* /Users/goodleon/Downloads/20200624/build/luasocket/options.c */,
+				35ECCA081D7047488BBAD020 /* /Users/goodleon/Downloads/20200624/build/luasocket/select.c */,
+				8300C8457BEC4847A73C9D63 /* /Users/goodleon/Downloads/20200624/build/luasocket/tcp.c */,
+				5103457BBD4B4055A88EA9DD /* /Users/goodleon/Downloads/20200624/build/luasocket/timeout.c */,
+				0D8D0C9253234B0099DE32D0 /* /Users/goodleon/Downloads/20200624/build/luasocket/udp.c */,
+				E4F8A5ED46204FBD89FDC2D4 /* /Users/goodleon/Downloads/20200624/build/luasocket/usocket.c */,
+				9C945D6574004C35B3DB088D /* /Users/goodleon/Downloads/20200624/build/memory_leak_checker.c */,
+				8F6203F178FA4480A863BDA8 /* /Users/goodleon/Downloads/20200624/build/perflib.c */,
+				B2873A1B79A843098C2BA1BB /* /Users/goodleon/Downloads/20200624/build/xlua.c */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AE7E29B65A584F339AFD3DC1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1949FB3790749BA835B6336 /* ZERO_CHECK */;
+			targetProxy = D4F662F6CC064C55AA7F32D8 /* PBXContainerItemProxy */;
+		};
+		C18CE748091443A3BD95649C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1949FB3790749BA835B6336 /* ZERO_CHECK */;
+			targetProxy = 2AFFEF93DC47468682D5050E /* PBXContainerItemProxy */;
+		};
+		F4201C54EB5842A3B6802B4F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 89E911FDF389456CBC853A1A /* xlua */;
+			targetProxy = F0391478FB4D4129965F3B70 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1E4893BBBCA74B5C88927CC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		2B12EE5AEF5848F98CD7D785 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",xlua_EXPORTS);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INFOPLIST_FILE = /Users/goodleon/Downloads/20200624/build/build_osx/CMakeFiles/xlua.dir/Info.plist;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = BUNDLE;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "    -DNDEBUG -fPIC  ";
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG -fPIC  ";
+				OTHER_LDFLAGS = "-L/usr/local/opt/php@7.1/lib -bundle -Wl,-headerpad_max_install_names  -lm";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = xlua;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		304833E5B8F347D5BDEDC73B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx/build;
+			};
+			name = Release;
+		};
+		3D86ED0AA65C41BA92CF7F69 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		428FDB41634945F8A20EB8EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		54D7149A880B495BA0D6B40C /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		641571270FEA497FA9C79787 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		A10BB0D2790641E2B8DE47A9 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx/build;
+			};
+			name = MinSizeRel;
+		};
+		AEA6AA6B41B143DF8CCBEE30 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		B1568728843548DF982EFC9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx/build;
+			};
+			name = Debug;
+		};
+		B6C9709C39F345859C936AC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",xlua_EXPORTS);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INFOPLIST_FILE = /Users/goodleon/Downloads/20200624/build/build_osx/CMakeFiles/xlua.dir/Info.plist;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = BUNDLE;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "    -DNDEBUG -fPIC  ";
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG -fPIC  ";
+				OTHER_LDFLAGS = "-L/usr/local/opt/php@7.1/lib -bundle -Wl,-headerpad_max_install_names  -lm";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = xlua;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		B8093ABCCB9F4648AEAFEA6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",xlua_EXPORTS);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INFOPLIST_FILE = /Users/goodleon/Downloads/20200624/build/build_osx/CMakeFiles/xlua.dir/Info.plist;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = BUNDLE;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "   -fPIC  ";
+				OTHER_CPLUSPLUSFLAGS = "   -fPIC  ";
+				OTHER_LDFLAGS = "-L/usr/local/opt/php@7.1/lib -bundle -Wl,-headerpad_max_install_names  -lm";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = xlua;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		D5922641C61D44E6A2ECF794 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		E5D74856DE31477AAAAF8FC0 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		EF8802F6699C46DDA3D4A772 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx/build;
+			};
+			name = RelWithDebInfo;
+		};
+		FDEDB350BDB1489E914F23E8 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",xlua_EXPORTS);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/goodleon/Downloads/20200624/build,"/Users/goodleon/Downloads/20200624/build/lua-5.3.5/src",/Users/goodleon/Downloads/20200624/build/build_osx,"/Users/goodleon/Downloads/20200624/build/lua-rapidjson/include","/Users/goodleon/Downloads/20200624/build/lua-protobuf",/Users/goodleon/Downloads/20200624/build/lpeg,/Users/goodleon/Downloads/20200624/build/ffi);
+				INFOPLIST_FILE = /Users/goodleon/Downloads/20200624/build/build_osx/CMakeFiles/xlua.dir/Info.plist;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = BUNDLE;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "       -DNDEBUG -fPIC  ";
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG -fPIC  ";
+				OTHER_LDFLAGS = "-L/usr/local/opt/php@7.1/lib -bundle -Wl,-headerpad_max_install_names  -lm";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = xlua;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/goodleon/Downloads/20200624/build/build_osx;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		12A9B7F8CF804005B51A9BFB /* Build configuration list for PBXNativeTarget "xlua" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8093ABCCB9F4648AEAFEA6C /* Debug */,
+				B6C9709C39F345859C936AC0 /* Release */,
+				2B12EE5AEF5848F98CD7D785 /* MinSizeRel */,
+				FDEDB350BDB1489E914F23E8 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2B436827CC174D069A60D624 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				428FDB41634945F8A20EB8EA /* Debug */,
+				D5922641C61D44E6A2ECF794 /* Release */,
+				AEA6AA6B41B143DF8CCBEE30 /* MinSizeRel */,
+				641571270FEA497FA9C79787 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		87C50678D4B140A88A4DB8EC /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D86ED0AA65C41BA92CF7F69 /* Debug */,
+				1E4893BBBCA74B5C88927CC0 /* Release */,
+				E5D74856DE31477AAAAF8FC0 /* MinSizeRel */,
+				54D7149A880B495BA0D6B40C /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BCA19942E7684B13A9B1F312 /* Build configuration list for PBXProject "XLua" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1568728843548DF982EFC9F /* Debug */,
+				304833E5B8F347D5BDEDC73B /* Release */,
+				A10BB0D2790641E2B8DE47A9 /* MinSizeRel */,
+				EF8802F6699C46DDA3D4A772 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4976F009F0BF48519016E62D /* Project object */;
+}

@@ -1,0 +1,3 @@
+/Users/goodleon/Downloads/20200624/build/build_osx/CMakeFiles/xlua.dir
+/Users/goodleon/Downloads/20200624/build/build_osx/CMakeFiles/ALL_BUILD.dir
+/Users/goodleon/Downloads/20200624/build/build_osx/CMakeFiles/ZERO_CHECK.dir
