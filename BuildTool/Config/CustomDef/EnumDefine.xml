@@ -1,0 +1,5 @@
+<enum name="ItemType">
+		<var name="Long" alias="长的" value="1"/>
+		<var name="Side" alias="方的" value="2"/>
+		<var name="Circle" alias="圆的" value="3"/>
+</enum>

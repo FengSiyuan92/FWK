@@ -1,0 +1,5 @@
+<enum name="Consume">
+		<var name="item_id" type="int" ref="Item.name" out="cs" index="2" />
+		<var name="use_count" type="int" index="1"/>
+
+</enum>
