@@ -21,6 +21,7 @@ public class AssetManager
     static Dictionary<string, string[]> m_depends;
     static string m_BaseDownloadingURL;
     static string pre;
+
 #if UNITY_EDITOR
     const string simulateKey = "ASSET_BUNDLE_SIMULATE";
     static int m_simulateModel = -1;

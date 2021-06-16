@@ -10,6 +10,7 @@ namespace BuildTool
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
