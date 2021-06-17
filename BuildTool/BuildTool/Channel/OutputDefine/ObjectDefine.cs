@@ -11,18 +11,34 @@ namespace Channel.OutputDefine
     /// <summary>
     /// 导出表对象定义
     /// </summary>
-    class ObjectDefine
+    class ObjectDefine : IObjDefine
     {
+        public string Name { get; set; }
+        public IFieldDefine this[string key, bool alias = false]
+        {
+            get
+            {
+                FieldDefine def;
+                defines.TryGetValue(key, out def);
+                return def;
+            }
+        }
+
+        List<string> fieldName = new List<string>();
         Dictionary<string, FieldDefine> defines = new Dictionary<string, FieldDefine>();
 
-        public void AddFieldDefine(FieldDefine define)
+        public void AddFieldDefine(IFieldDefine def)
         {
-            var key = define.fieldName;
+            var define = def as FieldDefine;
+            if (define == null) return;
+
+            var key = define.FieldName;
             if (defines.ContainsKey(key))
             {
                 throw new Exception("重复添加相同的字段名");
             }
             defines.Add(key, define);
+            fieldName.Add(key);
         }
 
 
@@ -38,6 +54,7 @@ namespace Channel.OutputDefine
                 if (!defines.TryGetValue(define.Key, out oldDefine))
                 {
                     defines.Add(define.Key, define.Value);
+                    fieldName.Add(define.Key);
                 }
                 else
                 {

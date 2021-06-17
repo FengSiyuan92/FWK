@@ -10,7 +10,7 @@ using Channel.OutputDefine;
 
 namespace Channel.Reader
 {
-    class ExcelReader
+    public class ExcelReader
     {
         /// <summary>
         /// 有效数据表的标记符号
@@ -20,8 +20,9 @@ namespace Channel.Reader
         const string FieldNameTitle = "字段名";
         const string FieldTypeTitle = "类型";
         const string OutputTypeTitle = "导出";
-        const string AppendDefTitle = "附加定义";
+        const string ValueAppendTitle = "内容描述";
         const string CheckRuleTitle = "检查规则";
+
         enum FieldRowOrder
         {
             Name = 0,
@@ -37,11 +38,49 @@ namespace Channel.Reader
             {FieldNameTitle,  FieldRowOrder.Name},
             {FieldTypeTitle,  FieldRowOrder.Type},
             {OutputTypeTitle,  FieldRowOrder.OutputType},
-            {AppendDefTitle,  FieldRowOrder.AppendDef},
+            {ValueAppendTitle,  FieldRowOrder.AppendDef},
             {CheckRuleTitle,  FieldRowOrder.CheckRule},
         };
 
         static Dictionary<string, ObjectDefine> allLoadedDef = new Dictionary<string, ObjectDefine>();
+
+        /// <summary>
+        /// 加载生成excel对应的ObjectDefine数据
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="assign"></param>
+        /// <returns></returns>
+        public static bool LoadObjectDefine(string filePath)
+        {
+
+            if (!IsValidExcelFile(filePath)) return false;
+            // TODO:多线程处理,加入try,catch处理
+            // 使用io共享打开
+            IWorkbook workBook = null;
+            using (FileStream file = new FileStream(filePath, System.IO.FileMode.Open, 
+                System.IO.FileAccess.Read, FileShare.ReadWrite))
+            {
+                workBook = WorkbookFactory.Create(file);
+                for (int i = 0; i < workBook.NumberOfSheets; i++)
+                {
+                    ISheet sheet = workBook.GetSheetAt(i);
+                    // 不是有效数据表继续排查
+                    if (!IsValidSheet(sheet)) continue;
+
+                    // 对sheet创建一个Object定义,赋值Object名称
+                    ObjectDefine objDef = new ObjectDefine();
+                    objDef.Name = Utils.GetObjectTypeName(filePath);
+
+                    // 收集所有有效数据行(**start--------end**)
+                    var rows = CollectFieldRows(sheet);
+                    // 使用收集好的IRow数据,为ObjectDef填充数据
+                    InjectObjectDef(objDef, rows);
+
+                    Lookup.AddObjectDefine(objDef);
+                }
+            }
+            return true;
+        }
 
         /// <summary>
         /// 检查一个sheet表格是否是有效的数据表格
@@ -52,41 +91,40 @@ namespace Channel.Reader
         /// 
         static bool IsValidSheet(ISheet sheet)
         {
-            if (sheet.LastRowNum == 0 ) return false;
+            // 空表
+            if (sheet == null || sheet.LastRowNum == 0) return false;
 
+            //第一行没有数据
             IRow row = sheet.GetRow(0);
-            if (row.LastCellNum == 0) return false;
+            if (row == null || row.LastCellNum == 0) return false;
 
+            //第一行数据是否为可用表的标志符号
             ICell cell = row.GetCell(0);
-            return cell.StringCellValue == VALID_SHEET_SIGN;
+            return cell!= null && cell.StringCellValue == VALID_SHEET_SIGN;
         }
 
         /// <summary>
-        /// 加载一个xlsx表格的数据
-        /// 加载完成后,将会生成excel对应的ObjectDefine数据
+        /// 检查文件路径是否是有效的excel文件
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="assign"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
-        public static bool Load(string fileName)
+        static bool IsValidExcelFile(string path)
         {
-            IWorkbook workBook = CreateBook(fileName);
-            if (workBook == null) return false;
-
-            for (int i = 0; i < workBook.NumberOfSheets; i++)
+            if (!File.Exists(path))
             {
-                ISheet sheet = workBook.GetSheetAt(i);
-                // 不是有效数据表继续排查
-                if (!IsValidSheet(sheet)) continue;
-
-                var tabName = Utils.GetObjectTypeName(fileName);
-                ObjectDefine objDef = new ObjectDefine();
-                var rows = CollectFieldRows(sheet);
-
-
+                return false;
             }
-
-
+            // 临时文件不读取
+            var f = Path.GetFileName(path);
+            if (f.StartsWith("~$") || f.StartsWith("~"))
+            {
+                return false;
+            }
+            // 参数传递进来的 忽略文件不读取
+            if (GlobalArgs.IsIgnoreFile(path))
+            {
+                return false;
+            }
             return true;
         }
 
@@ -127,78 +165,44 @@ namespace Channel.Reader
             return fieldRows;
         }
 
-
-        static void InjectObjectDef(string name, ObjectDefine def, ISheet sheet)
+        static void InjectObjectDef(ObjectDefine def, Dictionary<FieldRowOrder, IRow> validRows)
         {
-            var max = (int)FieldRowOrder.Max;
-            for (int i = 0; i < max; i++)
-            {
-                FieldRowOrder order = (FieldRowOrder)i;
-                IRow row;
-                if (!fieldRows.TryGetValue(order, out row)) continue;
-                switch (order)
-                {
-                    case FieldRowOrder.Name:
-                        break;
-                    case FieldRowOrder.Type:
-                        break;
-                    case FieldRowOrder.OutputType:
-                        break;
-                    case FieldRowOrder.AppendDef:
-                        break;
-                    case FieldRowOrder.CheckRule:
-                        break;
-                    case FieldRowOrder.Max:
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+            IRow fieldNameRow = validRows[FieldRowOrder.Name];
+            if (fieldNameRow == null) throw new Exception("没有查找到定义字段名称的有效行");
 
-        static void CreateAndFillFieldDefine(IRow fieldNameRow, ObjectDefine def)
-        {
             // i = 0 是title,遍历从1开始
             for (int i = 1; i < fieldNameRow.LastCellNum; i++)
             {
                 var cell = fieldNameRow.GetCell(i);
-                if (cell != null && string.IsNullOrWhiteSpace(cell.StringCellValue))
-                {
-                    FieldDefine fDef = new FieldDefine();
-                    fDef.fieldName = cell.StringCellValue;
-                    def.AddFieldDefine(fDef);
-                }
+                if (cell != null && string.IsNullOrEmpty(cell.StringCellValue)) continue;
+                //创建字段定义并添加到object定义中
+                FieldDefine fDef = new FieldDefine();
+               
+                // 开始执行定义赋值
+                // 字段名称
+                fDef.FieldName = cell.StringCellValue;
+                def.AddFieldDefine(fDef);
+
+                // 字段类型
+                fDef.fieldType = GetCellValue(validRows[FieldRowOrder.Type], i);
+
+                // 导出类型
+                fDef.outType = GetCellValue(validRows[FieldRowOrder.OutputType], i);
+
+                // 内容描述
+                fDef.valueAppend = GetCellValue(validRows[FieldRowOrder.AppendDef], i);
+
+                // 检查规则
+                fDef.checkRule = GetCellValue(validRows[FieldRowOrder.CheckRule], i);
             }
         }
 
-
-        /// <summary>
-        /// 尝试创建一个workBook对象
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        static IWorkbook CreateBook(string fileName)
+        static string GetCellValue(IRow row, int index, string defaultValue = "")
         {
-            // 临时文件不读取
-            var f = Path.GetFileName(fileName);
-            if (f.StartsWith("~$") || f.StartsWith("~"))
-            {
-                return null;
-            }
-            // 参数传递进来的 忽略文件不读取
-            if (GlobalArgs.IsIgnoreFile(fileName))
-            {
-                return null;
-            }
-            // TODO:多线程处理,加入try,catch处理
-            // 使用io共享打开
-            IWorkbook workBook = null;
-            using (FileStream file = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read, FileShare.ReadWrite))
-            {
-                workBook = WorkbookFactory.Create(file);
-            }
-            return workBook;
+            if (row == null) return defaultValue;
+            var contentCell = row.GetCell(index);
+            string value = contentCell != null ? contentCell.StringCellValue : string.Empty;
+            return string.IsNullOrEmpty(value) ? defaultValue : value;
         }
-
     }
 }
