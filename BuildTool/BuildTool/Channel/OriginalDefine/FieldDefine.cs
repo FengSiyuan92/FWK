@@ -61,7 +61,7 @@ namespace Channel.OutputDefine
         public int IsKey;
 
         #endregion
-        public void Merge(FieldDefine otherDefine)
+        internal void Merge(FieldDefine otherDefine)
         {
 
         }

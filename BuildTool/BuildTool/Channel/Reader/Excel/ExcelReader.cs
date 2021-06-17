@@ -7,6 +7,8 @@ using NPOI;
 using NPOI.SS.UserModel;
 using System.IO;
 using Channel.OutputDefine;
+using Channel.Data;
+using Table = Channel.Data.Table;
 
 namespace Channel.Reader
 {
@@ -43,44 +45,6 @@ namespace Channel.Reader
         };
 
         static Dictionary<string, ObjectDefine> allLoadedDef = new Dictionary<string, ObjectDefine>();
-
-        /// <summary>
-        /// 加载生成excel对应的ObjectDefine数据
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="assign"></param>
-        /// <returns></returns>
-        public static bool LoadObjectDefine(string filePath)
-        {
-
-            if (!IsValidExcelFile(filePath)) return false;
-            // TODO:多线程处理,加入try,catch处理
-            // 使用io共享打开
-            IWorkbook workBook = null;
-            using (FileStream file = new FileStream(filePath, System.IO.FileMode.Open, 
-                System.IO.FileAccess.Read, FileShare.ReadWrite))
-            {
-                workBook = WorkbookFactory.Create(file);
-                for (int i = 0; i < workBook.NumberOfSheets; i++)
-                {
-                    ISheet sheet = workBook.GetSheetAt(i);
-                    // 不是有效数据表继续排查
-                    if (!IsValidSheet(sheet)) continue;
-
-                    // 对sheet创建一个Object定义,赋值Object名称
-                    ObjectDefine objDef = new ObjectDefine();
-                    objDef.Name = Utils.GetObjectTypeName(filePath);
-
-                    // 收集所有有效数据行(**start--------end**)
-                    var rows = CollectFieldRows(sheet);
-                    // 使用收集好的IRow数据,为ObjectDef填充数据
-                    InjectObjectDef(objDef, rows);
-
-                    Lookup.AddObjectDefine(objDef);
-                }
-            }
-            return true;
-        }
 
         /// <summary>
         /// 检查一个sheet表格是否是有效的数据表格
@@ -203,6 +167,126 @@ namespace Channel.Reader
             var contentCell = row.GetCell(index);
             string value = contentCell != null ? contentCell.StringCellValue : string.Empty;
             return string.IsNullOrEmpty(value) ? defaultValue : value;
+        }
+        /// <summary>
+        /// 加载生成excel对应的ObjectDefine数据
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="assign"></param>
+        /// <returns></returns>
+        public static bool LoadObjectDefine(string filePath)
+        {
+
+            if (!IsValidExcelFile(filePath)) return false;
+            // TODO:多线程处理,加入try,catch处理
+            // 使用io共享打开
+            IWorkbook workBook = null;
+            using (FileStream file = new FileStream(filePath, System.IO.FileMode.Open,
+                System.IO.FileAccess.Read, FileShare.ReadWrite))
+            {
+                workBook = WorkbookFactory.Create(file);
+                for (int i = 0; i < workBook.NumberOfSheets; i++)
+                {
+                    ISheet sheet = workBook.GetSheetAt(i);
+                    // 不是有效数据表继续排查
+                    if (!IsValidSheet(sheet)) continue;
+
+                    // 对sheet创建一个Object定义,赋值Object名称
+                    ObjectDefine objDef = new ObjectDefine();
+                    objDef.Name = Utils.GetObjectTypeName(filePath);
+
+                    // 收集所有有效数据行(**start--------end**)
+                    var rows = CollectFieldRows(sheet);
+                    // 使用收集好的IRow数据,为ObjectDef填充数据
+                    InjectObjectDef(objDef, rows);
+
+                    Lookup.AddObjectDefine(objDef);
+                }
+                workBook.Close();
+            }
+            return true;
+        }
+
+        // 跳过标题行,并且搜集下来标题的信息数据.用做和当前表格做对照
+        static Dictionary<int, string> SkipAndSelectTitle(System.Collections.IEnumerator rows)
+        {
+            Dictionary<int, string> title = new Dictionary<int, string>();
+
+            int signCount = 0;
+
+            while (rows.MoveNext())
+            {
+                var row = rows.Current as IRow;
+
+                // 尝试分析是否是
+                var titleCell = row.GetCell(0);
+                // 跳过空行(可能是策划的备注行)
+                if (titleCell == null || string.IsNullOrEmpty(titleCell.StringCellValue)) continue;
+
+                if (titleCell.StringCellValue == VALID_SHEET_SIGN)
+                {
+                    signCount++;
+                    // 匹配结束
+                    if (signCount == 2) break;
+                }
+                else if (titleCell.StringCellValue == FieldNameTitle)
+                {
+                    // 注册int和字段名
+                    for (int i = 1; i < row.LastCellNum; i++)
+                    {
+                        var cell = row.GetCell(i);
+                        var value = cell.StringCellValue;
+                        if (string.IsNullOrEmpty(value) || value.StartsWith("#")) continue;
+                        title.Add(i, value);
+                    }
+                }     
+            }
+
+            return title;
+        }
+
+
+        public static bool LoadObjectConent(string filePath)
+        {
+            if (!IsValidExcelFile(filePath)) return false;
+            // TODO:多线程处理,加入try,catch处理
+            // 使用io共享打开
+            IWorkbook workBook = null;
+            using (FileStream file = new FileStream(filePath, System.IO.FileMode.Open,
+                System.IO.FileAccess.Read, FileShare.ReadWrite))
+            {
+                workBook = WorkbookFactory.Create(file);
+                for (int i = 0; i < workBook.NumberOfSheets; i++)
+                {
+                    ISheet sheet = workBook.GetSheetAt(i);
+                    // 不是有效数据表继续排查
+                    if (!IsValidSheet(sheet)) continue;
+                    
+                    // table 类型名称
+                    var tabName = Utils.GetObjectTypeName(filePath);
+                    // 创建一个table,引用ContentObject的定义
+                    Table table = new Table(tabName);
+
+                    // 选择标题头,并跳过表头信息
+                    var rows = sheet.GetRowEnumerator();
+                    var titles = SkipAndSelectTitle(rows);
+                    while (rows.MoveNext())
+                    {
+                        var currentRow = rows.Current as IRow;
+                        for (int j = 1; j < currentRow.LastCellNum; j++)
+                        {
+                            string fieldName = string.Empty;
+                            ICell cell = currentRow.GetCell(i);
+                            if (cell == null || !titles.TryGetValue(j, out fieldName)) continue;
+                            // 将配置表的内容注入到table中
+                            table.AddConent(fieldName, cell.StringCellValue);
+                        }
+                    }
+                    Lookup.AddTable(table);
+                }
+                workBook.Close();
+            }
+            return true;
         }
     }
 }

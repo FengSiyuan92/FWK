@@ -17,5 +17,20 @@ namespace Channel
         {
             return ignoreFiles.Contains(filePath);
         }
+
+        public static string targetPlatform = string.Empty;
+        /// <summary>
+        /// 是否是有效的配置平台
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        public static bool IsValidPlatform(string platform)
+        {
+            if (string.IsNullOrEmpty(targetPlatform) || string.IsNullOrEmpty(platform))
+            {
+                return true;
+            }
+            return platform == targetPlatform;
+        }
     }
 }

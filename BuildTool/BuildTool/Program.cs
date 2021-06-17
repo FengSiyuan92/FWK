@@ -22,9 +22,9 @@ namespace BuildTool
 
         static void Main(string[] args)
         {
-            //ExcelReader.LoadObjectDefine(ItemPart1);
-            //ExcelReader.LoadObjectDefine(ItemPart2);
-            //ExcelReader.LoadObjectDefine(TestUseItempath);
+            ExcelReader.LoadObjectDefine(ItemPart1);
+            ExcelReader.LoadObjectDefine(ItemPart2);
+            ExcelReader.LoadObjectDefine(TestUseItempath);
             XMLReader.LoadEnumDefine(EnumXML);
             XMLReader.LoadObjectDefine(ObjXML);
             Lookup.Test();

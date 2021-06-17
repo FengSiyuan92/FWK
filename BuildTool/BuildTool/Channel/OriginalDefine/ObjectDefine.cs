@@ -11,8 +11,13 @@ namespace Channel.OutputDefine
     /// <summary>
     /// 导出表对象定义
     /// </summary>
-    class ObjectDefine : IObjDefine
+    internal class ObjectDefine : IObjDefine
     {
+
+        List<string> fieldName = new List<string>();
+        Dictionary<string, FieldDefine> defines = new Dictionary<string, FieldDefine>();
+
+
         public string Name { get; set; }
         public IFieldDefine this[string key, bool alias = false]
         {
@@ -23,9 +28,6 @@ namespace Channel.OutputDefine
                 return def;
             }
         }
-
-        List<string> fieldName = new List<string>();
-        Dictionary<string, FieldDefine> defines = new Dictionary<string, FieldDefine>();
 
         public void AddFieldDefine(IFieldDefine def)
         {
@@ -46,7 +48,7 @@ namespace Channel.OutputDefine
         /// 支持将多个ObjectDefine进行合并
         /// </summary>
         /// <param name="otherDefine"></param>
-        public void Merge(ObjectDefine otherDefine)
+        internal void Merge(ObjectDefine otherDefine)
         {
             foreach (var define in otherDefine.defines)
             {
