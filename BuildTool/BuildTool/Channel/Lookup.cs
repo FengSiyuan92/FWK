@@ -15,7 +15,6 @@ namespace Channel
             var a = 0;
         }
 
-
         static Dictionary<string, ObjectDefine> ObjCollect = new Dictionary<string, ObjectDefine>();
 
         internal static void AddObjectDefine(ObjectDefine def)
@@ -42,6 +41,18 @@ namespace Channel
             return def;
         }
 
+        // todo 访问权限,暂时测试时使用public
+        public static void InitDefine()
+        {
+            foreach (var item in ObjCollect)
+            {
+                item.Value.ParseDefine();
+            }
+            foreach (var item in EnumCollect)
+            {
+                item.Value.ParseDefine();
+            }
+        }
 
         static Dictionary<string, EnumDefine> EnumCollect = new Dictionary<string, EnumDefine>();
 
@@ -62,6 +73,7 @@ namespace Channel
 
 
         static Dictionary<string, Channel.Data.Table> TableCollect = new Dictionary<string, Data.Table>();
+
         internal static void AddTable(Channel.Data.Table table)
         {
             lock (TableCollect)

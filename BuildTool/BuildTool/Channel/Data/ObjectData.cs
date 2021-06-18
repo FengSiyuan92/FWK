@@ -23,10 +23,8 @@ namespace Channel.Data
             }
         }
 
-        public string Key1;
-        public string Key2;
+        public string Key;
         Dictionary<string, Field> fields = new Dictionary<string, Field>();
-
 
         internal void AddField(Field field)
         {
@@ -35,11 +33,11 @@ namespace Channel.Data
             switch (keyIndex)
             {
                 case 1:
-                    Key1 = field.originalValue;
+                    Key = field.originalValue;
                     break;
-                case 2:
-                    Key2 = field.originalValue;
-                    break;
+                //case 2:
+                //    Key2 = field.originalValue;
+                    //break;
                 default:
                     break;
             }

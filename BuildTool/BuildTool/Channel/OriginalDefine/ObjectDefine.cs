@@ -39,12 +39,17 @@ namespace Channel.OutputDefine
             defines.Add(key, define);
         }
 
+        bool parsed = false;
+        
+
         public void ParseDefine()
         {
+            if(parsed)  return;
             foreach (var item in defines)
             {
                 item.Value.AnalysisOriginalDefine();
             }
+            parsed = true;
         }
 
 

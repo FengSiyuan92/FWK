@@ -8,45 +8,30 @@ using Channel.OutputDefine;
 
 namespace Channel.Data
 {
-    class ObjectDataCompare : IEqualityComparer<ObjectData>
+    public class Table  :ITable
     {
-        public static ObjectDataCompare compare = new ObjectDataCompare();
-        public bool Equals(ObjectData x, ObjectData y)
-        {
-            return !(x.Key1 != y.Key1 || x.Key2 != y.Key2);
-        }
-
-        public int GetHashCode(ObjectData obj)
-        {
-            return 1;
-        }
-    }
-
-    public class Table :IEnumerable< ObjectData>
-    {
-        public string Name;
-
+        public string Name { get; private set; }
+        public string Path { get; private set; }
+        public ITable MainTable { get; private set; }
+        public List<ITable> SubTable { get; private set; }
         ObjectDefine define;
-        
-        internal Table(string name)
+
+        internal Table(string name, string path)
         {
+            this.MainTable = this;
             this.Name = name;
             this.define = Lookup.LookObjectDefine(name);
+            this.Path = path;
         }
 
-        public List<ObjectData> commonData { get; internal set; } = new List<ObjectData>();
+        Dictionary<string, ObjectData> datas = new Dictionary<string, ObjectData>();
 
+        List<Table> subTable;
 
-        public IEnumerator<ObjectData> GetEnumerator()
-        {
-            return commonData.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// 向table中添加一条数据
+        /// </summary>
+        /// <param name="titleAndContent"></param>
         internal void AddObjectData(Dictionary<string, string> titleAndContent)
         {
             //创建一个数据对象 映射一条数据
@@ -64,12 +49,32 @@ namespace Channel.Data
 
                 objData.AddField(field);
             }
-            commonData.Add(objData);
+
+            if (datas.ContainsKey(objData.Key))
+            {
+                CLog.LogError("{0}表格中存在着两个key(id?)相同的两条配置 key = {1}.", Path, objData.Key);
+                return;
+            }
+
+            datas.Add(objData.Key, objData);
         }
 
         internal void Merge(Table otherTable)
         {
-            commonData.Union<ObjectData>(otherTable.commonData, ObjectDataCompare.compare);
+            otherTable.MainTable = this;
+            if (subTable == null)
+            {
+                SubTable = new List<ITable>();
+            }
+            SubTable.Add(otherTable);
+
+            // 检查主表和子表中是否有相同的key值(id)
+            var inter = datas.Keys.Intersect(otherTable.datas.Keys);
+            foreach (var item in inter)
+            {
+                CLog.LogError("表{0}和表{1},存在着相同key(={2})的配置项,需要删除一条,否则可能会被覆盖",
+                    Path, otherTable.Path, item);
+            }
         }
 
  

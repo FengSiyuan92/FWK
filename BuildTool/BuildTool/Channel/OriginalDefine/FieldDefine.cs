@@ -61,15 +61,6 @@ namespace Channel.OutputDefine
         /// </summary>
         public int IsKey { get; private set; }
 
-
-        /// <summary>
-        /// 解析原始定义
-        /// </summary>
-        public void AnalysisOriginalDefine()
-        {
-
-        }
-
         #endregion
         internal void Merge(FieldDefine otherDefine)
         {

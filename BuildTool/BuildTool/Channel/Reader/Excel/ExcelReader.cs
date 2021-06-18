@@ -107,7 +107,7 @@ namespace Channel.Reader
             var rows = sheet.GetRowEnumerator();
             // 跳过A1的 '**'
             rows.MoveNext();
-            // 这里主要是支持row的乱序,可以通过需求自定义字段头的顺序,以方便阅读
+            
             // TODO: 池子
             Dictionary<FieldRowOrder, IRow> fieldRows = new Dictionary<FieldRowOrder, IRow>((int)FieldRowOrder.Max);
 
@@ -147,7 +147,7 @@ namespace Channel.Reader
         static void InjectObjectDef(ObjectDefine def, Dictionary<FieldRowOrder, IRow> validRows)
         {
             IRow fieldNameRow = validRows[FieldRowOrder.Name];
-            if (fieldNameRow == null) throw new Exception("没有查找到定义字段名称的有效行");
+      
 
             // i = 0 是title,遍历从1开始
             for (int i = 1; i < fieldNameRow.LastCellNum; i++)
@@ -163,26 +163,33 @@ namespace Channel.Reader
                 def.AddFieldDefine(fDef);
 
                 // 字段类型
-                fDef.fieldType = GetCellValue(validRows[FieldRowOrder.Type], i);
+                fDef.fieldType = GetAppiontCellValue(validRows[FieldRowOrder.Type], i);
 
                 // 导出类型
-                fDef.outType = GetCellValue(validRows[FieldRowOrder.OutputType], i);
+                fDef.outType = GetAppiontCellValue(validRows[FieldRowOrder.OutputType], i);
 
                 // 内容描述
-                fDef.valueAppend = GetCellValue(validRows[FieldRowOrder.AppendDef], i);
+                fDef.valueAppend = GetAppiontCellValue(validRows[FieldRowOrder.AppendDef], i);
 
                 // 检查规则
-                fDef.checkRule = GetCellValue(validRows[FieldRowOrder.CheckRule], i);
+                fDef.checkRule = GetAppiontCellValue(validRows[FieldRowOrder.CheckRule], i);
             }
         }
-
-        static string GetCellValue(IRow row, int index, string defaultValue = "")
+        /// <summary>
+        /// 获取指定索引对应的单元格中的值
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="index"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        static string GetAppiontCellValue(IRow row, int index, string defaultValue = "")
         {
             if (row == null) return defaultValue;
             var contentCell = row.GetCell(index);
             string value = contentCell != null ? contentCell.GetValue() : string.Empty;
             return string.IsNullOrEmpty(value) ? defaultValue : value;
         }
+
         /// <summary>
         /// 加载生成excel对应的ObjectDefine数据
         /// </summary>
@@ -206,13 +213,27 @@ namespace Channel.Reader
                     // 不是有效数据表继续排查
                     if (!IsValidSheet(sheet)) continue;
 
-                    // 对sheet创建一个Object定义,赋值Object名称
-                    ObjectDefine objDef = new ObjectDefine();
-                    objDef.Name = Utils.GetObjectTypeName(filePath);
 
                     // 收集所有有效数据行(**start--------end**)
+                    // 这里主要是支持表头的乱序,可以通过需求自定义字段头的顺序,以方便阅读
                     var rows = CollectFieldRows(sheet);
+
                     // 使用收集好的IRow数据,为ObjectDef填充数据
+                    // 检查是否有字段名的一行,没有的话没法执行
+                    IRow fieldNameRow = rows[FieldRowOrder.Name];
+                    if (fieldNameRow == null)
+                    {
+                        CLog.LogError("{0}@{1}电子表格中的表头没有有效的字段名标志符,需要在对应字段名行的第一列中声明'{2}'"
+                            , filePath, sheet.SheetName, FieldNameTitle);
+                        continue;
+                    }
+
+                    /*     数据校验合格,开始执行定义生成        */
+
+                    // 对sheet创建一个Object定义,并赋值Object名称
+                    ObjectDefine objDef = new ObjectDefine();
+                    objDef.Name = Utils.GetObjectTypeName(filePath);
+                    // 使用表头行填充定义
                     InjectObjectDef(objDef, rows);
 
                     Lookup.AddObjectDefine(objDef);
@@ -281,7 +302,7 @@ namespace Channel.Reader
                     // table 类型名称
                     var tabName = Utils.GetObjectTypeName(filePath);
                     // 创建一个table,引用ContentObject的定义
-                    Table table = new Table(tabName);
+                    Table table = new Table(tabName, filePath+"@" + sheet.SheetName);
 
                     // 选择标题头,并跳过表头信息
                     var rows = sheet.GetRowEnumerator();
@@ -301,7 +322,6 @@ namespace Channel.Reader
                             if (cell == null || !titles.TryGetValue(j, out fieldName)) continue;
                             titleAndContent.Add(fieldName, cell.GetValue());
                         }
-
                         table.AddObjectData(titleAndContent);
                     }
                     Lookup.AddTable(table);
