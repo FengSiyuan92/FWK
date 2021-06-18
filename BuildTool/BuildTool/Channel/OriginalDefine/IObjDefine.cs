@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace Channel.OutputDefine
 {
-    internal interface IObjDefine
+     interface IObjDefine
     {
         string Name { get; set; }
 
         void AddFieldDefine(IFieldDefine fieldDef);
 
         IFieldDefine this[string key, bool alias = false] { get; }
+
+        void ParseDefine();
     }
 
-    internal interface IFieldDefine
+     interface IFieldDefine
     {
         string FieldName { get; set; }
     }

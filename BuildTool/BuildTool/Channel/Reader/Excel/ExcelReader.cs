@@ -12,7 +12,7 @@ using Table = Channel.Data.Table;
 
 namespace Channel.Reader
 {
-    public class ExcelReader
+    public static class ExcelReader
     {
         /// <summary>
         /// 有效数据表的标记符号
@@ -64,7 +64,8 @@ namespace Channel.Reader
 
             //第一行数据是否为可用表的标志符号
             ICell cell = row.GetCell(0);
-            return cell!= null && cell.StringCellValue == VALID_SHEET_SIGN;
+            var s = cell.ToString();
+            return cell!= null && cell.GetValue() == VALID_SHEET_SIGN;
         }
 
         /// <summary>
@@ -92,6 +93,15 @@ namespace Channel.Reader
             return true;
         }
 
+
+        static string GetValue(this ICell cell)
+        {
+            return cell.ToString();
+        }
+
+
+
+
         static Dictionary<FieldRowOrder, IRow> CollectFieldRows(ISheet sheet)
         {
             var rows = sheet.GetRowEnumerator();
@@ -105,7 +115,12 @@ namespace Channel.Reader
             while (rows.MoveNext())
             {
                 var currentRow = rows.Current as IRow;
-                var title = currentRow.GetCell(0).StringCellValue;
+                if (currentRow == null || currentRow.LastCellNum <= 0) continue;
+
+                var titleCell = currentRow.GetCell(0);
+                if (titleCell == null || string.IsNullOrEmpty(titleCell.GetValue())) continue;
+
+                var title = titleCell.GetValue(); ;
 
                 var skip = false;
                 switch (title)
@@ -119,7 +134,7 @@ namespace Channel.Reader
                     default:
                         FieldRowOrder order = default(FieldRowOrder);
                         if (TITLE_ORDER.TryGetValue(title, out order)) fieldRows.Add(order, currentRow);
-                        else throw new Exception("未支持的解析类型行");
+                        else throw new Exception("表头未支持的解析类型行:" + title);
                         break;
 
                 }
@@ -138,13 +153,13 @@ namespace Channel.Reader
             for (int i = 1; i < fieldNameRow.LastCellNum; i++)
             {
                 var cell = fieldNameRow.GetCell(i);
-                if (cell != null && string.IsNullOrEmpty(cell.StringCellValue)) continue;
+                if (cell == null || string.IsNullOrEmpty(cell.GetValue())) continue;
                 //创建字段定义并添加到object定义中
                 FieldDefine fDef = new FieldDefine();
                
                 // 开始执行定义赋值
                 // 字段名称
-                fDef.FieldName = cell.StringCellValue;
+                fDef.FieldName = cell.GetValue();
                 def.AddFieldDefine(fDef);
 
                 // 字段类型
@@ -165,7 +180,7 @@ namespace Channel.Reader
         {
             if (row == null) return defaultValue;
             var contentCell = row.GetCell(index);
-            string value = contentCell != null ? contentCell.StringCellValue : string.Empty;
+            string value = contentCell != null ? contentCell.GetValue() : string.Empty;
             return string.IsNullOrEmpty(value) ? defaultValue : value;
         }
         /// <summary>
@@ -221,21 +236,22 @@ namespace Channel.Reader
                 // 尝试分析是否是
                 var titleCell = row.GetCell(0);
                 // 跳过空行(可能是策划的备注行)
-                if (titleCell == null || string.IsNullOrEmpty(titleCell.StringCellValue)) continue;
+                if (titleCell == null || string.IsNullOrEmpty(titleCell.GetValue())) continue;
 
-                if (titleCell.StringCellValue == VALID_SHEET_SIGN)
+                if (titleCell.GetValue() == VALID_SHEET_SIGN)
                 {
                     signCount++;
                     // 匹配结束
                     if (signCount == 2) break;
                 }
-                else if (titleCell.StringCellValue == FieldNameTitle)
+                else if (titleCell.GetValue() == FieldNameTitle)
                 {
                     // 注册int和字段名
                     for (int i = 1; i < row.LastCellNum; i++)
                     {
                         var cell = row.GetCell(i);
-                        var value = cell.StringCellValue;
+                        if (cell == null) continue;
+                        var value = cell.GetValue();
                         if (string.IsNullOrEmpty(value) || value.StartsWith("#")) continue;
                         title.Add(i, value);
                     }
@@ -270,17 +286,23 @@ namespace Channel.Reader
                     // 选择标题头,并跳过表头信息
                     var rows = sheet.GetRowEnumerator();
                     var titles = SkipAndSelectTitle(rows);
+                    //逐行将excel组织成key value的形式,key为title value为对应的内容
+                    Dictionary<string, string> titleAndContent =
+                         new Dictionary<string, string>(titles.Count);
                     while (rows.MoveNext())
                     {
+                        titleAndContent.Clear();
                         var currentRow = rows.Current as IRow;
+       
                         for (int j = 1; j < currentRow.LastCellNum; j++)
                         {
                             string fieldName = string.Empty;
-                            ICell cell = currentRow.GetCell(i);
+                            ICell cell = currentRow.GetCell(j);
                             if (cell == null || !titles.TryGetValue(j, out fieldName)) continue;
-                            // 将配置表的内容注入到table中
-                            table.AddConent(fieldName, cell.StringCellValue);
+                            titleAndContent.Add(fieldName, cell.GetValue());
                         }
+
+                        table.AddObjectData(titleAndContent);
                     }
                     Lookup.AddTable(table);
                 }

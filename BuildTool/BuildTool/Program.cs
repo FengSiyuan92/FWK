@@ -27,7 +27,18 @@ namespace BuildTool
             ExcelReader.LoadObjectDefine(TestUseItempath);
             XMLReader.LoadEnumDefine(EnumXML);
             XMLReader.LoadObjectDefine(ObjXML);
+
+
+            ExcelReader.LoadObjectConent(ItemPart1);
             Lookup.Test();
+            ExcelReader.LoadObjectConent(ItemPart2);
+            Lookup.Test();
+
+            ExcelReader.LoadObjectConent(TestUseItempath);
+            Lookup.Test();
+
+
+
 
             var a = 0;
         }

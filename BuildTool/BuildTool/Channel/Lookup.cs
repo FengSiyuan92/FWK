@@ -7,12 +7,14 @@ using Channel.OutputDefine;
 
 namespace Channel
 {
-    public class Lookup
+    public static class Lookup
     {
+
         public static void Test()
         {
             var a = 0;
         }
+
 
         static Dictionary<string, ObjectDefine> ObjCollect = new Dictionary<string, ObjectDefine>();
 
@@ -74,6 +76,14 @@ namespace Channel
                     TableCollect.Add(table.Name, table);
                 }
             }
+        }
+
+
+        public static Channel.Data.Table LookTable(string tableName)
+        {
+            Channel.Data.Table table;
+            TableCollect.TryGetValue(tableName, out table);
+            return table;
         }
     }
 }

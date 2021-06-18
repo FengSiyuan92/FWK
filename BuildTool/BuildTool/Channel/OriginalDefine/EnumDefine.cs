@@ -44,6 +44,7 @@ namespace Channel.OutputDefine
             }
         }
 
+        public void ParseDefine() { }
 
         /// <summary>
         /// 取值,key可以是字段名或者是别名,当alias = true时就是表明要用别名索引,默认该值为false

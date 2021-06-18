@@ -9,7 +9,7 @@ namespace Channel.OutputDefine
     /// <summary>
     ///  导出字段定义
     /// </summary>
-    class FieldDefine : IFieldDefine
+    public class FieldDefine : IFieldDefine
     {
         #region 原始数据配置
         /// <summary>
@@ -39,26 +39,36 @@ namespace Channel.OutputDefine
         public string checkRule;
         #endregion
 
+
         #region 通过原生value解析出来的build用含义字段
         /// <summary>
         /// 该字段引用的其他类型的名称
         /// </summary>
-        public string refType;
+        public string refType { get; private set; }
 
         /// <summary>
         /// 该字段引用其他类型的字段名称
         /// </summary>
-        public string refField;
+        public string refField { get; private set; }
 
         /// <summary>
         /// 数据源中配置的数值,是否配置了对应类型的别名
         /// </summary>
-        public bool valueIsAlias;
+        public bool valueIsAlias { get; private set; }
 
         /// <summary>
         /// 改字段是否需要做为key值. 如果是key值的话需要做几级key值
         /// </summary>
-        public int IsKey;
+        public int IsKey { get; private set; }
+
+
+        /// <summary>
+        /// 解析原始定义
+        /// </summary>
+        public void AnalysisOriginalDefine()
+        {
+
+        }
 
         #endregion
         internal void Merge(FieldDefine otherDefine)
