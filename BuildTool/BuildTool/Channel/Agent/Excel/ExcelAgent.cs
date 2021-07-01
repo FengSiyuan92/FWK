@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NPOI;
 using NPOI.SS.UserModel;
 using System.IO;
 using Channel.RawDefine;
-using Channel.Data;
-using Table = Channel.Data.Table;
 
-namespace Channel.Reader
+namespace Channel.Agent.Excel
 {
-    public static class ExcelReader
+    class ExcelAgent :IDisposable, IFileAgent
     {
         /// <summary>
         /// 有效数据表的标记符号
@@ -24,14 +21,13 @@ namespace Channel.Reader
         const string OutputTypeTitle = "导出";
         const string ValueAppendTitle = "内容描述";
         const string CheckRuleTitle = "检查规则";
-
         enum FieldRowOrder
         {
             Name = 0,
             Type,
             OutputType,
             AppendDef,
-            CheckRule, 
+            CheckRule,
             Max
         }
 
@@ -43,9 +39,6 @@ namespace Channel.Reader
             {ValueAppendTitle,  FieldRowOrder.AppendDef},
             {CheckRuleTitle,  FieldRowOrder.CheckRule},
         };
-
-        static Dictionary<string, RawObjDef> allLoadedDef = new Dictionary<string, RawObjDef>();
-
         /// <summary>
         /// 检查一个sheet表格是否是有效的数据表格
         /// 需要A1是VALID_SHEET_SIGN(**)
@@ -65,7 +58,7 @@ namespace Channel.Reader
             //第一行数据是否为可用表的标志符号
             ICell cell = row.GetCell(0);
             var s = cell.ToString();
-            return cell!= null && cell.GetValue() == VALID_SHEET_SIGN;
+            return cell != null && cell.GetValue() == VALID_SHEET_SIGN;
         }
 
         /// <summary>
@@ -93,10 +86,81 @@ namespace Channel.Reader
             return true;
         }
 
+        string filePath;
+        IWorkbook workBook;
+ 
 
-        static string GetValue(this ICell cell)
+        public bool Valid { get; private set; }
+
+        public ExcelAgent(string filePath)
         {
-            return cell.ToString();
+            this.filePath = filePath;
+            if (!IsValidExcelFile(filePath))
+            {
+                Valid = false;
+                return;
+            }
+            try
+            {
+                FileStream file = new FileStream(filePath, System.IO.FileMode.Open,
+                        System.IO.FileAccess.Read, FileShare.ReadWrite);
+                workBook = WorkbookFactory.Create(file);
+            }
+            catch
+            {
+                Valid = false;
+                return;
+            }
+        
+            if (workBook == null)
+            {
+                Valid = false;
+                return;
+            }
+            Valid = true;
+        }
+
+        /// <summary>
+        /// 加载生成excel对应的ObjectDefine数据
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="assign"></param>
+        /// <returns></returns>
+        public void LoadDefine()
+        {
+            for (int i = 0; i < workBook.NumberOfSheets; i++)
+            {
+                ISheet sheet = workBook.GetSheetAt(i);
+                // 不是有效数据表继续排查
+                if (!IsValidSheet(sheet)) continue;
+
+                // 收集所有有效数据行(**start--------end**)
+                // 这里主要是支持表头的乱序,可以通过需求自定义字段头的顺序,以方便阅读
+                var rows = CollectFieldRows(sheet);
+
+                // 使用收集好的IRow数据,为ObjectDef填充数据
+                // 检查是否有字段名的一行,没有的话没法执行
+                IRow fieldNameRow = rows[FieldRowOrder.Name];
+                if (fieldNameRow == null)
+                {
+                    CLog.LogError("{0}@{1}电子表格中的表头没有有效的字段名标志符,需要在对应字段名行的第一列中声明'{2}'"
+                        , filePath, sheet.SheetName, FieldNameTitle);
+                    continue;
+                }
+
+                /*     数据校验合格,开始执行定义生成        */
+
+                // 对sheet创建一个Object定义,并赋值Object名称
+                RawObjDef objDef = new RawObjDef(Utils.GetObjectTypeName(filePath), RawObjType.OBJECT);
+                // 使用表头行填充定义
+                InjectObjectDef(objDef, rows);
+                Lookup.AddRawObjDef(objDef);
+            }
+        }
+
+        public void Dispose()
+        {
+            workBook.Close();
         }
 
         static Dictionary<FieldRowOrder, IRow> CollectFieldRows(ISheet sheet)
@@ -104,7 +168,7 @@ namespace Channel.Reader
             var rows = sheet.GetRowEnumerator();
             // 跳过A1的 '**'
             rows.MoveNext();
-            
+
             // TODO: 池子
             Dictionary<FieldRowOrder, IRow> fieldRows = new Dictionary<FieldRowOrder, IRow>((int)FieldRowOrder.Max);
 
@@ -144,7 +208,6 @@ namespace Channel.Reader
         static void InjectObjectDef(RawObjDef def, Dictionary<FieldRowOrder, IRow> validRows)
         {
             IRow fieldNameRow = validRows[FieldRowOrder.Name];
-      
 
             // i = 0 是title,遍历从1开始
             for (int i = 1; i < fieldNameRow.LastCellNum; i++)
@@ -152,26 +215,27 @@ namespace Channel.Reader
                 var cell = fieldNameRow.GetCell(i);
                 if (cell == null || string.IsNullOrEmpty(cell.GetValue())) continue;
                 //创建字段定义并添加到object定义中
-                RawObjFieldDef fDef = new RawObjFieldDef();
-               
+                RawFieldDef fDef = new RawFieldDef();
+
                 // 开始执行定义赋值
                 // 字段名称
                 fDef.FieldName = cell.GetValue();
                 def.AddFieldDefine(fDef);
 
                 // 字段类型
-                fDef.fieldType = GetAppiontCellValue(validRows[FieldRowOrder.Type], i);
+                fDef.FieldType = GetAppiontCellValue(validRows[FieldRowOrder.Type], i);
 
                 // 导出类型
-                fDef.outType = GetAppiontCellValue(validRows[FieldRowOrder.OutputType], i);
+                fDef.OutputType = GetAppiontCellValue(validRows[FieldRowOrder.OutputType], i);
 
                 // 内容描述
-                fDef.valueAppend = GetAppiontCellValue(validRows[FieldRowOrder.AppendDef], i);
+                fDef.AppendDef = GetAppiontCellValue(validRows[FieldRowOrder.AppendDef], i);
 
                 // 检查规则
-                fDef.checkRule = GetAppiontCellValue(validRows[FieldRowOrder.CheckRule], i);
+                fDef.CheckRule = GetAppiontCellValue(validRows[FieldRowOrder.CheckRule], i);
             }
         }
+
         /// <summary>
         /// 获取指定索引对应的单元格中的值
         /// </summary>
@@ -185,59 +249,6 @@ namespace Channel.Reader
             var contentCell = row.GetCell(index);
             string value = contentCell != null ? contentCell.GetValue() : string.Empty;
             return string.IsNullOrEmpty(value) ? defaultValue : value;
-        }
-
-        /// <summary>
-        /// 加载生成excel对应的ObjectDefine数据
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="assign"></param>
-        /// <returns></returns>
-        public static bool LoadObjectDefine(string filePath)
-        {
-
-            if (!IsValidExcelFile(filePath)) return false;
-            // TODO:多线程处理,加入try,catch处理
-            // 使用io共享打开
-            IWorkbook workBook = null;
-            using (FileStream file = new FileStream(filePath, System.IO.FileMode.Open,
-                System.IO.FileAccess.Read, FileShare.ReadWrite))
-            {
-                workBook = WorkbookFactory.Create(file);
-                for (int i = 0; i < workBook.NumberOfSheets; i++)
-                {
-                    ISheet sheet = workBook.GetSheetAt(i);
-                    // 不是有效数据表继续排查
-                    if (!IsValidSheet(sheet)) continue;
-
-
-                    // 收集所有有效数据行(**start--------end**)
-                    // 这里主要是支持表头的乱序,可以通过需求自定义字段头的顺序,以方便阅读
-                    var rows = CollectFieldRows(sheet);
-
-                    // 使用收集好的IRow数据,为ObjectDef填充数据
-                    // 检查是否有字段名的一行,没有的话没法执行
-                    IRow fieldNameRow = rows[FieldRowOrder.Name];
-                    if (fieldNameRow == null)
-                    {
-                        CLog.LogError("{0}@{1}电子表格中的表头没有有效的字段名标志符,需要在对应字段名行的第一列中声明'{2}'"
-                            , filePath, sheet.SheetName, FieldNameTitle);
-                        continue;
-                    }
-
-                    /*     数据校验合格,开始执行定义生成        */
-
-                    // 对sheet创建一个Object定义,并赋值Object名称
-                    RawObjDef objDef = new RawObjDef();
-                    objDef.Name = Utils.GetObjectTypeName(filePath);
-                    // 使用表头行填充定义
-                    InjectObjectDef(objDef, rows);
-
-                    Lookup.AddRawObjDef(objDef);
-                }
-                workBook.Close();
-            }
-            return true;
         }
 
         // 跳过标题行,并且搜集下来标题的信息数据.用做和当前表格做对照
@@ -273,59 +284,51 @@ namespace Channel.Reader
                         if (string.IsNullOrEmpty(value) || value.StartsWith("#")) continue;
                         title.Add(i, value);
                     }
-                }     
+                }
             }
 
             return title;
         }
 
 
-        public static bool LoadObjectConent(string filePath)
+        public void LoadContent()
         {
-            if (!IsValidExcelFile(filePath)) return false;
-            // TODO:多线程处理,加入try,catch处理
-            // 使用io共享打开
-            IWorkbook workBook = null;
-            using (FileStream file = new FileStream(filePath, System.IO.FileMode.Open,
-                System.IO.FileAccess.Read, FileShare.ReadWrite))
-            {
-                workBook = WorkbookFactory.Create(file);
-                for (int i = 0; i < workBook.NumberOfSheets; i++)
-                {
-                    ISheet sheet = workBook.GetSheetAt(i);
-                    // 不是有效数据表继续排查
-                    if (!IsValidSheet(sheet)) continue;
-                    
-                    // table 类型名称
-                    var tabName = Utils.GetObjectTypeName(filePath);
-                    // 创建一个table,引用ContentObject的定义
-                    Table table = new Table(tabName, filePath+"@" + sheet.SheetName);
+            //for (int i = 0; i < workBook.NumberOfSheets; i++)
+            //{
+            //    ISheet sheet = workBook.GetSheetAt(i);
+            //    // 不是有效数据表继续排查
+            //    if (!IsValidSheet(sheet)) continue;
 
-                    // 选择标题头,并跳过表头信息
-                    var rows = sheet.GetRowEnumerator();
-                    var titles = SkipAndSelectTitle(rows);
-                    //逐行将excel组织成key value的形式,key为title value为对应的内容
-                    Dictionary<string, string> titleAndContent =
-                         new Dictionary<string, string>(titles.Count);
-                    while (rows.MoveNext())
-                    {
-                        titleAndContent.Clear();
-                        var currentRow = rows.Current as IRow;
-       
-                        for (int j = 1; j < currentRow.LastCellNum; j++)
-                        {
-                            string fieldName = string.Empty;
-                            ICell cell = currentRow.GetCell(j);
-                            if (cell == null || !titles.TryGetValue(j, out fieldName)) continue;
-                            titleAndContent.Add(fieldName, cell.GetValue());
-                        }
-                        table.AddObjectData(titleAndContent);
-                    }
-                    Lookup.AddTable(table);
-                }
-                workBook.Close();
-            }
-            return true;
+            //    // table 类型名称
+            //    var tabName = Utils.GetObjectTypeName(filePath);
+            //    // 创建一个table,引用ContentObject的定义
+            //    Table table = new Table(tabName, filePath + "@" + sheet.SheetName);
+
+            //    // 选择标题头,并跳过表头信息
+            //    var rows = sheet.GetRowEnumerator();
+            //    var titles = SkipAndSelectTitle(rows);
+            //    //逐行将excel组织成key value的形式,key为title value为对应的内容
+            //    Dictionary<string, string> titleAndContent =
+            //            new Dictionary<string, string>(titles.Count);
+            //    while (rows.MoveNext())
+            //    {
+            //        titleAndContent.Clear();
+            //        var currentRow = rows.Current as IRow;
+
+            //        for (int j = 1; j < currentRow.LastCellNum; j++)
+            //        {
+            //            string fieldName = string.Empty;
+            //            ICell cell = currentRow.GetCell(j);
+            //            if (cell == null || !titles.TryGetValue(j, out fieldName)) continue;
+            //            titleAndContent.Add(fieldName, cell.GetValue());
+            //        }
+            //        table.AddObjectData(titleAndContent);
+            //    }
+            //    Lookup.AddTable(table);
+            //}
+   
         }
+
+   
     }
 }

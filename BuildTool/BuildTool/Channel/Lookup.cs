@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Channel.OutputDefine;
+using Channel.RawDefine;
 
 namespace Channel
 {
@@ -15,62 +15,36 @@ namespace Channel
             var a = 0;
         }
 
-        static Dictionary<string, ObjectDefine> ObjCollect = new Dictionary<string, ObjectDefine>();
+        static Dictionary<string, RawObjDef> RawDefineCollect = new Dictionary<string, RawObjDef>();
 
-        internal static void AddObjectDefine(ObjectDefine def)
+        internal static void AddRawObjDef(RawObjDef def)
         {
             var key = def.Name;
-            ObjectDefine oldDef = null;
-            lock (ObjCollect)
+            RawObjDef oldDef = null;
+            lock (RawDefineCollect)
             {
-                if (ObjCollect.TryGetValue(key, out oldDef))
+                if (RawDefineCollect.TryGetValue(key, out oldDef))
                 {
                     oldDef.Merge(def);
                 }
                 else
                 {
-                    ObjCollect.Add(key, def);
+                    RawDefineCollect.Add(key, def);
                 }
             }
         }
 
-        internal static ObjectDefine LookObjectDefine(string objTypeName)
+        internal static RawObjDef LookupRawObjDef(string objTypeName)
         {
-            ObjectDefine def = null;
-            ObjCollect.TryGetValue(objTypeName, out def);
+            RawObjDef def = null;
+            RawDefineCollect.TryGetValue(objTypeName, out def);
             return def;
         }
 
-        // todo 访问权限,暂时测试时使用public
-        public static void InitDefine()
+        internal static List<string> LookAllRawDefineName()
         {
-            foreach (var item in ObjCollect)
-            {
-                item.Value.ParseDefine();
-            }
-            foreach (var item in EnumCollect)
-            {
-                item.Value.ParseDefine();
-            }
+            return RawDefineCollect.Keys.ToList<string>();
         }
-
-        static Dictionary<string, EnumDefine> EnumCollect = new Dictionary<string, EnumDefine>();
-
-        internal static void AddEnumDefine(EnumDefine def)
-        {
-            lock (EnumCollect)
-            {
-                EnumCollect.Add(def.Name, def);
-            }
-        }
-
-        internal static EnumDefine LookEnumDefine(string enumTypeName)
-        {
-            EnumDefine def = null;
-            EnumCollect.TryGetValue(enumTypeName, out def);
-            return def;
-        }
-
 
         static Dictionary<string, Channel.Data.Table> TableCollect = new Dictionary<string, Data.Table>();
 
@@ -89,7 +63,6 @@ namespace Channel
                 }
             }
         }
-
 
         public static Channel.Data.Table LookTable(string tableName)
         {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Channel.OutputDefine;
+using Channel.RawDefine;
 
 namespace Channel.Data
 {
@@ -14,13 +14,13 @@ namespace Channel.Data
         public string Path { get; private set; }
         public ITable MainTable { get; private set; }
         public List<ITable> SubTable { get; private set; }
-        ObjectDefine define;
+        RawObjDef define;
 
         internal Table(string name, string path)
         {
             this.MainTable = this;
             this.Name = name;
-            this.define = Lookup.LookObjectDefine(name);
+            this.define = Lookup.LookupRawObjDef(name) as RawObjDef;
             this.Path = path;
         }
 
@@ -41,7 +41,7 @@ namespace Channel.Data
             foreach (var item in titleAndContent)
             {
                 ObjectData.Field field = new ObjectData.Field();
-                var fieldDefine = define[item.Key] as FieldDefine;
+                var fieldDefine = define[item.Key] as RawObjFieldDef;
                 // 字段定义
                 field.fieldDefine = fieldDefine;
                 // 字段原始内容

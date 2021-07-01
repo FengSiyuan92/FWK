@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Channel.OutputDefine;
+using Channel.RawDefine;
 
 namespace Channel.Data
 {
@@ -14,7 +14,7 @@ namespace Channel.Data
 
         internal class Field
         {
-            public FieldDefine fieldDefine;
+            public RawObjFieldDef fieldDefine;
             public string originalValue;
 
             public override string ToString()
@@ -29,18 +29,18 @@ namespace Channel.Data
         internal void AddField(Field field)
         {
             fields.Add(field.fieldDefine.FieldName, field);
-            var keyIndex = field.fieldDefine.IsKey;
-            switch (keyIndex)
-            {
-                case 1:
-                    Key = field.originalValue;
-                    break;
-                //case 2:
-                //    Key2 = field.originalValue;
-                    //break;
-                default:
-                    break;
-            }
+            //var keyIndex = field.fieldDefine.IsKey;
+            //switch (keyIndex)
+            //{
+            //    case 1:
+            //        Key = field.originalValue;
+            //        break;
+            //    //case 2:
+            //    //    Key2 = field.originalValue;
+            //        //break;
+            //    default:
+            //        break;
+            //}
         }
     }
 }

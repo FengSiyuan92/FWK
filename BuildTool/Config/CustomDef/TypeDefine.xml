@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<EnumDefine>
+<Define>
 	<obj type="Consume">
 			<var name="use_count" type="int"/>
 			<var name="item_id" type="int" out="cs" desc="key1|alias=Item.name" check="ref=Item.id"/>
 	</obj>
-</EnumDefine>
+</Define>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
-using Channel.OutputDefine;
+using Channel.RawDefine;
 
 namespace Channel.Reader
 {
@@ -83,7 +83,7 @@ namespace Channel.Reader
         static void CreateAndFillEnum(XmlNode enumNode)
         {
             // 创建一个新的enum定义
-            EnumDefine def = new EnumDefine();
+            RawEnumDefine def = new RawEnumDefine();
             def.Name = enumNode.Attributes[EnumTypeTitle].Value;
 
             // 遍历enum下所有node,用来生成枚举的字段定义
@@ -110,7 +110,7 @@ namespace Channel.Reader
                     }
                 }
 
-                EnumFieldDefine edef = new EnumFieldDefine();
+                RawEnumFieldDefine edef = new RawEnumFieldDefine();
                 edef.FieldName = GetNodeAttributeValue(node, EnumNameTitle);
                 edef.alias = GetNodeAttributeValue(node, EnumAliasTitle);
                 edef.value = enumValue;
@@ -118,7 +118,7 @@ namespace Channel.Reader
             }
 
             // 将枚举定义添加进enumlookup中
-            Lookup.AddEnumDefine(def);
+            Lookup.AddRawObjDef(def);
         }
 
         static string GetNodeAttributeValue(XmlNode node, string key)
@@ -166,7 +166,7 @@ namespace Channel.Reader
         /// <param name="enumNode"></param>
         static void CreateObjDefine(XmlNode enumNode)
         {
-            ObjectDefine def = new ObjectDefine();
+            RawObjDef def = new RawObjDef();
             def.Name = enumNode.Attributes[ObjTypeTitle].Value;
             var nodelist = enumNode.ChildNodes;
 
@@ -174,7 +174,7 @@ namespace Channel.Reader
             {
                 var node = nodelist.Item(i);
                 // 为Obj基础字段赋值
-                FieldDefine fieldDefine = new FieldDefine();
+                RawObjFieldDef fieldDefine = new RawObjFieldDef();
                 fieldDefine.FieldName = GetNodeAttributeValue(node, ObjNameTitle);
                 if (string.IsNullOrEmpty(fieldDefine.FieldName))
                 {
@@ -191,7 +191,7 @@ namespace Channel.Reader
             }
 
             // 将obj定义添加进lookup中
-            Lookup.AddObjectDefine(def);
+            Lookup.AddRawObjDef(def);
         }
     }
 }

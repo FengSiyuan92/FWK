@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Channel;
 using Channel.Reader;
-using Channel.OutputDefine;
-
 namespace BuildTool
 {
     class Program
@@ -22,25 +20,29 @@ namespace BuildTool
 
         static void Main(string[] args)
         {
-            ExcelReader.LoadObjectDefine(ItemPart1);
-            ExcelReader.LoadObjectDefine(ItemPart2);
-            ExcelReader.LoadObjectDefine(TestUseItempath);
-            XMLReader.LoadEnumDefine(EnumXML);
-            XMLReader.LoadObjectDefine(ObjXML);
+            //ExcelReader.LoadObjectDefine(ItemPart1);
+            //ExcelReader.LoadObjectDefine(ItemPart2);
+            //ExcelReader.LoadObjectDefine(TestUseItempath);
+            //XMLReader.LoadEnumDefine(EnumXML);
+            //XMLReader.LoadObjectDefine(ObjXML);
 
-            Lookup.InitDefine();
+            // Lookup.InitDefine();
 
-            ExcelReader.LoadObjectConent(ItemPart1);
-            Lookup.Test();
-            ExcelReader.LoadObjectConent(ItemPart2);
-            Lookup.Test();
+            //ExcelReader.LoadObjectConent(ItemPart1);
+            //Lookup.Test();
+            //ExcelReader.LoadObjectConent(ItemPart2);
+            //Lookup.Test();
 
-            ExcelReader.LoadObjectConent(TestUseItempath);
-            Lookup.Test();
+            //ExcelReader.LoadObjectConent(TestUseItempath);
+            //Lookup.Test();
+
+            FileAgent.RegisterFile(EnumXML);
+            FileAgent.RegisterFile(ItemPart1);
 
 
+            Compiler.StartCompile();
 
-
+            Console.ReadKey();
             var a = 0;
         }
     }
