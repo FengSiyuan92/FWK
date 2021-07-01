@@ -8,7 +8,7 @@ using NPOI.SS.UserModel;
 using System.IO;
 namespace Channel
 {
-    class Utils
+    public class Utils
     {
         public static string GetObjectTypeName(string filePath)
         {

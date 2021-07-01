@@ -17,7 +17,7 @@ namespace Channel.Define
     }
 
 
-    public class Field<T>
+    public class Field
     {
         /// <summary>
         /// 字段名称
@@ -44,9 +44,10 @@ namespace Channel.Define
         /// </summary>
         public string OriginalDefaultValue { get; set; }
 
-
-        public T FieldType;
-
+        /// <summary>
+        /// 数值转换器
+        /// </summary>
+        internal TypeConvert Convert { get; set; }
 
     }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Channel
 {
-    internal class CLog
+    public class CLog
     {
         public static void Log(string fmt, params object[] pms)
         {
@@ -14,7 +14,6 @@ namespace Channel
             Console.WriteLine(fmt, pms);
     
         }
-
 
         public static void LogWarning(string fmt, params object[] pms)
         {

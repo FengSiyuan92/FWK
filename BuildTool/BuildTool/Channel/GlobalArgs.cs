@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Channel
 {
-    class GlobalArgs
+    internal class GlobalArgs
     {
         /// <summary>
         /// 忽略读取的文件路径

@@ -61,34 +61,21 @@
   <ItemGroup>
     <Compile Include="CLog.cs" />
     <Compile Include="Compiler.cs" />
-    <Compile Include="Data\IContent.cs" />
-    <Compile Include="Data\ITable.cs" />
-    <Compile Include="Data\Table.cs" />
-    <Compile Include="Define.cs" />
     <Compile Include="Agent\Excel\ExcelAgent.cs" />
     <Compile Include="Agent\Excel\Extend.cs" />
     <Compile Include="Define\IField.cs" />
-    <Compile Include="Define\IObject.cs" />
+    <Compile Include="Define\ObjectDef.cs" />
     <Compile Include="Define\IConvert.cs" />
-    <Compile Include="Define\IType.cs" />
+    <Compile Include="Define\TypeConvert.cs" />
+    <Compile Include="Enum.cs" />
+    <Compile Include="EnumUtil.cs" />
     <Compile Include="FileAgent.cs" />
     <Compile Include="Agent\XML\Extend.cs" />
     <Compile Include="Agent\XML\XMLAgent.cs" />
     <Compile Include="GlobalArgs.cs" />
     <Compile Include="Lookup.cs" />
-    <Compile Include="Data\ObjectData.cs" />
     <Compile Include="Define\RawDefine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reader\Excel\ExcelReader.cs" />
-    <Compile Include="Reader\XML\XMLReader.cs" />
-    <Compile Include="TransitionData\TCustom.cs" />
-    <Compile Include="TransitionData\TEnum.cs" />
-    <Compile Include="TransitionData\TList.cs" />
-    <Compile Include="TransitionData\TString.cs" />
-    <Compile Include="TransitionData\TDouble.cs" />
-    <Compile Include="TransitionData\TFloat.cs" />
-    <Compile Include="TransitionData\TInt.cs" />
-    <Compile Include="TransitionData\TType.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>

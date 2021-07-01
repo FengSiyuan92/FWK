@@ -25,6 +25,7 @@ namespace Channel.Agent.Excel
         {
             Name = 0,
             Type,
+            DefaultValue,
             OutputType,
             AppendDef,
             CheckRule,

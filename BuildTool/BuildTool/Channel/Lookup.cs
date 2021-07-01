@@ -17,6 +17,10 @@ namespace Channel
 
         static Dictionary<string, RawObjDef> RawDefineCollect = new Dictionary<string, RawObjDef>();
 
+        /// <summary>
+        /// 内部通过该接口注册原生定义到查看器
+        /// </summary>
+        /// <param name="def"></param>
         internal static void AddRawObjDef(RawObjDef def)
         {
             var key = def.Name;
@@ -34,41 +38,61 @@ namespace Channel
             }
         }
 
+        /// <summary>
+        /// 内部通过该接口查看原生定义
+        /// </summary>
+        /// <param name="objTypeName"></param>
+        /// <returns></returns>
         internal static RawObjDef LookupRawObjDef(string objTypeName)
         {
             RawObjDef def = null;
             RawDefineCollect.TryGetValue(objTypeName, out def);
             return def;
         }
-
+        /// <summary>
+        /// 内部通过该接口获取所有原生定义的类型
+        /// </summary>
+        /// <returns></returns>
         internal static List<string> LookAllRawDefineName()
         {
             return RawDefineCollect.Keys.ToList<string>();
         }
 
-        static Dictionary<string, Channel.Data.Table> TableCollect = new Dictionary<string, Data.Table>();
+        static Dictionary<string, Channel.Enum> enums = new Dictionary<string, Channel.Enum>();
 
-        internal static void AddTable(Channel.Data.Table table)
+        /// <summary>
+        /// 内部通过该接口注册进一个枚举定义
+        /// </summary>
+        /// <param name="enumObj"></param>
+        internal static void AddEnumDefine(Channel.Enum enumObj)
         {
-            lock (TableCollect)
-            {
-                Channel.Data.Table oldTab;
-                if (TableCollect.TryGetValue(table.Name, out oldTab))
-                {
-                    oldTab.Merge(table);
-                }
-                else
-                {
-                    TableCollect.Add(table.Name, table);
-                }
-            }
+            enums.Add(enumObj.Name, enumObj);
         }
 
-        public static Channel.Data.Table LookTable(string tableName)
+        /// <summary>
+        /// 编译完成后,可以通过该接口查看一个枚举信息
+        /// </summary>
+        /// <param name="enumName"></param>
+        /// <returns></returns>
+        public static Channel.Enum LookEnum(string enumName)
         {
-            Channel.Data.Table table;
-            TableCollect.TryGetValue(tableName, out table);
-            return table;
+            if (string.IsNullOrEmpty(enumName))
+            {
+                return null; 
+            }
+            Channel.Enum e = null;
+            enums.TryGetValue(enumName, out e);
+            return e;
+        }
+
+        /// <summary>
+        /// 编译完成后,可以通过该接口查看当前环境下一共有哪些名称的枚举
+        /// </summary>
+        /// <param name="enumName"></param>
+        /// <returns></returns>
+        public static string[] LookAllEnumName()
+        {
+            return enums.Keys.ToArray();
         }
     }
 }

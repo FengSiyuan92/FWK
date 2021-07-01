@@ -26,6 +26,8 @@ namespace Channel.Agent.XML
 
         const string OutTypeTitle = "out";
 
+        const string AliasTypeTitle = "alias";
+
         const string DEFINE_TYPE_ENUM = "enum";
         const string DEFINE_TYPE_OBJ = "obj";
 
@@ -140,6 +142,7 @@ namespace Channel.Agent.XML
                 fieldDef.OutputType = node.GetNodeAttributeValue(OutTypeTitle);
                 fieldDef.CheckRule = node.GetNodeAttributeValue(CheckTitle);
                 fieldDef.DefaultValue = enumValue.ToString();
+                fieldDef.AppendDef +=  "alias=" + node.GetNodeAttributeValue(AliasTypeTitle);
 
                 obj.AddFieldDefine(fieldDef);
             }

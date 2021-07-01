@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Channel;
-using Channel.Reader;
+using System.Text.RegularExpressions;
+
 namespace BuildTool
 {
     class Program
@@ -42,8 +43,28 @@ namespace BuildTool
 
             Compiler.StartCompile();
 
+
+            var allEnums = Lookup.LookAllEnumName();
+            foreach (var enumName in allEnums)
+            {
+                var e = Lookup.LookEnum(enumName);
+                var fieldName = e.GetAllItemName();
+                foreach (var item in fieldName)
+                {
+                    CLog.LogError(e.GetItemByFieldName(item).ToString());
+                }
+            }
+
+            foreach (var enumName in allEnums)
+            {
+                var e = Lookup.LookEnum(enumName);
+                CLog.Log(e.ToString());
+            }
             Console.ReadKey();
-            var a = 0;
+            //var a = 0;
         }
+
+
+        
     }
 }
