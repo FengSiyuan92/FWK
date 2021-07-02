@@ -155,7 +155,7 @@ namespace Channel.Agent.Excel
                 RawObjDef objDef = new RawObjDef(Utils.GetObjectTypeName(filePath), RawObjType.OBJECT);
                 // 使用表头行填充定义
                 InjectObjectDef(objDef, rows);
-                Lookup.AddRawObjDef(objDef);
+                Lookup.RawDefine.Add(objDef);
             }
         }
 

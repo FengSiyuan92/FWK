@@ -19,17 +19,17 @@ namespace Channel
 
             Lookup.Test();
             // 初始化定义完成后,遍历定义执行编译
-            var defineNames = Lookup.LookAllRawDefineName();
+
+            var defineNames = Lookup.RawDefine.AllName();
 
             // 第一次编译,编译初始定义的类型信息
             foreach (var objTypeName in defineNames)
             {
-               RawObjDef def = Lookup.LookupRawObjDef(objTypeName);
+                RawObjDef def = Lookup.RawDefine[objTypeName];  
                 CompileRawDef(def);
             }
 
             // 对所有编译类型执行嵌套的二次编译,用于关联自定义类型
-
         }
 
         static void CompileRawDef(RawObjDef def)
@@ -47,10 +47,23 @@ namespace Channel
             }
         }
 
-        static void CompileObjDefine1(RawObjDef def)
+        static void CompileObjDefine1(RawObjDef rawDef)
         {
-
+            ObjectDefine objDef = new ObjectDefine(rawDef.Name);
+            var filedNames = rawDef.GetAllRawFieldName();
+            foreach (var filedName in filedNames)
+            {
+                var rawField = rawDef[filedName];
+                Field field = new Field();
+                field.FieldName = filedName;
+                field.OutputType = GetOutputType(rawField.OutputType);
+                field.IsKey = CheckIsKey(rawField.AppendDef);
+                field.AliasRefPos = GetAliasPos(rawField.AppendDef);
+                field.OriginalDefaultValue = 
+            }
         }
+
+
 
         static void CompileEnumDefine1(RawObjDef def)
         {
@@ -88,9 +101,8 @@ namespace Channel
             return OutputType.ClientAndServer;
         }
 
-        const string AliasMath = @"alias=(.*)\|*";
 
-        static Regex aliasReg = new Regex(AliasMath, RegexOptions.IgnoreCase);
+        static Regex AliasContentReg = new Regex(@"alias=([^\|\s]*)\|*", RegexOptions.IgnoreCase);
         static string GetAlias(string appendDef)
         {
             if (string.IsNullOrEmpty(appendDef))
@@ -98,12 +110,68 @@ namespace Channel
                 return string.Empty;
             }
 
-            var res = aliasReg.Match(appendDef);
-            if (res.Success &&res.Groups.Count > 1)
+            var res = AliasContentReg.Match(appendDef);
+            if (res.Success && res.Groups.Count > 1)
             {
                 return res.Groups[1].ToString();
             }
             return "";
+        }
+
+
+        static Regex AliasPosReg = new Regex(@"alias=?([^\|\s]*)\|*", RegexOptions.IgnoreCase);
+        static string GetAliasPos(string appendDef)
+        {
+            if (string.IsNullOrEmpty(appendDef))
+            {
+                return string.Empty;
+            }
+            var res = AliasPosReg.Match(appendDef);
+            if (res.Success)
+            {
+
+                if (res.Groups.Count > 1)
+                {
+                    var pos = res.Groups[1].ToString();
+                    return string.IsNullOrEmpty(pos) ? "default" : pos;
+                }
+                return "default";
+            }
+
+            return string.Empty;
+        }
+
+
+        static Regex IsKeyReg = new Regex(@"key\d?", RegexOptions.IgnoreCase);
+        static bool CheckIsKey(string appendDef)
+        {
+            if (string.IsNullOrEmpty(appendDef))
+            {
+                return false;
+            }
+            var res = IsKeyReg.Match(appendDef);
+            return res.Success && res.Groups.Count > 0;
+        }
+
+        static Regex DefValueReg = new Regex(@"default=?([^\|\s]*)\|*", RegexOptions.IgnoreCase);
+        static string GetDefaultValue(string appendDef)
+        {
+
+            if (string.IsNullOrEmpty(appendDef))
+            {
+                return string.Empty;
+            }
+            var res = DefValueReg.Match(appendDef);
+            if (res.Success)
+            {
+                if (res.Groups.Count > 1)
+                {
+                    var pos = res.Groups[1].ToString();
+                    return string.IsNullOrEmpty(pos) ? "default" : pos;
+                }
+                return "default";
+            }
+            return string.Empty;
         }
 
     }

@@ -148,7 +148,7 @@ namespace Channel.Agent.XML
             }
 
             // 将枚举定义添加进enumlookup中
-            Lookup.AddRawObjDef(obj);
+            Lookup.RawDefine.Add(obj);
         }
 
         /// <summary>
@@ -180,9 +180,8 @@ namespace Channel.Agent.XML
                 // 将字段定义添加进objdef中
                 objDef.AddFieldDefine(fieldDefine);
             }
-
             // 将obj定义添加进lookup中
-            Lookup.AddRawObjDef(objDef);
+            Lookup.RawDefine.Add(objDef);
         }
 
         public void Dispose()

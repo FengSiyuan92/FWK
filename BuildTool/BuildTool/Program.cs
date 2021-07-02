@@ -21,50 +21,107 @@ namespace BuildTool
 
         static void Main(string[] args)
         {
-            //ExcelReader.LoadObjectDefine(ItemPart1);
-            //ExcelReader.LoadObjectDefine(ItemPart2);
-            //ExcelReader.LoadObjectDefine(TestUseItempath);
-            //XMLReader.LoadEnumDefine(EnumXML);
-            //XMLReader.LoadObjectDefine(ObjXML);
-
-            // Lookup.InitDefine();
-
-            //ExcelReader.LoadObjectConent(ItemPart1);
-            //Lookup.Test();
-            //ExcelReader.LoadObjectConent(ItemPart2);
-            //Lookup.Test();
-
-            //ExcelReader.LoadObjectConent(TestUseItempath);
-            //Lookup.Test();
-
-            FileAgent.RegisterFile(EnumXML);
-            FileAgent.RegisterFile(ItemPart1);
 
 
-            Compiler.StartCompile();
+            //FileAgent.RegisterFile(EnumXML);
+            //FileAgent.RegisterFile(ItemPart1);
 
 
-            var allEnums = Lookup.LookAllEnumName();
-            foreach (var enumName in allEnums)
-            {
-                var e = Lookup.LookEnum(enumName);
-                var fieldName = e.GetAllItemName();
-                foreach (var item in fieldName)
-                {
-                    CLog.LogError(e.GetItemByFieldName(item).ToString());
-                }
-            }
+            //Compiler.StartCompile();
 
-            foreach (var enumName in allEnums)
-            {
-                var e = Lookup.LookEnum(enumName);
-                CLog.Log(e.ToString());
-            }
+
+            //var allEnums = Lookup.Enum.AllName();
+            //foreach (var enumName in allEnums)
+            //{
+            //    var e = Lookup.Enum[enumName];  //Lookup.LookEnum(enumName);
+
+            //    var fieldName = e.GetAllItemName();
+            //    foreach (var item in fieldName)
+            //    {
+            //        CLog.LogError(e.GetItemByFieldName(item).ToString());
+            //    }
+            //}
+
+            //foreach (var enumName in allEnums)
+            //{
+            //    var e = Lookup.Enum[enumName];
+            //    CLog.Log(e.ToString());
+            //}
+
+
+
+
+
+            var a = GetAlias("alias|key1");
+            var b = GetAlias("key|alias=Item.name");
+            var c = GetAlias("key");
+            var d = GetAlias("alias");
+
             Console.ReadKey();
             //var a = 0;
         }
 
 
-        
+        static Regex AliasPosReg = new Regex(@"alias=?([^\|\s]*)\|*", RegexOptions.IgnoreCase);
+        static string GetAliasPos(string appendDef)
+        {
+            if (string.IsNullOrEmpty(appendDef))
+            {
+                return string.Empty;
+            }
+            var res = AliasPosReg.Match(appendDef);
+            if (res.Success)
+            {
+
+                if (res.Groups.Count > 1)
+                {
+                    var pos = res.Groups[1].ToString();
+                    return string.IsNullOrEmpty(pos) ? "default" : pos;
+                }
+                return "default";
+            }
+
+            return string.Empty;
+        }
+
+
+        static Regex AliasContentReg = new Regex(@"alias=([^\|\s]*)\|*", RegexOptions.IgnoreCase);
+        static string GetAlias(string appendDef)
+        {
+            if (string.IsNullOrEmpty(appendDef))
+            {
+                return string.Empty;
+            }
+
+            var res = AliasContentReg.Match(appendDef);
+            if (res.Success && res.Groups.Count > 1)
+            {
+                return res.Groups[1].ToString();
+            }
+            return "";
+        }
+
+
+        static Regex DefValueReg = new Regex(@"default=?([^\|\s]*)\|*", RegexOptions.IgnoreCase);
+        static string GetDefaultValue(string appendDef)
+        {
+
+            if (string.IsNullOrEmpty(appendDef))
+            {
+                return string.Empty;
+            }
+            var res = DefValueReg.Match(appendDef);
+            if (res.Success)
+            {
+                if (res.Groups.Count > 1)
+                {
+                    var pos = res.Groups[1].ToString();
+                    return string.IsNullOrEmpty(pos) ? "default" : pos;
+                }
+                return "default";
+            }
+            return string.Empty;
+        }
+
     }
 }

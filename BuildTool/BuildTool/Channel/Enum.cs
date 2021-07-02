@@ -124,6 +124,13 @@ namespace Channel
             return sb.ToString();
         }
 
+        /// <summary>
+        /// 添加一个枚举Item
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <param name="outputType"></param>
+        /// <param name="alias"></param>
         internal void AddEnumItem(string name, int value, OutputType outputType, string alias = "")
         {
             Item item = new Item();

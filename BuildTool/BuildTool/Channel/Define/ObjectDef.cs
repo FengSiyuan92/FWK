@@ -21,6 +21,10 @@ namespace Channel.Define
 
         Dictionary<string, Field> fields = new Dictionary<string, Field>();
 
+        public void AddField(Field field)
+        {
+            fields.Add(field.FieldName, field);
+        }
     }
 
 }

@@ -35,20 +35,16 @@ namespace Channel.Define
         public bool IsKey { get; internal set; }
 
         /// <summary>
-        /// 该字段对应的内容是否使用的是别名
+        /// 别名的指向,为string.Empty时说明不使用别名
         /// </summary>
-        public bool UseAlias { get; internal set; }
+        internal string AliasRefPos { get; set; }
 
         /// <summary>
         /// 原始填入的默认值
         /// </summary>
-        public string OriginalDefaultValue { get; set; }
+        internal string OriginalDefaultValue { get; set; }
 
-        /// <summary>
-        /// 数值转换器
-        /// </summary>
-        internal TypeConvert Convert { get; set; }
-
+       
     }
 
 
