@@ -48,80 +48,19 @@ namespace BuildTool
             //    CLog.Log(e.ToString());
             //}
 
+            var s1 = "alias|key1";
+            var s2 = "key|default=25|alias=Item.name";
+            var s3 = "key";
+            var s4 = "alias";
 
-
-
-
-            var a = GetAlias("alias|key1");
-            var b = GetAlias("key|alias=Item.name");
-            var c = GetAlias("key");
-            var d = GetAlias("alias");
-
+            var t = typeof(Channel.Define.CompileType.IntType);
+            var i = (new Channel.Define.CompileType.IntType() )as Channel.Define.CompileType.CompileType;
+            var t2 = i.GetType();
             Console.ReadKey();
             //var a = 0;
         }
 
 
-        static Regex AliasPosReg = new Regex(@"alias=?([^\|\s]*)\|*", RegexOptions.IgnoreCase);
-        static string GetAliasPos(string appendDef)
-        {
-            if (string.IsNullOrEmpty(appendDef))
-            {
-                return string.Empty;
-            }
-            var res = AliasPosReg.Match(appendDef);
-            if (res.Success)
-            {
-
-                if (res.Groups.Count > 1)
-                {
-                    var pos = res.Groups[1].ToString();
-                    return string.IsNullOrEmpty(pos) ? "default" : pos;
-                }
-                return "default";
-            }
-
-            return string.Empty;
-        }
-
-
-        static Regex AliasContentReg = new Regex(@"alias=([^\|\s]*)\|*", RegexOptions.IgnoreCase);
-        static string GetAlias(string appendDef)
-        {
-            if (string.IsNullOrEmpty(appendDef))
-            {
-                return string.Empty;
-            }
-
-            var res = AliasContentReg.Match(appendDef);
-            if (res.Success && res.Groups.Count > 1)
-            {
-                return res.Groups[1].ToString();
-            }
-            return "";
-        }
-
-
-        static Regex DefValueReg = new Regex(@"default=?([^\|\s]*)\|*", RegexOptions.IgnoreCase);
-        static string GetDefaultValue(string appendDef)
-        {
-
-            if (string.IsNullOrEmpty(appendDef))
-            {
-                return string.Empty;
-            }
-            var res = DefValueReg.Match(appendDef);
-            if (res.Success)
-            {
-                if (res.Groups.Count > 1)
-                {
-                    var pos = res.Groups[1].ToString();
-                    return string.IsNullOrEmpty(pos) ? "default" : pos;
-                }
-                return "default";
-            }
-            return string.Empty;
-        }
 
     }
 }

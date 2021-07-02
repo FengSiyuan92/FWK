@@ -12,24 +12,7 @@ namespace Channel.Agent.XML
     class XMLAgent :IFileAgent,IDisposable
     {
 
-        // 获取枚举类型名称的arrtibute name
-        const string TypeTitle = "type";
-        // 获取枚举字段名称的AT_NAME
-        const string NameTitle = "name";
-
-        // 获取枚举对应值的AT_NAME
-        const string ValueTitle = "value";
-
-        const string DescTitle = "desc";
-
-        const string CheckTitle = "check";
-
-        const string OutTypeTitle = "out";
-
-        const string AliasTypeTitle = "alias";
-
-        const string DEFINE_TYPE_ENUM = "enum";
-        const string DEFINE_TYPE_OBJ = "obj";
+       
 
         public bool Valid { get; private set; }
         XmlDocument doc;
@@ -82,11 +65,11 @@ namespace Channel.Agent.XML
                 var node = defineNode as XmlNode;
                 switch (node.Name)
                 {
-                    case DEFINE_TYPE_ENUM:
+                    case ConstString.XML_ENUM_DEF_TYPE:
                         LoadEnumDef(node);
                         break;
 
-                    case DEFINE_TYPE_OBJ:
+                    case ConstString.XML_OBJ_DEF_TYPE:
                         LoadObjDef(node);
                         break;
                     default:
@@ -109,7 +92,7 @@ namespace Channel.Agent.XML
         void LoadEnumDef(XmlNode enumNode)
         {
             // 创建一个新的enum定义
-            RawObjDef obj = new RawObjDef(enumNode.Attributes[TypeTitle].Value, RawObjType.ENUM);
+            RawObjDef obj = new RawObjDef(enumNode.Attributes[ConstString.XML_TYPE_TITLE].Value, RawObjType.ENUM);
 
             // 遍历enum下所有node,用来生成枚举的字段定义
             var nodelist = enumNode.ChildNodes;
@@ -119,7 +102,7 @@ namespace Channel.Agent.XML
             for (int i = 0; i < nodelist.Count; i++)
             {
                 var node = nodelist.Item(i);
-                var valueContent = node.GetNodeAttributeValue(ValueTitle);
+                var valueContent = node.GetNodeAttributeValue(ConstString.XML_VALUE_TITLE);
                 int enumValue = defaultValue++;
                 if (!string.IsNullOrEmpty(valueContent))
                 {
@@ -137,12 +120,12 @@ namespace Channel.Agent.XML
                 }
 
                 RawFieldDef fieldDef = new RawFieldDef();
-                fieldDef.FieldName = node.GetNodeAttributeValue(NameTitle);
+                fieldDef.FieldName = node.GetNodeAttributeValue(ConstString.XML_NAME_TITLE);
                 fieldDef.FieldType = RawFieldType.Int;
-                fieldDef.OutputType = node.GetNodeAttributeValue(OutTypeTitle);
-                fieldDef.CheckRule = node.GetNodeAttributeValue(CheckTitle);
+                fieldDef.OutputType = node.GetNodeAttributeValue(ConstString.XML_OUTPUT_TYPE_TITLE);
+                fieldDef.CheckRule = node.GetNodeAttributeValue(ConstString.XML_CHECK_RULE_TITLE);
                 fieldDef.DefaultValue = enumValue.ToString();
-                fieldDef.AppendDef +=  "alias=" + node.GetNodeAttributeValue(AliasTypeTitle);
+                fieldDef.AppendDef +=  "alias=" + node.GetNodeAttributeValue(ConstString.XML_ALIAS_TITLE);
 
                 obj.AddFieldDefine(fieldDef);
             }
@@ -157,7 +140,7 @@ namespace Channel.Agent.XML
         /// <param name="enumNode"></param>
         void LoadObjDef(XmlNode enumNode)
         {
-            RawObjDef objDef = new RawObjDef(enumNode.Attributes[TypeTitle].Value, RawObjType.OBJECT);
+            RawObjDef objDef = new RawObjDef(enumNode.Attributes[ConstString.XML_TYPE_TITLE].Value, RawObjType.OBJECT);
     
             var nodelist = enumNode.ChildNodes;
 
@@ -166,16 +149,16 @@ namespace Channel.Agent.XML
                 var node = nodelist.Item(i);
                 // 为Obj基础字段赋值
                 RawFieldDef fieldDefine = new RawFieldDef();
-                fieldDefine.FieldName = node.GetNodeAttributeValue(NameTitle);
+                fieldDefine.FieldName = node.GetNodeAttributeValue(ConstString.XML_NAME_TITLE);
                 if (string.IsNullOrEmpty(fieldDefine.FieldName))
                 {
                     CLog.LogError("{0}:{1}的Object定义必须使用 name=\"??\"格式来定义字段名", filePath, objDef.Name);
                     return;
                 }
-                fieldDefine.FieldType = node.GetNodeAttributeValue(TypeTitle);
-                fieldDefine.OutputType = node.GetNodeAttributeValue(OutTypeTitle);
-                fieldDefine.AppendDef = node.GetNodeAttributeValue(DescTitle);
-                fieldDefine.CheckRule = node.GetNodeAttributeValue(CheckTitle);
+                fieldDefine.FieldType = node.GetNodeAttributeValue(ConstString.XML_TYPE_TITLE);
+                fieldDefine.OutputType = node.GetNodeAttributeValue(ConstString.XML_OUTPUT_TYPE_TITLE);
+                fieldDefine.AppendDef = node.GetNodeAttributeValue(ConstString.XML_DESC_TITLE);
+                fieldDefine.CheckRule = node.GetNodeAttributeValue(ConstString.XML_CHECK_RULE_TITLE);
 
                 // 将字段定义添加进objdef中
                 objDef.AddFieldDefine(fieldDefine);

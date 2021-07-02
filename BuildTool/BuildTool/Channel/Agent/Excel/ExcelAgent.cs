@@ -14,13 +14,7 @@ namespace Channel.Agent.Excel
         /// <summary>
         /// 有效数据表的标记符号
         /// </summary>
-        const string VALID_SHEET_SIGN = "**";
 
-        const string FieldNameTitle = "字段名";
-        const string FieldTypeTitle = "类型";
-        const string OutputTypeTitle = "导出";
-        const string ValueAppendTitle = "内容描述";
-        const string CheckRuleTitle = "检查规则";
         enum FieldRowOrder
         {
             Name = 0,
@@ -34,11 +28,11 @@ namespace Channel.Agent.Excel
 
         static readonly Dictionary<string, FieldRowOrder> TITLE_ORDER = new Dictionary<string, FieldRowOrder>()
         {
-            {FieldNameTitle,  FieldRowOrder.Name},
-            {FieldTypeTitle,  FieldRowOrder.Type},
-            {OutputTypeTitle,  FieldRowOrder.OutputType},
-            {ValueAppendTitle,  FieldRowOrder.AppendDef},
-            {CheckRuleTitle,  FieldRowOrder.CheckRule},
+            {ConstString.EXL_FIELD_NAME_TITLE,  FieldRowOrder.Name},
+            {ConstString.EXL_FIELD_TYPE_TITLE,  FieldRowOrder.Type},
+            {ConstString.EXL_FIELD_OUTPUT_TYPE_TITLE,  FieldRowOrder.OutputType},
+            {ConstString.EXL_FIELD_APPEND_TITLE,  FieldRowOrder.AppendDef},
+            {ConstString.EXL_CHECK_RULE_TITLE,  FieldRowOrder.CheckRule},
         };
         /// <summary>
         /// 检查一个sheet表格是否是有效的数据表格
@@ -59,7 +53,7 @@ namespace Channel.Agent.Excel
             //第一行数据是否为可用表的标志符号
             ICell cell = row.GetCell(0);
             var s = cell.ToString();
-            return cell != null && cell.GetValue() == VALID_SHEET_SIGN;
+            return cell != null && cell.GetValue() == ConstString.VALID_SHEET_SIGN;
         }
 
         /// <summary>
@@ -145,7 +139,7 @@ namespace Channel.Agent.Excel
                 if (fieldNameRow == null)
                 {
                     CLog.LogError("{0}@{1}电子表格中的表头没有有效的字段名标志符,需要在对应字段名行的第一列中声明'{2}'"
-                        , filePath, sheet.SheetName, FieldNameTitle);
+                        , filePath, sheet.SheetName, ConstString.EXL_FIELD_NAME_TITLE);
                     continue;
                 }
 
@@ -190,7 +184,7 @@ namespace Channel.Agent.Excel
                     // 空行继续
                     case "": case " ": break;
                     // 结束符
-                    case VALID_SHEET_SIGN:
+                    case ConstString.VALID_SHEET_SIGN:
                         skip = true;
                         break;
                     default:
@@ -268,13 +262,13 @@ namespace Channel.Agent.Excel
                 // 跳过空行(可能是策划的备注行)
                 if (titleCell == null || string.IsNullOrEmpty(titleCell.GetValue())) continue;
 
-                if (titleCell.GetValue() == VALID_SHEET_SIGN)
+                if (titleCell.GetValue() == ConstString.VALID_SHEET_SIGN)
                 {
                     signCount++;
                     // 匹配结束
                     if (signCount == 2) break;
                 }
-                else if (titleCell.GetValue() == FieldNameTitle)
+                else if (titleCell.GetValue() == ConstString.EXL_FIELD_NAME_TITLE)
                 {
                     // 注册int和字段名
                     for (int i = 1; i < row.LastCellNum; i++)

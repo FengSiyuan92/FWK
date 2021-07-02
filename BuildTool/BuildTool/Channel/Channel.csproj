@@ -63,6 +63,8 @@
     <Compile Include="Compiler.cs" />
     <Compile Include="Agent\Excel\ExcelAgent.cs" />
     <Compile Include="Agent\Excel\Extend.cs" />
+    <Compile Include="ConstString.cs" />
+    <Compile Include="Define\CompileType\CompileType.cs" />
     <Compile Include="Define\IField.cs" />
     <Compile Include="Define\ObjectDef.cs" />
     <Compile Include="Define\IConvert.cs" />

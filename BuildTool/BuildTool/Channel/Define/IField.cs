@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Channel.Define.CompileType;
 
 namespace Channel.Define
 {
@@ -44,6 +45,10 @@ namespace Channel.Define
         /// </summary>
         internal string OriginalDefaultValue { get; set; }
 
+        /// <summary>
+        /// 数据编译类型
+        /// </summary>
+        internal CompileType.CompileType FieldType { get; set; }
        
     }
 
