@@ -4,20 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Channel.Define
+namespace Channel.Define.Class
 {
-
-    public class ObjectDefine
+    public class CustomType
     {
         public string Name { get; private set; }
 
-
-        public ObjectDefine(string name)
+        public CustomType(string name)
         {
             Name = name;
-
         }
-
 
         Dictionary<string, Field> fields = new Dictionary<string, Field>();
 
@@ -25,6 +21,8 @@ namespace Channel.Define
         {
             fields.Add(field.FieldName, field);
         }
+
+
     }
 
 }

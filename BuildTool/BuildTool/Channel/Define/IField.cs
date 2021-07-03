@@ -48,7 +48,7 @@ namespace Channel.Define
         /// <summary>
         /// 数据编译类型
         /// </summary>
-        internal CompileType.CompileType FieldType { get; set; }
+        internal CompileType.Converter Convert { get; set; }
        
     }
 

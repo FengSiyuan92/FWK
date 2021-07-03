@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Channel.Define;
 using System.Text;
 
-namespace Channel
+namespace Channel.Define.Class
 {
     public class Enum
     {

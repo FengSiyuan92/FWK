@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Channel.RawDefine;
 using Channel.Define;
-using Enum = Channel.Enum;
+using Enum = Channel.Define.Enum;
 using System.Text.RegularExpressions;
 
 using Channel.Define.CompileType;
@@ -17,17 +17,27 @@ namespace Channel
         // 基础数据类型
         // TODO: 支持DataTime
  
-        static Dictionary<string, CompileType> BaseType = new Dictionary<string, CompileType>()
+        static Dictionary<string, Define.CompileType.Converter> BaseConverter = new Dictionary<string, Define.CompileType.Converter>()
         {
-            { "int", new IntType()},
-            { "float", new FloatType()},
-            { "string", new StringType()},
-            { "int[]", new ListType(new IntType())},
-            { "float[]", new ListType(new FloatType())},
-            { "string[]", new ListType(new StringType())},
+            { "int", new IntConverter()},
+            { "float", new FloatConverter()},
+            { "string", new StringConverter()},
+            { "int[]", new ListConverter(new IntConverter())},
+            { "float[]", new ListConverter(new FloatConverter())},
+            { "string[]", new ListConverter(new StringConverter())},
+            { "vector2", new VectorConverter(2)},
+            { "vector3", new VectorConverter(3)},
+            { "vector4", new VectorConverter(4)},
+            { "vector2[]", new VectorListConverter(2)},
+            { "vector3[]", new VectorListConverter(3)},
+            { "vector4[]", new VectorListConverter(4)},
         };
 
-       
+        static bool CheckIsEnum(string name)
+        {
+            return Lookup.Enum[name] == null;
+        }
+
         public static void StartCompile()
         {
             // 后面尝试改成多线程loaddefine和异步
@@ -45,7 +55,14 @@ namespace Channel
                 CompileRawDef(def);
             }
 
-            // 对所有编译类型执行嵌套的二次编译,用于关联自定义类型
+            // 检查一遍所有的自定义类型是否存在
+            foreach (var item in CustomTypeConverter.delayComileType)
+            {
+                if (Lookup.CustomType[item.Name] == null)
+                {
+                    CLog.LogError("{0}类型的定义不存在,请检查", item.Name);
+                }
+            }
         }
 
         static void CompileRawDef(RawObjDef def)
@@ -65,7 +82,7 @@ namespace Channel
 
         static void CompileObjDefine1(RawObjDef rawDef)
         {
-            ObjectDefine objDef = new ObjectDefine(rawDef.Name);
+            CustomType objDef = new CustomType(rawDef.Name);
             var filedNames = rawDef.GetAllRawFieldName();
             foreach (var filedName in filedNames)
             {
@@ -83,18 +100,35 @@ namespace Channel
                 field.OriginalDefaultValue = GetContent(rawField.AppendDef, ConstString.STR_DEFAULT);
 
                 // 字段编译类型
-              
-                CompileType type = null;
-
+                Define.CompileType.Converter type = null;
                 // 检查是否是基础数据类型, 第一次编译只编译基础数据类型
-                if (BaseType.TryGetValue(rawField.FieldType, out type))
+                var rawType = rawField.FieldType;
+                if (BaseConverter.TryGetValue(rawType, out type))
                 {
-                    field.FieldType = type;
-           
+                    field.Convert = type;
+                }
+                else if (rawType.EndsWith("[]"))
+                {
+                    var eleType = rawType.Remove(rawType.Length - 2);
+                    if (CheckIsEnum(eleType))
+                    {
+                        field.Convert = new EnumListConverter(rawType);
+                    }
+                    else
+                    {
+                        field.Convert = new CustomTypeConverter(rawType);
+                    }
+                }
+                else if (CheckIsEnum(eleType))
+                {
+                    field.Convert = new CustomTypeListConvert();
+                }
+                else
+                {
+                    field.Convert = new CustomTypeConverter(rawType);
                 }
 
-    
-
+                objDef.AddField(field);
             }
         }
 
@@ -133,8 +167,6 @@ namespace Channel
             }
             return OutputType.ClientAndServer;
         }
-
-
 
         static Dictionary<string, Regex> contentReg = new Dictionary<string, Regex>();
 
@@ -178,7 +210,9 @@ namespace Channel
         }
 
 
-     
+
+        
+
 
     }
 }

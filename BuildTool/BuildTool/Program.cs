@@ -23,39 +23,37 @@ namespace BuildTool
         {
 
 
-            //FileAgent.RegisterFile(EnumXML);
-            //FileAgent.RegisterFile(ItemPart1);
+            FileAgent.RegisterFile(EnumXML);
+            FileAgent.RegisterFile(ItemPart1);
 
+            Compiler.StartCompile();
 
-            //Compiler.StartCompile();
+            var allEnums = Lookup.Enum.AllName();
+            foreach (var enumName in allEnums)
+            {
+                var e = Lookup.Enum[enumName];  //Lookup.LookEnum(enumName);
 
+                var fieldName = e.GetAllItemName();
+                foreach (var item in fieldName)
+                {
+                    CLog.LogError(e.GetItemByFieldName(item).ToString());
+                }
+            }
 
-            //var allEnums = Lookup.Enum.AllName();
-            //foreach (var enumName in allEnums)
-            //{
-            //    var e = Lookup.Enum[enumName];  //Lookup.LookEnum(enumName);
+            foreach (var enumName in allEnums)
+            {
+                var e = Lookup.Enum[enumName];
+                CLog.Log(e.ToString());
+            }
 
-            //    var fieldName = e.GetAllItemName();
-            //    foreach (var item in fieldName)
-            //    {
-            //        CLog.LogError(e.GetItemByFieldName(item).ToString());
-            //    }
-            //}
+            //var s1 = "alias|key1";
+            //var s2 = "key|default=25|alias=Item.name";
+            //var s3 = "key";
+            //var s4 = "alias";
 
-            //foreach (var enumName in allEnums)
-            //{
-            //    var e = Lookup.Enum[enumName];
-            //    CLog.Log(e.ToString());
-            //}
-
-            var s1 = "alias|key1";
-            var s2 = "key|default=25|alias=Item.name";
-            var s3 = "key";
-            var s4 = "alias";
-
-            var t = typeof(Channel.Define.CompileType.IntType);
-            var i = (new Channel.Define.CompileType.IntType() )as Channel.Define.CompileType.CompileType;
-            var t2 = i.GetType();
+            //var t = typeof(Channel.Define.CompileType.IntConverter);
+            //var i = (new Channel.Define.CompileType.IntConverter() )as Channel.Define.CompileType.Converter;
+            //var t2 = i.GetType();
             Console.ReadKey();
             //var a = 0;
         }
