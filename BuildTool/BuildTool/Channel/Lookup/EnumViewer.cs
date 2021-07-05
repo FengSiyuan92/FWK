@@ -40,6 +40,7 @@ namespace Channel
             }
         }
 
+        static object enumLock = new object();
 
         /// <summary>
         /// 内部通过该接口注册进一个枚举定义
@@ -47,10 +48,13 @@ namespace Channel
         /// <param name="enumObj"></param>
         internal static void AddEnumDefine(Enum enumObj)
         {
-            Enum.enums.Add(enumObj.Name, enumObj);
+            lock (enumLock)
+            {
+                Enum.enums.Add(enumObj.Name, enumObj);
+            }
         }
 
-        static EnumViewer enumLookupInstance;
+        static EnumViewer enumLookupInstance = new EnumViewer();
         /// <summary>
         /// 枚举查看器
         /// </summary>
@@ -58,7 +62,6 @@ namespace Channel
         {
             get
             {
-                enumLookupInstance = enumLookupInstance ?? new EnumViewer();
                 return enumLookupInstance;
             }
         }

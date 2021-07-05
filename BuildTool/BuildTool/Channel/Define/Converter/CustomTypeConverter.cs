@@ -7,20 +7,22 @@ using Channel.Define.Class;
 
 namespace Channel.Define.Converter
 {
-    internal class CustomTypeConverter : Converter
+    internal class CustomTypeConverter : ExtendConverter
     {
-        internal static List<CustomTypeConverter> delayComileType = new List<CustomTypeConverter>();
-
         public override Type GetResultType()
         {
             return typeof(CustomType);
         }
 
-        internal string Name;
-        public CustomTypeConverter(string name)
+        public string Name { get; private set; }
+        public CustomTypeConverter(string name):base()
         {
-            delayComileType.Add(this);
             this.Name = name;
+        }
+
+        public override object Convert(string originalValue, Field template, int depth = 0)
+        {
+            throw new NotImplementedException();
         }
     }
 }

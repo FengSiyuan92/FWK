@@ -9,9 +9,10 @@ using Enum = Channel.Define.Class.Enum;
 using System.Text.RegularExpressions;
 using Channel.Define.Converter;
 using Channel.Define.Class;
+
 namespace Channel
 {
-    public class Compiler
+    public class Compile
     {
         // 基础数据类型
         // TODO: 支持DataTime
@@ -27,7 +28,7 @@ namespace Channel
 
             { "int[]", new ListConverter(new IntConverter())},
             { "float[]", new ListConverter(new FloatConverter())},
-            { "string[]", new ListConverter(new StringConverter())},
+            { "string[]", new ListConverter(new StringConverter(), '|')},
             { "vector2[]", new ListConverter( new Vector2Converter())},
             { "vector3[]", new ListConverter( new Vector3Converter())},
             { "vector4[]", new ListConverter( new Vector4Converter())},
@@ -80,15 +81,8 @@ namespace Channel
                 CompileRawDef(def);
             }
 
-            // 检查一遍所有的自定义类型是否存在
-            foreach (var item in CustomTypeConverter.delayComileType)
-            {
-                if (Lookup.CustomType[item.Name] == null)
-                {
-                    CLog.LogError("{0}类型的定义不存在,请检查", item.Name);
-                }
-            }
-            var a = 0;
+            // 编译完成后的检查
+            Check.CompileOverCheck();
         }
 
         static void CompileRawDef(RawObjDef def)
@@ -124,6 +118,12 @@ namespace Channel
                 field.AliasRefPos = GetContent(rawField.AppendDef, ConstString.STR_ALIAS);
                 // 字段默认值,用于excel不填写时的默认填充
                 field.OriginalDefaultValue = GetContent(rawField.AppendDef, ConstString.STR_DEFAULT);
+
+                var seps = GetContent(rawField.AppendDef, ConstString.STR_SEP);
+                if (!string.IsNullOrEmpty(seps))
+                {
+                    field.Seps = seps.ToCharArray();
+                }
 
                 // 字段编译类型
                 Converter convert = null;
@@ -196,7 +196,7 @@ namespace Channel
 
         static Dictionary<string, Regex> contentReg = new Dictionary<string, Regex>();
 
-        const string MATCH_PATTERN = @"(=?[^\|\s]*)\|*";
+        const string MATCH_PATTERN = @"(=?[^\|\s]*)&*";
         static Regex GetContentRegex(string name)
         {
             Regex reg = null;

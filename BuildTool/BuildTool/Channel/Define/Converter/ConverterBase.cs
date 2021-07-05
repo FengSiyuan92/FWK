@@ -9,10 +9,7 @@ namespace Channel.Define.Converter
     internal abstract class Converter
     {
 
-        public virtual object Convert(string originalValue, string defaultValue, params object[] pms)
-        {
-            return null;
-        }
+        public abstract object Convert(string originalValue, Field template, int depth = 0);
 
 
         public abstract System.Type GetResultType();
@@ -26,6 +23,22 @@ namespace Channel.Define.Converter
             return ',';
         }
 
+    }
+
+
+    internal abstract class ExtendConverter : Converter
+    {
+        internal static List<ExtendConverter> allExtend = new List<ExtendConverter>();
+
+        public override Type GetResultType()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ExtendConverter()
+        {
+            allExtend.Add(this);
+        }
     }
 
 
@@ -78,7 +91,7 @@ namespace Channel.Define.Converter
 
     //        var v = string.IsNullOrEmpty(originalValue) ? defaultValue : originalValue;
     //        return Splite(v, asep, sep);
-    
+
 
     //    }
 
@@ -225,8 +238,8 @@ namespace Channel.Define.Converter
     //    }
     //}
 
-    
-    
+
+
 
 
 }

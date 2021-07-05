@@ -12,26 +12,7 @@ namespace Channel
         internal class RawDefineViewer
         {
             internal static Dictionary<string, RawObjDef> RawDefineCollect = new Dictionary<string, RawObjDef>();
-            /// <summary>
-            /// 内部通过该接口注册原生定义到查看器
-            /// </summary>
-            /// <param name="def"></param>
-            public void Add(RawObjDef def)
-            {
-                var key = def.Name;
-                RawObjDef oldDef = null;
-                lock (RawDefineCollect)
-                {
-                    if (RawDefineCollect.TryGetValue(key, out oldDef))
-                    {
-                        oldDef.Merge(def);
-                    }
-                    else
-                    {
-                        RawDefineCollect.Add(key, def);
-                    }
-                }
-            }
+
 
             /// <summary>
             /// 内部通过该接口查看原生定义
@@ -58,7 +39,29 @@ namespace Channel
             }
         }
 
-        static RawDefineViewer rawdefViewerInstance;
+        static object rawDefLock = new object();
+        /// <summary>
+        /// 内部通过该接口注册原生定义到查看器
+        /// </summary>
+        /// <param name="def"></param>
+        internal static void AddRawDef(RawObjDef def)
+        {
+            lock(rawDefLock)
+            {
+                var key = def.Name;
+                RawObjDef oldDef = null;
+                if (RawDefineViewer.RawDefineCollect.TryGetValue(key, out oldDef))
+                {
+                    oldDef.Merge(def);
+                }
+                else
+                {
+                    RawDefineViewer.RawDefineCollect.Add(key, def);
+                }
+            }
+        }
+
+        static RawDefineViewer rawdefViewerInstance = new RawDefineViewer();
         /// <summary>
         /// 原生定义查看器
         /// </summary>
@@ -66,7 +69,6 @@ namespace Channel
         {
             get
             {
-                rawdefViewerInstance = rawdefViewerInstance ?? new RawDefineViewer();
                 return rawdefViewerInstance;
             }
         }

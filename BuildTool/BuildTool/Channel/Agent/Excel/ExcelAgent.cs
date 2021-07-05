@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NPOI.SS.UserModel;
 using System.IO;
 using Channel.RawDefine;
+using Channel.Data;
 
 namespace Channel.Agent.Excel
 {
@@ -149,7 +150,7 @@ namespace Channel.Agent.Excel
                 RawObjDef objDef = new RawObjDef(Utils.GetObjectTypeName(filePath), RawObjType.OBJECT);
                 // 使用表头行填充定义
                 InjectObjectDef(objDef, rows);
-                Lookup.RawDefine.Add(objDef);
+                Lookup.AddRawDef(objDef);
             }
         }
 
@@ -285,43 +286,49 @@ namespace Channel.Agent.Excel
             return title;
         }
 
-
         public void LoadContent()
         {
-            //for (int i = 0; i < workBook.NumberOfSheets; i++)
-            //{
-            //    ISheet sheet = workBook.GetSheetAt(i);
-            //    // 不是有效数据表继续排查
-            //    if (!IsValidSheet(sheet)) continue;
+            for (int i = 0; i < workBook.NumberOfSheets; i++)
+            {
+                ISheet sheet = workBook.GetSheetAt(i);
+                // 不是有效数据表继续排查
+                if (!IsValidSheet(sheet)) continue;
 
-            //    // table 类型名称
-            //    var tabName = Utils.GetObjectTypeName(filePath);
-            //    // 创建一个table,引用ContentObject的定义
-            //    Table table = new Table(tabName, filePath + "@" + sheet.SheetName);
+                // table 类型名称
+                var tabName = Utils.GetObjectTypeName(filePath);
+               
 
-            //    // 选择标题头,并跳过表头信息
-            //    var rows = sheet.GetRowEnumerator();
-            //    var titles = SkipAndSelectTitle(rows);
-            //    //逐行将excel组织成key value的形式,key为title value为对应的内容
-            //    Dictionary<string, string> titleAndContent =
-            //            new Dictionary<string, string>(titles.Count);
-            //    while (rows.MoveNext())
-            //    {
-            //        titleAndContent.Clear();
-            //        var currentRow = rows.Current as IRow;
+                // 选择标题头,并跳过表头信息
+                var rows = sheet.GetRowEnumerator();
+                var titles = SkipAndSelectTitle(rows);
+                //逐行将excel组织成key value的形式,key为title value为对应的内容
+                Dictionary<string, string> titleAndContent =
+                        new Dictionary<string, string>(titles.Count);
+                while (rows.MoveNext())
+                {
+                    titleAndContent.Clear();
+                    var currentRow = rows.Current as IRow;
+                    var firstCell = currentRow.GetCell(0);
+                    if (firstCell!= null && firstCell.GetValue() == "#")
+                    {
+                        continue;
+                    }
 
-            //        for (int j = 1; j < currentRow.LastCellNum; j++)
-            //        {
-            //            string fieldName = string.Empty;
-            //            ICell cell = currentRow.GetCell(j);
-            //            if (cell == null || !titles.TryGetValue(j, out fieldName)) continue;
-            //            titleAndContent.Add(fieldName, cell.GetValue());
-            //        }
-            //        table.AddObjectData(titleAndContent);
-            //    }
-            //    Lookup.AddTable(table);
-            //}
-   
+                    foreach (var title in titles)
+                    {
+                        var index = title.Key;
+                        var fieldName = title.Value;
+                        ICell cell = currentRow.GetCell(index);
+                        var content = cell == null ? ConstString.STR_EMPTY : cell.GetValue();
+                        titleAndContent.Add(fieldName, content);
+                    }
+
+                    DataObject data = new DataObject(tabName);
+                    data.SetKV(titleAndContent);
+                    Lookup.AddData(data);
+                }
+            }
+
         }
 
    

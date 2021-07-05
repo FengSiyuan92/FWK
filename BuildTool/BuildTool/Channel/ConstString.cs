@@ -11,6 +11,7 @@ namespace Channel
         // 编译用字符串常量
         public const string STR_ALIAS = "alias";
         public const string STR_KEY = "key";
+        public const string STR_SEP = "sep";
         public const string STR_DEFAULT = "default";
         public const string STR_C = "c";
         public const string STR_S = "s";

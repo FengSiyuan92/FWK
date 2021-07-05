@@ -9,6 +9,8 @@ namespace Channel
     public static partial class Lookup
     {
 
+        static object customLock = new object();
+
         public class CustomTypeViewer
         {
             internal Dictionary<string, CustomType> defines = new Dictionary<string, CustomType>();
@@ -48,7 +50,10 @@ namespace Channel
         /// <param name="enumObj"></param>
         internal static void AddObjDefine(CustomType objDef)
         {
-            CustomType.defines.Add(objDef.Name, objDef);
+            lock (customLock)
+            {
+                CustomType.defines.Add(objDef.Name, objDef);
+            }
         }
 
         static CustomTypeViewer customTypeViewer;
@@ -59,7 +64,9 @@ namespace Channel
         {
             get
             {
+ 
                 customTypeViewer = customTypeViewer ?? new CustomTypeViewer();
+      
                 return customTypeViewer;
             }
         }

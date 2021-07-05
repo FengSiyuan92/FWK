@@ -65,5 +65,14 @@ namespace Channel
                 item.Value.LoadDefine();
             }
         }
+
+
+        internal static void LoadContent()
+        {
+            foreach (var item in allAgents)
+            {
+                item.Value.LoadContent();
+            }
+        }
     }
 }

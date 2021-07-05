@@ -11,21 +11,24 @@ namespace Channel.Define.Converter
     {
         public override Type GetResultType()
         {
-            return typeof(float);
+            return typeof(decimal);
         }
 
-        public override object Convert(string originalValue, string defaultValue, params object[] pms)
+        public override object Convert(string originalValue, Field template, int depth = 0)
         {
-            float _;
-            if (float.TryParse(originalValue, out _))
+            decimal _;
+            if (decimal.TryParse(originalValue, out _))
             {
                 return _;
             }
-            if (float.TryParse(defaultValue, out _))
+            if (depth == 0)
             {
-                return _;
+                if (decimal.TryParse(template.OriginalDefaultValue, out _))
+                {
+                    return _;
+                }
             }
-            return 0f;
+            return default(decimal);
         }
 
     }

@@ -7,44 +7,54 @@ using Channel.Define.Class;
 
 namespace Channel.Define.Converter
 {
-    internal class EnumConverter : Converter
+    internal class EnumConverter : ExtendConverter
     {
         public override Type GetResultType()
         {
             return typeof(int);
         }
 
-        public override object Convert(string originalValue, string defaultValue, params object[] pms)
+        public override object Convert(string originalValue, Field template, int depth = 0)
         {
-            var value = string.IsNullOrEmpty(originalValue) ? defaultValue : originalValue;
-            if (string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(originalValue))
             {
-                return 0;
+                var value = originalValue;
+                int v = 0;
+                if (int.TryParse(value, out v))
+                {
+                    return v;
+                }
+                var isAlias = !string.IsNullOrEmpty(template.AliasRefPos);
+                var res = isAlias ? e.GetValueByAlias(value) : e.GetValueByFieldName(value);
+                if (res == -1)
+                {
+                    CLog.LogError("枚举转换失败:{0}=>{1}", e.Name, v);
+                }
             }
-
-            int v = 0;
-            if (int.TryParse(value, out v))
+            else if  (depth != 0)
             {
-                return v;
+                var value = template.OriginalDefaultValue;
+                int v = 0;
+                if (int.TryParse(value, out v))
+                {
+                    return v;
+                }
+                var isAlias = !string.IsNullOrEmpty(template.AliasRefPos);
+                var res = isAlias ? e.GetValueByAlias(value) : e.GetValueByFieldName(value);
+                if (res == -1)
+                {
+                    CLog.LogError("枚举转换失败:{0}=>{1}", e.Name, v);
+                }
             }
-            var isAlias = pms != null && pms.Length > 0 && (bool)pms[0];
-            var res= isAlias ? e.GetValueByAlias(value) : e.GetValueByFieldName(value);
-            if (res == -1)
-            {
-                CLog.LogError("枚举转换失败:{0}=>{1}", e.Name, v);
-            }
-            return res;
+            return 0;
         }
 
         Channel.Define.Class.Enum e = null;
-
-        public EnumConverter(string enumName)
+        public string Name { get; private set; }
+        public EnumConverter(string enumName):base()
         {
+            this.Name = enumName;
             e = Lookup.Enum[enumName];
-            if (e == null)
-            {
-                CLog.LogError("没有定义类型为{0}的枚举", enumName);
-            }
         }
     }
 

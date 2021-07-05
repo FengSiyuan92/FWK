@@ -14,21 +14,36 @@ namespace Channel.Define.Converter
             return typeof(Vector2);
         }
 
-        public override object Convert(string originalValue, string defaultValue, params object[] pms)
+        static Vector2 Parse(string content, Field template, int depth = 0)
         {
-            var v = string.IsNullOrEmpty(originalValue) ? defaultValue : originalValue;
-            Vector2 vec = null;
-            if (string.IsNullOrEmpty(v))
+            var sep = ',';
+            if (template.Seps != null && template.Seps.Length > depth)
             {
-                vec = new Vector2();
+                sep = template.Seps[depth];
+            }
+            var slice = content.Split(sep);
+
+            var x = slice.Length > 0 ? float.Parse(slice[0]) : 0;
+            var y = slice.Length > 1 ? float.Parse(slice[1]) : 0;
+            return new Vector2(x, y);
+        }
+
+        public override object Convert(string originalValue, Field template, int depth = 0)
+        {
+            Vector2 vec = null;
+            if (!string.IsNullOrEmpty(originalValue))
+            {
+                Parse(originalValue, template, depth);
+            }
+            else if (depth == 0 && !string.IsNullOrEmpty(template.OriginalDefaultValue))
+            {
+                Parse(template.OriginalDefaultValue, template, depth);
             }
             else
             {
-                var sp = v.Split(',');
-                var x = sp.Length > 0 ? float.Parse(sp[0]) : 0;
-                var y = sp.Length > 1 ? float.Parse(sp[1]) : 0;
-                vec = new Vector2(x, y);
+                vec = new Vector2();
             }
+
             return vec;
         }
     }
@@ -40,21 +55,35 @@ namespace Channel.Define.Converter
             return typeof(Vector3);
         }
 
-        public override object Convert(string originalValue, string defaultValue, params object[] pms)
+        static Vector3 Parse(string content, Field template, int depth = 0)
         {
-            var v = string.IsNullOrEmpty(originalValue) ? defaultValue : originalValue;
-            Vector3 vec = null;
-            if (string.IsNullOrEmpty(v))
+            var sep = ',';
+            if (template.Seps != null && template.Seps.Length > depth)
             {
-                vec = new Vector3();
+                sep = template.Seps[depth];
+            }
+            var slice = content.Split(sep);
+
+            var x = slice.Length > 0 ? float.Parse(slice[0]) : 0;
+            var y = slice.Length > 1 ? float.Parse(slice[1]) : 0;
+            var z = slice.Length > 2 ? float.Parse(slice[2]) : 0;
+            return new Vector3(x, y, z);
+        }
+
+        public override object Convert(string originalValue, Field template, int depth = 0)
+        {
+            Vector3 vec = null;
+            if (!string.IsNullOrEmpty(originalValue))
+            {
+                Parse(originalValue, template, depth);
+            }
+            else if (depth == 0 && !string.IsNullOrEmpty(template.OriginalDefaultValue))
+            {
+                Parse(template.OriginalDefaultValue, template, depth);
             }
             else
             {
-                var sp = v.Split(',');
-                var x = sp.Length > 0 ? float.Parse(sp[0]) : 0;
-                var y = sp.Length > 1 ? float.Parse(sp[1]) : 0;
-                var z = sp.Length > 2 ? float.Parse(sp[2]) : 0;
-                vec = new Vector3(x, y, z);
+                vec = new Vector3();
             }
             return vec;
         }
@@ -68,24 +97,39 @@ namespace Channel.Define.Converter
             return typeof(Vector4);
         }
 
-        public override object Convert(string originalValue, string defaultValue, params object[] pms)
+        static Vector4 Parse(string content, Field template, int depth = 0)
         {
-            var v = string.IsNullOrEmpty(originalValue) ? defaultValue : originalValue;
-            Vector4 vec = null;
-            if (string.IsNullOrEmpty(v))
+            var sep = ',';
+            if (template.Seps != null && template.Seps.Length > depth)
             {
-                vec = new Vector4();
+                sep = template.Seps[depth];
+            }
+            var slice = content.Split(sep);
+
+            var x = slice.Length > 0 ? float.Parse(slice[0]) : 0;
+            var y = slice.Length > 1 ? float.Parse(slice[1]) : 0;
+            var z = slice.Length > 2 ? float.Parse(slice[2]) : 0;
+            var w = slice.Length > 3 ? float.Parse(slice[3]) : 0;
+            return new Vector4(x, y, z, w);
+        }
+
+        public override object Convert(string originalValue, Field template, int depth = 0)
+        {
+            Vector4 vec = null;
+            if (!string.IsNullOrEmpty(originalValue))
+            {
+                Parse(originalValue, template, depth);
+            }
+            else if (depth == 0 && !string.IsNullOrEmpty(template.OriginalDefaultValue))
+            {
+                Parse(template.OriginalDefaultValue, template, depth);
             }
             else
             {
-                var sp = v.Split(',');
-                var x = sp.Length > 0 ? float.Parse(sp[0]) : 0;
-                var y = sp.Length > 1 ? float.Parse(sp[1]) : 0;
-                var z = sp.Length > 2 ? float.Parse(sp[2]) : 0;
-                var w = sp.Length > 3 ? float.Parse(sp[3]) : 0;
-                vec = new Vector4(x, y, z);
+                vec = new Vector4();
             }
             return vec;
         }
     }
+
 }

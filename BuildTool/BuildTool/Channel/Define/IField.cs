@@ -32,7 +32,7 @@ namespace Channel.Define
         /// <summary>
         /// 字段导出类型
         /// </summary>
-        public OutputType OutputType { get; internal set;}
+        public OutputType OutputType { get; internal set; }
 
         /// <summary>
         /// 该字段填入的值,是否需要作为table data的key
@@ -54,7 +54,10 @@ namespace Channel.Define
         /// </summary>
         internal Converter.Converter Convert { get; set; }
 
-
+        /// <summary>
+        /// 自定义分隔符数组
+        /// </summary>
+        internal char[] Seps;
     }
 
 

@@ -11,21 +11,25 @@ namespace Channel.Define.Converter
     {
         public override Type GetResultType()
         {
-            return typeof(int);
+            return typeof(long);
         }
 
-        public override object Convert(string originalValue, string defaultValue, params object[] pms)
+        public override object Convert(string originalValue, Field template, int depth = 0)
         {
-            int _;
-            if (int.TryParse(originalValue, out _))
+            long _;
+            if (long.TryParse(originalValue, out _))
             {
                 return _;
             }
-            if (int.TryParse(defaultValue, out _))
+            if (depth == 0)
             {
-                return _;
+                if (long.TryParse(template.OriginalDefaultValue, out _))
+                {
+                    return _;
+                }
             }
-            return 0;
+            
+            return 0L;
         }
 
     }

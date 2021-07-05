@@ -6,5 +6,11 @@ using System.Threading.Tasks;
 
 namespace Channel
 {
-
+    public class Parse
+    {
+        public static void StartParse()
+        {
+            FileAgent.LoadContent();
+        }
+    }
 }

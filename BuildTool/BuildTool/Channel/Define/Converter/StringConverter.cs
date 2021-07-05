@@ -13,20 +13,28 @@ namespace Channel.Define.Converter
             return typeof(string);
         }
 
-        public override object Convert(string originalValue, string defaultValue, params object[] pms)
+        public override object Convert(string originalValue, Field template, int depth = 0)
         {
-            if (string.IsNullOrEmpty(originalValue))
+            // 原值
+            if (originalValue != ConstString.STR_EMPTY)
             {
-                if (originalValue.Equals(ConstString.STR_NIL, StringComparison.OrdinalIgnoreCase) ||
-                    originalValue.Equals(ConstString.STR_NULL, StringComparison.OrdinalIgnoreCase))
+                return originalValue;
+            }
+            // 最上层的默认值
+            else if(depth ==0)
+            {
+                if (template.OriginalDefaultValue.Equals(ConstString.STR_NIL, StringComparison.OrdinalIgnoreCase) ||
+                    template.OriginalDefaultValue.Equals(ConstString.STR_NULL, StringComparison.OrdinalIgnoreCase))
                 {
                     return null;
                 }
 
-                return defaultValue;
+                return template.OriginalDefaultValue;
             }
-
-            return originalValue;
+            else
+            {
+                return string.Empty;
+            }
         }
 
 

@@ -21,14 +21,41 @@ namespace BuildTool
 
         const string TypeTestPath = @"F:\FWK\BuildTool\Config\TypeTest.xlsx";
 
+
+        const string IntTest = @"F:\FWK\BuildTool\Config\Test\IntTest.xlsx";
+        const string FloatTest = @"F:\FWK\BuildTool\Config\Test\FloatTest.xlsx";
+        const string StringTest = @"F:\FWK\BuildTool\Config\Test\StringTest.xlsx";
+
+
         static void Main(string[] args)
         {
 
 
             FileAgent.RegisterFile(EnumXML);
-            FileAgent.RegisterFile(TypeTestPath);
+            //FileAgent.RegisterFile(IntTest);
+            //FileAgent.RegisterFile(FloatTest);
+            FileAgent.RegisterFile(StringTest);
 
-            Compiler.StartCompile();
+            Compile.StartCompile();
+
+            Parse.StartParse();
+
+      
+            //var res1 = Lookup.Datas["IntTest"][1];
+            //var res2 = Lookup.Datas["IntTest"][2];
+            //var res3 = Lookup.Datas["IntTest"][3];
+
+            //var f1 = Lookup.Datas["FloatTest"][1];
+            //var f2 = Lookup.Datas["FloatTest"][2];
+            //var f3 = Lookup.Datas["FloatTest"][3];
+
+
+            var s1 = Lookup.Datas["StringTest"]["第一个"];
+            var s2 = Lookup.Datas["StringTest"]["第二个"];
+            var s3 = Lookup.Datas["StringTest"]["第三个"];
+
+            var a = 0;
+
 
             //var allEnums = Lookup.Enum.AllName();
             //foreach (var enumName in allEnums)
@@ -48,7 +75,7 @@ namespace BuildTool
             //    CLog.Log(e.ToString());
             //}
 
-            
+
 
             //var s1 = "alias|key1";
             //var s2 = "key|default=25|alias=Item.name";

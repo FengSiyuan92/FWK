@@ -12,11 +12,13 @@ namespace Channel.Define.Converter
         Converter element;
         Array defArray;
         Type arrType;
-        public ListConverter( Converter elementConvert)
+        char defSep;
+        public ListConverter( Converter elementConvert, char defSep = ',')
         {
             element = elementConvert;
             defArray = Array.CreateInstance(element.GetResultType(), 0);
             arrType = defArray.GetType();
+            this.defSep = defSep;
         }
 
         public override Type GetResultType()
@@ -30,49 +32,40 @@ namespace Channel.Define.Converter
         /// <param name="defaultValue"></param>
         /// <param name="pms"></param>
         /// <returns></returns>
-        public override object Convert(string originalValue, string defaultValue, params object[] pms)
+        public override object Convert(string originalValue, Field template, int depth = 0)
         {
-
-
             if (string.IsNullOrEmpty(originalValue))
             {
-                if (defaultValue.Equals(ConstString.STR_NIL, StringComparison.OrdinalIgnoreCase)||
-                    defaultValue.Equals(ConstString.STR_NULL, StringComparison.OrdinalIgnoreCase))
+                if (template.OriginalDefaultValue.Equals(ConstString.STR_NIL, StringComparison.OrdinalIgnoreCase)||
+                    template.OriginalDefaultValue.Equals(ConstString.STR_NULL, StringComparison.OrdinalIgnoreCase))
                 {
                     return null;
                 }
-                return _ConvertArray(defaultValue, pms);
+                return _ConvertArray(template.OriginalDefaultValue, template, depth);
             }
 
-            return _ConvertArray(originalValue, pms);
+            return _ConvertArray(originalValue, template, depth);
         }
 
-        object _ConvertArray(string value, params object[] pms)
+        object _ConvertArray(string value, Field template, int depth)
         {
             if (string.IsNullOrEmpty(value))
             {
                 return defArray;
             }
-            var apointSep = pms != null && pms.Length > 0 ? pms[0] : null;
 
-            var sep = apointSep as char?;
-            var aSep = sep == null ? element.ElementSplit() : (char)sep;
-            var slice = value.Split(aSep);
+            var sep = defSep;
+            if (template.Seps != null)
+            {
+                sep = template.Seps[depth];
+            }
+            var slice = value.Split(sep);
 
             var res = Array.CreateInstance(element.GetResultType(), slice.Length);
-            object[] cutPms = null;
-            if (pms!= null && pms.Length > 1)
-            {
-                cutPms = new object[pms.Length - 1];
-                for (int i = 0; i < pms.Length; i++)
-                {
-                    cutPms[i - 1] = pms[i];
-                }
-            }
-
+   
             for (int i = 0; i < res.Length; i++)
             {
-                res.SetValue(element.Convert(slice[i], null, cutPms), i);
+                res.SetValue(element.Convert(slice[i], template, depth + 1), i);
             }
 
             return res;
