@@ -20,6 +20,9 @@ namespace Channel
         public const string STR_EMPTY = "";
         public const string STR_LIST_END = "[]";
 
+        public const string STR_NULL = "null";
+        public const string STR_NIL = "nil";
+
         // EXCEL 使用的中文定义字符串
         public const string VALID_SHEET_SIGN = "**";
         public const string EXL_FIELD_NAME_TITLE = "字段名";

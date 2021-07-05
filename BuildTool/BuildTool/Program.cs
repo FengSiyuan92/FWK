@@ -19,32 +19,36 @@ namespace BuildTool
         const string EnumXML = @"F:\FWK\BuildTool\Config\CustomDef\EnumDefine.xml";
         const string ObjXML = @"F:\FWK\BuildTool\Config\CustomDef\TypeDefine.xml";
 
+        const string TypeTestPath = @"F:\FWK\BuildTool\Config\TypeTest.xlsx";
+
         static void Main(string[] args)
         {
 
 
             FileAgent.RegisterFile(EnumXML);
-            FileAgent.RegisterFile(ItemPart1);
+            FileAgent.RegisterFile(TypeTestPath);
 
             Compiler.StartCompile();
 
-            var allEnums = Lookup.Enum.AllName();
-            foreach (var enumName in allEnums)
-            {
-                var e = Lookup.Enum[enumName];  //Lookup.LookEnum(enumName);
+            //var allEnums = Lookup.Enum.AllName();
+            //foreach (var enumName in allEnums)
+            //{
+            //    var e = Lookup.Enum[enumName];  //Lookup.LookEnum(enumName);
 
-                var fieldName = e.GetAllItemName();
-                foreach (var item in fieldName)
-                {
-                    CLog.LogError(e.GetItemByFieldName(item).ToString());
-                }
-            }
+            //    var fieldName = e.GetAllItemName();
+            //    foreach (var item in fieldName)
+            //    {
+            //        CLog.LogError(e.GetItemByFieldName(item).ToString());
+            //    }
+            //}
 
-            foreach (var enumName in allEnums)
-            {
-                var e = Lookup.Enum[enumName];
-                CLog.Log(e.ToString());
-            }
+            //foreach (var enumName in allEnums)
+            //{
+            //    var e = Lookup.Enum[enumName];
+            //    CLog.Log(e.ToString());
+            //}
+
+            
 
             //var s1 = "alias|key1";
             //var s2 = "key|default=25|alias=Item.name";

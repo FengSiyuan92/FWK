@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Channel.RawDefine;
 using Channel.Define;
-using Enum = Channel.Define.Enum;
+using Enum = Channel.Define.Class.Enum;
 using System.Text.RegularExpressions;
-
-using Channel.Define.CompileType;
-
+using Channel.Define.Converter;
+using Channel.Define.Class;
 namespace Channel
 {
     public class Compiler
@@ -17,25 +16,51 @@ namespace Channel
         // 基础数据类型
         // TODO: 支持DataTime
  
-        static Dictionary<string, Define.CompileType.Converter> BaseConverter = new Dictionary<string, Define.CompileType.Converter>()
+        static Dictionary<string, Converter> BaseConverter = new Dictionary<string, Converter>()
         {
             { "int", new IntConverter()},
             { "float", new FloatConverter()},
             { "string", new StringConverter()},
+            { "vector2", new Vector2Converter()},
+            { "vector3", new Vector3Converter()},
+            { "vector4", new Vector4Converter()},
+
             { "int[]", new ListConverter(new IntConverter())},
             { "float[]", new ListConverter(new FloatConverter())},
             { "string[]", new ListConverter(new StringConverter())},
-            { "vector2", new VectorConverter(2)},
-            { "vector3", new VectorConverter(3)},
-            { "vector4", new VectorConverter(4)},
-            { "vector2[]", new VectorListConverter(2)},
-            { "vector3[]", new VectorListConverter(3)},
-            { "vector4[]", new VectorListConverter(4)},
+            { "vector2[]", new ListConverter( new Vector2Converter())},
+            { "vector3[]", new ListConverter( new Vector3Converter())},
+            { "vector4[]", new ListConverter( new Vector4Converter())},
         };
+
+        static Dictionary<string, EnumConverter> enumConverters = new Dictionary<string, EnumConverter>();
+        static EnumConverter GetEnumConvert(string name)
+        {
+            EnumConverter target = null;
+            if (!enumConverters.TryGetValue(name, out target))
+            {
+                target = new EnumConverter(name);
+                enumConverters.Add(name, target);
+            }
+            return target;
+        }
+
+        static Dictionary<string, CustomTypeConverter> customConverters = new Dictionary<string, CustomTypeConverter>();
+        static CustomTypeConverter GetCutomConvert(string name)
+        {
+            CustomTypeConverter target = null;
+            if (!customConverters.TryGetValue(name, out target))
+            {
+                target = new CustomTypeConverter(name);
+                customConverters.Add(name, target);
+            }
+            return target;
+        }
+
 
         static bool CheckIsEnum(string name)
         {
-            return Lookup.Enum[name] == null;
+            return Lookup.Enum[name] != null;
         }
 
         public static void StartCompile()
@@ -63,6 +88,7 @@ namespace Channel
                     CLog.LogError("{0}类型的定义不存在,请检查", item.Name);
                 }
             }
+            var a = 0;
         }
 
         static void CompileRawDef(RawObjDef def)
@@ -93,39 +119,39 @@ namespace Channel
                 // 字段导出类型
                 field.OutputType = GetOutputType(rawField.OutputType);
                 // 字段是否需要作为key值
-                field.IsKey = string.IsNullOrEmpty(GetContent(rawField.AppendDef, ConstString.STR_KEY));
+                field.IsKey = !string.IsNullOrEmpty(GetContent(rawField.AppendDef, ConstString.STR_KEY));
                 // 字段值引用的别名信息
                 field.AliasRefPos = GetContent(rawField.AppendDef, ConstString.STR_ALIAS);
                 // 字段默认值,用于excel不填写时的默认填充
                 field.OriginalDefaultValue = GetContent(rawField.AppendDef, ConstString.STR_DEFAULT);
 
                 // 字段编译类型
-                Define.CompileType.Converter type = null;
+                Converter convert = null;
                 // 检查是否是基础数据类型, 第一次编译只编译基础数据类型
                 var rawType = rawField.FieldType;
-                if (BaseConverter.TryGetValue(rawType, out type))
+                if (BaseConverter.TryGetValue(rawType, out convert))
                 {
-                    field.Convert = type;
+                    field.Convert = convert;
                 }
                 else if (rawType.EndsWith("[]"))
                 {
                     var eleType = rawType.Remove(rawType.Length - 2);
                     if (CheckIsEnum(eleType))
                     {
-                        field.Convert = new EnumListConverter(rawType);
+                        field.Convert = new ListConverter(GetEnumConvert(eleType));
                     }
                     else
                     {
-                        field.Convert = new CustomTypeConverter(rawType);
+                        field.Convert = new ListConverter(GetCutomConvert(eleType));
                     }
                 }
-                else if (CheckIsEnum(eleType))
+                else if (CheckIsEnum(rawType))
                 {
-                    field.Convert = new CustomTypeListConvert();
+                    field.Convert = GetEnumConvert(rawType);
                 }
                 else
                 {
-                    field.Convert = new CustomTypeConverter(rawType);
+                    field.Convert = GetCutomConvert(rawType);
                 }
 
                 objDef.AddField(field);

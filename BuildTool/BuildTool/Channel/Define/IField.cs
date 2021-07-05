@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Channel.Define.CompileType;
 
 namespace Channel.Define
 {
@@ -26,9 +25,14 @@ namespace Channel.Define
         public string FieldName { get; internal set; }
 
         /// <summary>
+        /// 导出的数据类型
+        /// </summary>
+        public Type FieldType => Convert.GetResultType();
+
+        /// <summary>
         /// 字段导出类型
         /// </summary>
-        public OutputType OutputType;
+        public OutputType OutputType { get; internal set;}
 
         /// <summary>
         /// 该字段填入的值,是否需要作为table data的key
@@ -38,18 +42,19 @@ namespace Channel.Define
         /// <summary>
         /// 别名的指向,为string.Empty时说明不使用别名
         /// </summary>
-        internal string AliasRefPos { get; set; }
+        public string AliasRefPos { get; internal set; }
 
         /// <summary>
         /// 原始填入的默认值
         /// </summary>
-        internal string OriginalDefaultValue { get; set; }
+        public string OriginalDefaultValue { get; internal set; }
 
         /// <summary>
         /// 数据编译类型
         /// </summary>
-        internal CompileType.Converter Convert { get; set; }
-       
+        internal Converter.Converter Convert { get; set; }
+
+
     }
 
 

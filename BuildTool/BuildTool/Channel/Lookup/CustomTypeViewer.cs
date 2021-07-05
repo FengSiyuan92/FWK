@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Channel.Define.Class;
 namespace Channel
 {
     public static partial class Lookup
@@ -11,13 +11,13 @@ namespace Channel
 
         public class CustomTypeViewer
         {
-            internal Dictionary<string, Define.CustomType> defines = new Dictionary<string, Define.CustomType>();
+            internal Dictionary<string, CustomType> defines = new Dictionary<string, CustomType>();
             /// <summary>
             /// 编译完成后,可以通过该接口查看一个自定义类型的信息
             /// </summary>
             /// <param name="enumName"></param>
             /// <returns></returns>
-            public Define.CustomType this[string typeName]
+            public CustomType this[string typeName]
             {
                 get
                 {
@@ -25,7 +25,7 @@ namespace Channel
                     {
                         return null;
                     }
-                    Define.CustomType def = null;
+                    CustomType def = null;
                     defines.TryGetValue(typeName, out def);
                     return def;
                 }
@@ -46,7 +46,7 @@ namespace Channel
         /// 内部通过该接口注册进一个枚举定义
         /// </summary>
         /// <param name="enumObj"></param>
-        internal static void AddObjDefine(Define.CustomType objDef)
+        internal static void AddObjDefine(CustomType objDef)
         {
             CustomType.defines.Add(objDef.Name, objDef);
         }

@@ -17,6 +17,15 @@ namespace Channel.Define.Converter
 
         public abstract System.Type GetResultType();
 
+        /// <summary>
+        ///  获取作为list子转换器时,默认的分隔符
+        /// </summary>
+        /// <returns></returns>
+        public virtual char ElementSplit()
+        {
+            return ',';
+        }
+
     }
 
 

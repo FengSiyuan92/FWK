@@ -15,7 +15,18 @@ namespace Channel.Define.Converter
 
         public override object Convert(string originalValue, string defaultValue, params object[] pms)
         {
-            return string.IsNullOrEmpty(originalValue) ? defaultValue : originalValue;
+            if (string.IsNullOrEmpty(originalValue))
+            {
+                if (originalValue.Equals(ConstString.STR_NIL, StringComparison.OrdinalIgnoreCase) ||
+                    originalValue.Equals(ConstString.STR_NULL, StringComparison.OrdinalIgnoreCase))
+                {
+                    return null;
+                }
+
+                return defaultValue;
+            }
+
+            return originalValue;
         }
 
 
