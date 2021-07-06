@@ -26,11 +26,15 @@ namespace Channel
         /// <returns></returns>
         public static bool IsValidPlatform(string platform)
         {
+            if (platform.StartsWith("#"))
+            {
+                return false;
+            }
             if (string.IsNullOrEmpty(targetPlatform) || string.IsNullOrEmpty(platform))
             {
                 return true;
             }
-            return platform == targetPlatform;
+            return platform.Contains(targetPlatform);
         }
     }
 }

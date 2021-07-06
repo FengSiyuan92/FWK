@@ -145,7 +145,6 @@ namespace Channel.Agent.Excel
                 }
 
                 /*     数据校验合格,开始执行定义生成        */
-
                 // 对sheet创建一个Object定义,并赋值Object名称
                 RawObjDef objDef = new RawObjDef(Utils.GetObjectTypeName(filePath), RawObjType.OBJECT);
                 // 使用表头行填充定义
@@ -253,7 +252,7 @@ namespace Channel.Agent.Excel
             Dictionary<int, string> title = new Dictionary<int, string>();
 
             int signCount = 0;
-
+            IRow signRow = null;
             while (rows.MoveNext())
             {
                 var row = rows.Current as IRow;
@@ -266,6 +265,12 @@ namespace Channel.Agent.Excel
                 if (titleCell.GetValue() == ConstString.VALID_SHEET_SIGN)
                 {
                     signCount++;
+                    if (signCount == 1)
+                    {
+                        // 当前行是字段的标记行
+                        signRow = row;
+                    }
+
                     // 匹配结束
                     if (signCount == 2) break;
                 }
@@ -274,10 +279,16 @@ namespace Channel.Agent.Excel
                     // 注册int和字段名
                     for (int i = 1; i < row.LastCellNum; i++)
                     {
+                        // 优先检查是否是需要跳过的行，列头使用#标注或者版本不匹配
+                        var platformCell = signRow.GetCell(i);
+                        if (platformCell != null && !GlobalArgs.IsValidPlatform(platformCell.GetValue())) continue;
+                        // 空列
                         var cell = row.GetCell(i);
                         if (cell == null) continue;
+                        // 没配置字段名
                         var value = cell.GetValue();
-                        if (string.IsNullOrEmpty(value) || value.StartsWith("#")) continue;
+                        if (string.IsNullOrEmpty(value)) continue;
+                        // 添加有效的字段名称
                         title.Add(i, value);
                     }
                 }
@@ -296,7 +307,6 @@ namespace Channel.Agent.Excel
 
                 // table 类型名称
                 var tabName = Utils.GetObjectTypeName(filePath);
-               
 
                 // 选择标题头,并跳过表头信息
                 var rows = sheet.GetRowEnumerator();
@@ -308,11 +318,9 @@ namespace Channel.Agent.Excel
                 {
                     titleAndContent.Clear();
                     var currentRow = rows.Current as IRow;
-                    var firstCell = currentRow.GetCell(0);
-                    if (firstCell!= null && firstCell.GetValue() == "#")
-                    {
-                        continue;
-                    }
+                    // 检查行头数据是否是对应的平台
+                    var platformCell = currentRow.GetCell(0);
+                    if (platformCell != null && !GlobalArgs.IsValidPlatform(platformCell.GetValue())) continue;
 
                     foreach (var title in titles)
                     {
