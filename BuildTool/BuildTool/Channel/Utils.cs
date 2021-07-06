@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using NPOI.SS.UserModel;
 using System.IO;
+using System.Threading;
+
 namespace Channel
 {
     public class Utils
@@ -120,6 +122,35 @@ namespace Channel
                 res.Add(ConstString.STR_EMPTY);
             }
             return res;
+        }
+
+        internal static void Parallel<T>(IEnumerable<T> items, Action<T> action)
+        {
+            if (GlobalArgs.ASYNC)
+            {
+                var resetEvents = new List<ManualResetEvent>();
+
+                foreach (var item in items)
+                {
+                    var evt = new ManualResetEvent(false);
+                    resetEvents.Add(evt);
+                    ThreadPool.QueueUserWorkItem((i) =>
+                    {
+                        action((T)i);
+                        evt.Set();
+                    }, item);
+          
+                }
+
+                WaitHandle.WaitAll(resetEvents.ToArray());
+            }
+            else
+            {
+                foreach (var item in items)
+                {
+                    action(item);
+                }
+            }
         }
 
     }

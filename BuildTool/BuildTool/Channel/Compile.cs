@@ -46,10 +46,13 @@ namespace Channel
         static EnumConverter GetEnumConvert(string name)
         {
             EnumConverter target = null;
-            if (!enumConverters.TryGetValue(name, out target))
+            lock(enumConverters)
             {
-                target = new EnumConverter(name);
-                enumConverters.Add(name, target);
+                if (!enumConverters.TryGetValue(name, out target))
+                {
+                    target = new EnumConverter(name);
+                    enumConverters.Add(name, target);
+                }
             }
             return target;
         }
@@ -58,11 +61,15 @@ namespace Channel
         static CustomTypeConverter GetCutomConvert(string name)
         {
             CustomTypeConverter target = null;
-            if (!customConverters.TryGetValue(name, out target))
+            lock(customConverters)
             {
-                target = new CustomTypeConverter(name);
-                customConverters.Add(name, target);
+                if (!customConverters.TryGetValue(name, out target))
+                {
+                    target = new CustomTypeConverter(name);
+                    customConverters.Add(name, target);
+                }
             }
+            
             return target;
         }
 
@@ -74,27 +81,23 @@ namespace Channel
 
         public static void StartCompile()
         {
-            // 后面尝试改成多线程loaddefine和异步
             FileAgent.LoadAllDefine();
 
-            Lookup.Test();
             // 初始化定义完成后,遍历定义执行编译
 
             var defineNames = Lookup.RawDefine.AllName();
 
             // 第一次编译,编译初始定义的类型信息
-            foreach (var objTypeName in defineNames)
-            {
-                RawObjDef def = Lookup.RawDefine[objTypeName];  
-                CompileRawDef(def);
-            }
+            Utils.Parallel(defineNames, CompileRawDef);
 
             // 编译完成后的检查
             Check.CompileOverCheck();
         }
 
-        static void CompileRawDef(RawObjDef def)
+
+        static void CompileRawDef(string objTypeName)
         {
+            RawObjDef def = Lookup.RawDefine[objTypeName];
             switch (def.DefType)
             {
                 case RawObjType.ENUM:
@@ -216,11 +219,15 @@ namespace Channel
         static Regex GetContentRegex(string name)
         {
             Regex reg = null;
-            if (!contentReg.TryGetValue(name, out reg))
+            lock(contentReg)
             {
-                reg = new Regex(name + MATCH_PATTERN, RegexOptions.IgnoreCase);
-                contentReg.Add(name, reg);
+                if (!contentReg.TryGetValue(name, out reg))
+                {
+                    reg = new Regex(name + MATCH_PATTERN, RegexOptions.IgnoreCase);
+                    contentReg.Add(name, reg);
+                }
             }
+        
             return reg;
         }
 

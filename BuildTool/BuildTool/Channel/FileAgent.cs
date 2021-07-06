@@ -60,19 +60,23 @@ namespace Channel
 
         internal static void LoadAllDefine()
         {
-            foreach (var item in allAgents)
-            {
-                item.Value.LoadDefine();
-            }
+            Utils.Parallel(allAgents.Values, LoadItemDefine);
         }
 
 
         internal static void LoadContent()
         {
-            foreach (var item in allAgents)
-            {
-                item.Value.LoadContent();
-            }
+            Utils.Parallel(allAgents.Values, LoadItemContent);
+        }
+
+        static void LoadItemDefine(IFileAgent agent)
+        {
+            agent.LoadDefine();
+        }
+
+        static void LoadItemContent(IFileAgent agent)
+        {
+            agent.LoadContent();
         }
     }
 }

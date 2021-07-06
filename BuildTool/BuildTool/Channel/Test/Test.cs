@@ -8,34 +8,33 @@ namespace Channel.Test
 {
     public class Test
     {
-        const string TestItemPath = @"F:\FWK\BuildTool\Config\Item.xlsx";
-        const string TestUseItempath = @"F:\FWK\BuildTool\Config\UseItem.xlsx";
-        const string ItemPart1 = @"F:\FWK\BuildTool\Config\Item(1-100).xlsx";
-        const string ItemPart2 = @"F:\FWK\BuildTool\Config\Item(1000-2000).xlsx";
-        const string EnumXML = @"F:\FWK\BuildTool\Config\CustomDef\EnumDefine.xml";
-        const string ObjXML = @"F:\FWK\BuildTool\Config\CustomDef\TypeDefine.xml";
-        const string TypeTestPath = @"F:\FWK\BuildTool\Config\TypeTest.xlsx";
-        const string IntTest = @"F:\FWK\BuildTool\Config\Test\IntTest.xlsx";
-        const string FloatTest = @"F:\FWK\BuildTool\Config\Test\FloatTest.xlsx";
-        const string StringTest = @"F:\FWK\BuildTool\Config\Test\StringTest.xlsx";
-        const string Vector2Test = @"F:\FWK\BuildTool\Config\Test\Vector2Test.xlsx";
-        const string EnumTest = @"F:\FWK\BuildTool\Config\Test\EnumTest.xlsx";
-        const string DefTest = @"F:\FWK\BuildTool\Config\Test\DefTest.xml";
-        const string CustomTest = @"F:\FWK\BuildTool\Config\Test\CustomTest.xlsx";
-        const string RefTest = @"F:\FWK\BuildTool\Config\Test\RefTest.xlsx";
+        const string TestItemPath = @"D:\FWK\BuildTool\Config\Item.xlsx";
+        const string TestUseItempath = @"D:\FWK\BuildTool\Config\UseItem.xlsx";
+        const string ItemPart1 = @"D:\FWK\BuildTool\Config\Item(1-100).xlsx";
+        const string ItemPart2 = @"D:\FWK\BuildTool\Config\Item(1000-2000).xlsx";
+        const string EnumXML = @"D:\FWK\BuildTool\Config\CustomDef\EnumDefine.xml";
+        const string ObjXML = @"D:\FWK\BuildTool\Config\CustomDef\TypeDefine.xml";
+        const string TypeTestPath = @"D:\FWK\BuildTool\Config\TypeTest.xlsx";
+        const string IntTest = @"D:\FWK\BuildTool\Config\Test\IntTest.xlsx";
+        const string FloatTest = @"D:\FWK\BuildTool\Config\Test\FloatTest.xlsx";
+        const string StringTest = @"D:\FWK\BuildTool\Config\Test\StringTest.xlsx";
+        const string Vector2Test = @"D:\FWK\BuildTool\Config\Test\Vector2Test.xlsx";
+        const string EnumTest = @"D:\FWK\BuildTool\Config\Test\EnumTest.xlsx";
+        const string DefTest = @"D:\FWK\BuildTool\Config\Test\DefTest.xml";
+        const string CustomTest = @"D:\FWK\BuildTool\Config\Test\CustomTest.xlsx";
+        const string RefTest = @"D:\FWK\BuildTool\Config\Test\RefTest.xlsx";
 
 
         public static void TypeDefineTest()
         {
-            FileAgent.RegisterFile(EnumXML);
-            FileAgent.RegisterFile(IntTest);
-            FileAgent.RegisterFile(FloatTest);
-            FileAgent.RegisterFile(StringTest);
-            FileAgent.RegisterFile(Vector2Test);
-            FileAgent.RegisterFile(DefTest);
-            FileAgent.RegisterFile(EnumTest);
-            FileAgent.RegisterFile(CustomTest);
-            FileAgent.RegisterFile(RefTest);
+            List<string> filePath = new List<string>
+            {
+                EnumXML,
+               IntTest,FloatTest,StringTest,Vector2Test,DefTest,EnumTest,CustomTest,RefTest
+            };
+
+
+            Utils.Parallel(filePath, FileAgent.RegisterFile);
             Compile.StartCompile();
         }
 
