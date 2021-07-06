@@ -16,16 +16,11 @@ namespace Channel.Define.Converter
 
         static Vector2 Parse(string content, Field template, int depth = 0)
         {
-            var sep = ',';
-            if (template.Seps != null && template.Seps.Length > depth)
-            {
-                sep = template.Seps[depth];
-            }
-            var slice = content.Split(sep);
-
-            var x = slice.Length > 0 ? float.Parse(slice[0]) : 0;
-            var y = slice.Length > 1 ? float.Parse(slice[1]) : 0;
-            return new Vector2(x, y);
+            var sep = Utils.GetCustomSep(template, depth);
+            var slice = Utils.Split(content, sep);
+            var xs = slice.Count > 0 ? slice[0].Trim() : ConstString.STR_EMPTY;
+            var ys = slice.Count > 1 ? slice[1].Trim() : ConstString.STR_EMPTY;
+            return new Vector2(Utils.ParseFloat(xs), Utils.ParseFloat(ys));
         }
 
         public override object Convert(string originalValue, Field template, int depth = 0)
@@ -33,11 +28,16 @@ namespace Channel.Define.Converter
             Vector2 vec = null;
             if (!string.IsNullOrEmpty(originalValue))
             {
-                Parse(originalValue, template, depth);
+                vec = Parse(originalValue, template, depth);
             }
             else if (depth == 0 && !string.IsNullOrEmpty(template.OriginalDefaultValue))
             {
-                Parse(template.OriginalDefaultValue, template, depth);
+                if (template.OriginalDefaultValue.Equals(ConstString.STR_NIL)||
+                    template.OriginalDefaultValue.Equals(ConstString.STR_NULL))
+                {
+                    return null;
+                }
+                vec = Parse(template.OriginalDefaultValue, template, depth);
             }
             else
             {
@@ -46,10 +46,19 @@ namespace Channel.Define.Converter
 
             return vec;
         }
+
+        internal override int SepLevel()
+        {
+            return 1;
+        }
     }
 
     class Vector3Converter : Converter
     {
+        internal override int SepLevel()
+        {
+            return 1;
+        }
         public override Type GetResultType()
         {
             return typeof(Vector3);
@@ -57,17 +66,13 @@ namespace Channel.Define.Converter
 
         static Vector3 Parse(string content, Field template, int depth = 0)
         {
-            var sep = ',';
-            if (template.Seps != null && template.Seps.Length > depth)
-            {
-                sep = template.Seps[depth];
-            }
-            var slice = content.Split(sep);
+            var sep = Utils.GetCustomSep(template, depth);
+            var slice = Utils.Split(content, sep);
 
-            var x = slice.Length > 0 ? float.Parse(slice[0]) : 0;
-            var y = slice.Length > 1 ? float.Parse(slice[1]) : 0;
-            var z = slice.Length > 2 ? float.Parse(slice[2]) : 0;
-            return new Vector3(x, y, z);
+            var xs = slice.Count > 0 ? slice[0].Trim() : ConstString.STR_EMPTY;
+            var ys = slice.Count > 1 ? slice[1].Trim() : ConstString.STR_EMPTY;
+            var zs = slice.Count > 2 ? slice[2].Trim() : ConstString.STR_EMPTY;
+            return new Vector3(Utils.ParseFloat(xs), Utils.ParseFloat(ys), Utils.ParseFloat(zs));
         }
 
         public override object Convert(string originalValue, Field template, int depth = 0)
@@ -75,11 +80,16 @@ namespace Channel.Define.Converter
             Vector3 vec = null;
             if (!string.IsNullOrEmpty(originalValue))
             {
-                Parse(originalValue, template, depth);
+                vec = Parse(originalValue, template, depth);
             }
             else if (depth == 0 && !string.IsNullOrEmpty(template.OriginalDefaultValue))
             {
-                Parse(template.OriginalDefaultValue, template, depth);
+                if (template.OriginalDefaultValue.Equals(ConstString.STR_NIL) ||
+                    template.OriginalDefaultValue.Equals(ConstString.STR_NULL))
+                {
+                    return null;
+                }
+                vec = Parse(template.OriginalDefaultValue, template, depth);
             }
             else
             {
@@ -92,6 +102,10 @@ namespace Channel.Define.Converter
 
     class Vector4Converter : Converter
     {
+        internal override int SepLevel()
+        {
+            return 1;
+        }
         public override Type GetResultType()
         {
             return typeof(Vector4);
@@ -99,18 +113,15 @@ namespace Channel.Define.Converter
 
         static Vector4 Parse(string content, Field template, int depth = 0)
         {
-            var sep = ',';
-            if (template.Seps != null && template.Seps.Length > depth)
-            {
-                sep = template.Seps[depth];
-            }
-            var slice = content.Split(sep);
+            var sep = Utils.GetCustomSep(template, depth);
+            var slice = Utils.Split(content, sep);
 
-            var x = slice.Length > 0 ? float.Parse(slice[0]) : 0;
-            var y = slice.Length > 1 ? float.Parse(slice[1]) : 0;
-            var z = slice.Length > 2 ? float.Parse(slice[2]) : 0;
-            var w = slice.Length > 3 ? float.Parse(slice[3]) : 0;
-            return new Vector4(x, y, z, w);
+            var xs = slice.Count > 0 ? slice[0].Trim() : ConstString.STR_EMPTY;
+            var ys = slice.Count > 1 ? slice[1].Trim() : ConstString.STR_EMPTY;
+            var zs = slice.Count > 2 ? slice[2].Trim() : ConstString.STR_EMPTY;
+            var ws = slice.Count > 3 ? slice[3].Trim() : ConstString.STR_EMPTY;
+            return new Vector4(Utils.ParseFloat(xs), Utils.ParseFloat(ys),
+                Utils.ParseFloat(zs), Utils.ParseFloat(ws)); ;
         }
 
         public override object Convert(string originalValue, Field template, int depth = 0)
@@ -118,11 +129,16 @@ namespace Channel.Define.Converter
             Vector4 vec = null;
             if (!string.IsNullOrEmpty(originalValue))
             {
-                Parse(originalValue, template, depth);
+                vec = Parse(originalValue, template, depth);
             }
             else if (depth == 0 && !string.IsNullOrEmpty(template.OriginalDefaultValue))
             {
-                Parse(template.OriginalDefaultValue, template, depth);
+                if (template.OriginalDefaultValue.Equals(ConstString.STR_NIL) ||
+                 template.OriginalDefaultValue.Equals(ConstString.STR_NULL))
+                {
+                    return null;
+                }
+                vec = Parse(template.OriginalDefaultValue, template, depth);
             }
             else
             {

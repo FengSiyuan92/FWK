@@ -159,7 +159,13 @@ namespace Channel.Agent.XML
                 fieldDefine.OutputType = node.GetNodeAttributeValue(ConstString.XML_OUTPUT_TYPE_TITLE);
                 fieldDefine.AppendDef = node.GetNodeAttributeValue(ConstString.XML_DESC_TITLE);
                 fieldDefine.CheckRule = node.GetNodeAttributeValue(ConstString.XML_CHECK_RULE_TITLE);
-
+                var index = node.GetNodeAttributeValue(ConstString.XML_FIELD_INDEX);
+                int defIndex = 0;
+                if (!string.IsNullOrEmpty(index))
+                {
+                    int.TryParse(index, out defIndex);
+                }
+                fieldDefine.DefIndex = defIndex;
                 // 将字段定义添加进objdef中
                 objDef.AddFieldDefine(fieldDefine);
             }

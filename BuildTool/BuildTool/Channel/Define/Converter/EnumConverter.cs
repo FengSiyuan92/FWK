@@ -14,38 +14,53 @@ namespace Channel.Define.Converter
             return typeof(int);
         }
 
+
+        int TryGetValue(string name)
+        {
+            int v = 0;
+            if (int.TryParse(name, out v))
+            {
+                return v;
+            }
+            v = e.GetValueByAlias(name);
+            if (v != -1) return v;
+
+            v = e.GetValueByFieldName(name);
+            return v;
+        }
+
         public override object Convert(string originalValue, Field template, int depth = 0)
         {
             if (!string.IsNullOrEmpty(originalValue))
             {
-                var value = originalValue;
-                int v = 0;
-                if (int.TryParse(value, out v))
-                {
-                    return v;
-                }
-                var isAlias = !string.IsNullOrEmpty(template.AliasRefPos);
-                var res = isAlias ? e.GetValueByAlias(value) : e.GetValueByFieldName(value);
+                var value = originalValue.Trim();
+                var res = TryGetValue(value);
                 if (res == -1)
                 {
-                    CLog.LogError("枚举转换失败:{0}=>{1}", e.Name, v);
+                    CLog.LogError("枚举转换失败:{0}的{1}", e.Name, originalValue);
                 }
+                return res;
             }
-            else if  (depth != 0)
+            else if  (depth == 0)
             {
-                var value = template.OriginalDefaultValue;
-                int v = 0;
-                if (int.TryParse(value, out v))
+                var value = template.OriginalDefaultValue.Trim();
+                var res = TryGetValue(value);
+                if (res == -1 && 
+                    !(value.Equals(ConstString.STR_NIL) || value.Equals(ConstString.STR_NULL)))
                 {
-                    return v;
+                    CLog.LogError("枚举转换失败:{0}的{1}", e.Name, value);
                 }
-                var isAlias = !string.IsNullOrEmpty(template.AliasRefPos);
-                var res = isAlias ? e.GetValueByAlias(value) : e.GetValueByFieldName(value);
-                if (res == -1)
+                else
                 {
-                    CLog.LogError("枚举转换失败:{0}=>{1}", e.Name, v);
+                    return 0;
                 }
+                return res;
             }
+            return 0;
+        }
+
+        internal override int SepLevel()
+        {
             return 0;
         }
 

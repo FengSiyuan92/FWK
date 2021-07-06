@@ -50,6 +50,12 @@ namespace Channel.Define.Class
                 return field;
             }
         }
+
+
+        public string[] AllFieldName()
+        {
+            return fields.Keys.ToArray();
+        }
     }
 
 }

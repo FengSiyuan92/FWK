@@ -11,7 +11,6 @@ namespace Channel.Define.Converter
 
         public abstract object Convert(string originalValue, Field template, int depth = 0);
 
-
         public abstract System.Type GetResultType();
 
         /// <summary>
@@ -22,6 +21,9 @@ namespace Channel.Define.Converter
         {
             return ',';
         }
+
+        internal abstract int SepLevel();
+   
 
     }
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Define>
+	<enum type="EnumType">
+			<var name="Long" alias="长的" value="1"/>
+			<var name="Side" alias="方的" value="2"/>
+			<var name="Circle" alias="圆的" value="3"/>
+	</enum>
+
+	<obj type="ObjType">
+			<var name="item_id" type="int" out="cs" index="1"/>
+			<var name="use_count" type="int" index="2"/>
+	</obj>
+
+	<obj type="UseObj">
+			<var name="obj" type="ObjType" out="cs" index="1" />
+			<var name="enum" type="EnumType" index="2" />
+			<var name="listint" type="int[]" index ="3" />
+	</obj>
+
+</Define>

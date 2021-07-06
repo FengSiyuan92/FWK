@@ -26,12 +26,20 @@ namespace Channel
             { "vector3", new Vector3Converter()},
             { "vector4", new Vector4Converter()},
 
+            { "vec2", new Vector2Converter()},
+            { "vec3", new Vector3Converter()},
+            { "vec4", new Vector4Converter()},
+
             { "int[]", new ListConverter(new IntConverter())},
             { "float[]", new ListConverter(new FloatConverter())},
-            { "string[]", new ListConverter(new StringConverter(), '|')},
-            { "vector2[]", new ListConverter( new Vector2Converter())},
-            { "vector3[]", new ListConverter( new Vector3Converter())},
-            { "vector4[]", new ListConverter( new Vector4Converter())},
+            { "string[]", new ListConverter(new StringConverter(), ConstString.SEP_LEVEL_1)},
+            { "vector2[]", new ListConverter( new Vector2Converter(),ConstString.SEP_LEVEL_1)},
+            { "vector3[]", new ListConverter( new Vector3Converter(),ConstString.SEP_LEVEL_1)},
+            { "vector4[]", new ListConverter( new Vector4Converter(),ConstString.SEP_LEVEL_1)},
+
+            { "vec2[]", new ListConverter( new Vector2Converter(),ConstString.SEP_LEVEL_1)},
+            { "vec3[]", new ListConverter( new Vector3Converter(),ConstString.SEP_LEVEL_1)},
+            { "vec4[]", new ListConverter( new Vector4Converter(),ConstString.SEP_LEVEL_1)},
         };
 
         static Dictionary<string, EnumConverter> enumConverters = new Dictionary<string, EnumConverter>();
@@ -100,6 +108,12 @@ namespace Channel
             }
         }
 
+
+        static void GetFieldIndex(string ori)
+        {
+    
+        }
+
         static void CompileObjDefine1(RawObjDef rawDef)
         {
             CustomType objDef = new CustomType(rawDef.Name);
@@ -118,6 +132,8 @@ namespace Channel
                 field.AliasRefPos = GetContent(rawField.AppendDef, ConstString.STR_ALIAS);
                 // 字段默认值,用于excel不填写时的默认填充
                 field.OriginalDefaultValue = GetContent(rawField.AppendDef, ConstString.STR_DEFAULT);
+                // 内置字段
+                field.FieldIndex = Math.Max(rawField.DefIndex - 1, 0);
 
                 var seps = GetContent(rawField.AppendDef, ConstString.STR_SEP);
                 if (!string.IsNullOrEmpty(seps))
@@ -196,7 +212,7 @@ namespace Channel
 
         static Dictionary<string, Regex> contentReg = new Dictionary<string, Regex>();
 
-        const string MATCH_PATTERN = @"(=?[^\|\s]*)&*";
+        const string MATCH_PATTERN = @"(=?[^\&\s]*)&*";
         static Regex GetContentRegex(string name)
         {
             Regex reg = null;

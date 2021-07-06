@@ -21,6 +21,12 @@ namespace Channel
         public const string STR_EMPTY = "";
         public const string STR_LIST_END = "[]";
 
+        public const char SEP_LEVEL_3 = '_';
+        public const char SEP_LEVEL_2 = ',';
+        public const char SEP_LEVEL_1 = '|';
+        public const char GROUP_SIGN_LEFT = '(';
+        public const char GROUP_SIGN_RIGHT = ')';
+
         public const string STR_NULL = "null";
         public const string STR_NIL = "nil";
 
@@ -42,5 +48,6 @@ namespace Channel
         public const string XML_ALIAS_TITLE = "alias";
         public const string XML_ENUM_DEF_TYPE = "enum";
         public const string XML_OBJ_DEF_TYPE = "obj";
+        public const string XML_FIELD_INDEX = "index";
     }
 }

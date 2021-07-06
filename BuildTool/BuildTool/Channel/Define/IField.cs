@@ -58,6 +58,8 @@ namespace Channel.Define
         /// 自定义分隔符数组
         /// </summary>
         internal char[] Seps;
+
+        internal int FieldIndex;
     }
 
 

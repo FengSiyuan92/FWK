@@ -147,6 +147,6 @@ namespace Channel.RawDefine
         /// <summary>
         /// TODO:该字段对应的内容指定索引,部分功能需要使用
         /// </summary>
-        public int DefIndex = 0;
+        internal int DefIndex = 0;
     }
 }

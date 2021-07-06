@@ -31,6 +31,11 @@ namespace Channel.Define.Converter
             return default(decimal);
         }
 
+        internal override int SepLevel()
+        {
+            return 0;
+        }
+
     }
 
 }

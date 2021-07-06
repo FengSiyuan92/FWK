@@ -31,6 +31,10 @@ namespace Channel.Define.Converter
             
             return 0L;
         }
+        internal override int SepLevel()
+        {
+            return 0;
+        }
 
     }
 

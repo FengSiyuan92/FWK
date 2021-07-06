@@ -13,7 +13,7 @@ namespace Channel.Define.Converter
         Array defArray;
         Type arrType;
         char defSep;
-        public ListConverter( Converter elementConvert, char defSep = ',')
+        public ListConverter( Converter elementConvert, char defSep = ConstString.SEP_LEVEL_2)
         {
             element = elementConvert;
             defArray = Array.CreateInstance(element.GetResultType(), 0);
@@ -54,21 +54,23 @@ namespace Channel.Define.Converter
                 return defArray;
             }
 
-            var sep = defSep;
-            if (template.Seps != null)
-            {
-                sep = template.Seps[depth];
-            }
-            var slice = value.Split(sep);
+            var sep = Utils.GetCustomSep(template, depth, defSep);
+          
+            var slice = Utils.Split(value, sep);
 
-            var res = Array.CreateInstance(element.GetResultType(), slice.Length);
+            var res = Array.CreateInstance(element.GetResultType(), slice.Count);
    
             for (int i = 0; i < res.Length; i++)
             {
-                res.SetValue(element.Convert(slice[i], template, depth + 1), i);
+                var subValue = Utils.TrimSign(slice[i]);
+                res.SetValue(element.Convert(subValue, template, depth + 1), i);
             }
 
             return res;
+        }
+        internal override int SepLevel()
+        {
+            return 1 + element.SepLevel();
         }
 
     }
