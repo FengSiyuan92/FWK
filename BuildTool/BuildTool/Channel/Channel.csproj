@@ -66,15 +66,16 @@
     <Compile Include="Agent\Excel\Extend.cs" />
     <Compile Include="ConstString.cs" />
     <Compile Include="Data\Data.cs" />
+    <Compile Include="Define\Class\DataArray.cs" />
     <Compile Include="Define\Class\Vector.cs" />
     <Compile Include="Define\Converter\ConverterBase.cs" />
     <Compile Include="Define\Converter\CustomTypeConverter.cs" />
     <Compile Include="Define\Converter\EnumConverter.cs" />
     <Compile Include="Define\Converter\FloatConverter.cs" />
     <Compile Include="Define\Converter\IntConverter.cs" />
+    <Compile Include="Define\Converter\ListConverter.cs" />
     <Compile Include="Define\Converter\StringConverter.cs" />
     <Compile Include="Define\Converter\VectorConverter.cs" />
-    <Compile Include="Define\Converter\ListConverter.cs" />
     <Compile Include="Define\IField.cs" />
     <Compile Include="Define\Class\CustomType.cs" />
     <Compile Include="Define\TypeConvert.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Agent\XML\Extend.cs" />
     <Compile Include="Agent\XML\XMLAgent.cs" />
     <Compile Include="GlobalArgs.cs" />
+    <Compile Include="ISource.cs" />
     <Compile Include="Lookup\DataViewer.cs" />
     <Compile Include="Lookup\Lookup.cs" />
     <Compile Include="Define\RawDefine.cs" />

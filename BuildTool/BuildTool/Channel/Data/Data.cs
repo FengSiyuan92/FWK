@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Channel.Define.Class;
-
+using System.Text;
 namespace Channel.Data
 {
-    public class DataObject
+    public class DataObject:ISource
     { 
         public string ClassName { get; private set; }
         public string KeyToString { get; private set;}
@@ -32,7 +32,7 @@ namespace Channel.Data
                 var fieldName = item.Key;
                 var original = item.Value;
                 var fieldType = t[fieldName];
-                var res = fieldType.Convert.Convert(item.Value, fieldType);
+                var res = fieldType.Convert.Convert(this, item.Value, fieldType);
                 ori.Add(fieldName, res);
                 if (fieldType.IsKey)
                 {
@@ -50,16 +50,53 @@ namespace Channel.Data
         }
 
 
-        public override string ToString()
+ 
+
+
+        internal string SourceInfo;
+        public string Source()
         {
-            var res = "";
-            foreach (var item in ori)
-            {
-                res += item.ToString() + " ";
-            }
-            return res;
+            return SourceInfo;
         }
 
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(ClassName);
+            sb.Append("[");
+
+            var targetCount = ori.Count;
+            var cCount = 0;
+            foreach (var item in ori.Keys)
+            {
+                var value = ori[item];
+                sb.Append(string.Format("{0}={1}", item, value == null ? "null" : value.ToString()));
+                if (++cCount != targetCount)
+                {
+                    sb.Append(',');
+                }
+            }
+            sb.Append("]");
+            return sb.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as DataObject;
+            if (target == null) return false;
+
+            if (t != target.t) return false;
+            var allfieldName = t.AllFieldName();
+
+            for (int i = 0; i < allfieldName.Length; i++)
+            {
+                var fieldName = allfieldName[i];
+                var v1 = this[fieldName];
+                var v2 = target[fieldName];
+                if (!v1.Equals(v2)) return false;
+            }
+            return true;
+        }
     }
 }

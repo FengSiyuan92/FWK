@@ -57,6 +57,8 @@ namespace Channel
 
     internal class InnerCheckFunc
     {
+
+        const string errortip = "不存在名称为{0}的枚举类型,但是却有配置表要使用该类型=>{1}";
         /// <summary>
         /// 检查扩展的类型转换器是否可用
         /// </summary>
@@ -67,18 +69,20 @@ namespace Channel
             {
                 if (item is EnumConverter)
                 {
-                    var e = Lookup.Enum[(item as EnumConverter).Name];
+                    var name = (item as EnumConverter).Name;
+                    var e = Lookup.Enum[name];
                     if (e == null)
                     {
-                        CLog.LogError("不存在名称为{0}的枚举类型,但是却有配置表要使用该类型");
+                        CLog.LogError(errortip, name);
                     }
                 }
                 else if (item is CustomTypeConverter)
                 {
-                    var c = Lookup.CustomType[(item as CustomTypeConverter).Name];
+                    var name = (item as CustomTypeConverter).Name;
+                    var c = Lookup.CustomType[name];
                     if (c == null)
                     {
-                        CLog.LogError("不存在名称为{0}的数据类型,但是却有配置表要使用该类型");
+                        CLog.LogError(errortip, name);
                     }
                 }
             }
@@ -188,11 +192,11 @@ namespace Channel
                 {
                     // obj自己的数据
                     var objData = data[field.FieldName];
-                    if (content.Contains(objData))
+                    if (!Utils.EqualsContains(content, objData))
                     {
-                        CLog.LogError("{0}类型中不存在{1}={2}的数据,但是却想在{3}.{4}中使用",
+                        CLog.LogError("{0}类型中不存在{1}={2}的数据,但是却想在=>{3}.{4}中使用",
                             targetClassName, targetFieldName, objData.ToString(),
-                            className, field.FieldName);
+                            data.Source(), field.FieldName);
                     }
                 }
             }

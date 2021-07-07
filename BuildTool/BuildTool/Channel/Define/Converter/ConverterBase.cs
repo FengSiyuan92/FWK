@@ -9,7 +9,7 @@ namespace Channel.Define.Converter
     internal abstract class Converter
     {
 
-        public abstract object Convert(string originalValue, Field template, int depth = 0);
+        public abstract object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0);
 
         public abstract System.Type GetResultType();
 

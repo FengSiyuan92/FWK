@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Channel.Define.Converter
 {
-
     internal class IntConverter : Converter
     {
         public override Type GetResultType()
@@ -14,7 +13,7 @@ namespace Channel.Define.Converter
             return typeof(long);
         }
 
-        public override object Convert(string originalValue, Field template, int depth = 0)
+        public override object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0)
         {
             long _;
             if (long.TryParse(originalValue, out _))

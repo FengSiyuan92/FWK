@@ -7,7 +7,7 @@ using Channel.Define.Class;
 
 namespace Channel.Define.Converter
 {
-    internal class EnumConverter : ExtendConverter
+    internal class EnumConverter : ExtendConverter,ISource
     {
         public override Type GetResultType()
         {
@@ -28,7 +28,8 @@ namespace Channel.Define.Converter
             return v;
         }
 
-        public override object Convert(string originalValue, Field template, int depth = 0)
+        const string errortip = "把数据'{0}'转换成枚举类型'{1}'失败,将返回错误值-1 => {2}.{3}";
+        public override object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0)
         {
             if (!string.IsNullOrEmpty(originalValue))
             {
@@ -36,7 +37,7 @@ namespace Channel.Define.Converter
                 var res = TryGetValue(value);
                 if (res == -1)
                 {
-                    CLog.LogError("枚举转换失败:想把数据'{0}'转换成{1}类型,返回值-1", originalValue, e.Name);
+                    CLog.LogError(errortip, originalValue, e.Name, original.Source(), template.FieldName);
                 }
                 return res;
             }
@@ -47,7 +48,7 @@ namespace Channel.Define.Converter
                 if (res == -1 && 
                     !(value.Equals(ConstString.STR_NIL) || value.Equals(ConstString.STR_NULL)))
                 {
-                    CLog.LogError("枚举转换失败:想把数据'{0}'转换成{1}类型,返回值-1", value,e.Name);
+                    CLog.LogError(errortip, value,e.Name, original.Source(), template.FieldName);
                 }
                 else
                 {
@@ -61,6 +62,12 @@ namespace Channel.Define.Converter
         internal override int SepLevel()
         {
             return 0;
+        }
+
+        internal string SourceInfo;
+        public string Source()
+        {
+            return SourceInfo;
         }
 
         Channel.Define.Class.Enum e = null;

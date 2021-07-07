@@ -20,6 +20,13 @@ namespace Channel.Define.Class
         {
             return string.Format("[x={0},y={1}]", x, y);
         }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as Vector2;
+            if (target == null) return false;
+            return x == target.x && y == target.y;
+        }
     }
 
     public class Vector3
@@ -36,6 +43,13 @@ namespace Channel.Define.Class
         public override string ToString()
         {
             return string.Format("[x={0},y={1},z={2}]", x, y, z);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as Vector3;
+            if (target == null) return false;
+            return x == target.x && y == target.y && z==target.z;
         }
     }
 
@@ -57,5 +71,13 @@ namespace Channel.Define.Class
         {
             return string.Format("[x={0},y={1},z={2},w={3}]", x, y, z, w);
         }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as Vector4;
+            if (target == null) return false;
+            return x == target.x && y == target.y && z == target.z && w == target.w;
+        }
+
     }
 }

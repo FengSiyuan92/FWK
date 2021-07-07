@@ -87,7 +87,7 @@ namespace Channel.Agent.Excel
  
 
         public bool Valid { get; private set; }
-
+ 
         public ExcelAgent(string filePath)
         {
             this.filePath = filePath;
@@ -200,7 +200,7 @@ namespace Channel.Agent.Excel
             return fieldRows;
         }
 
-        static void InjectObjectDef(RawObjDef def, Dictionary<FieldRowOrder, IRow> validRows)
+        void InjectObjectDef(RawObjDef def, Dictionary<FieldRowOrder, IRow> validRows)
         {
             IRow fieldNameRow = validRows[FieldRowOrder.Name];
 
@@ -215,6 +215,7 @@ namespace Channel.Agent.Excel
                 // 开始执行定义赋值
                 // 字段名称
                 fDef.FieldName = cell.GetValue();
+                fDef.SourceInfo = string.Format("{0}:{1}.{2}", filePath, def.Name, fDef.FieldName);
                 def.AddFieldDefine(fDef);
 
                 // 字段类型
@@ -332,6 +333,7 @@ namespace Channel.Agent.Excel
                     }
 
                     DataObject data = new DataObject(tabName);
+                    data.SourceInfo = string.Format("{0}第{1}行", filePath, currentRow.RowNum+1);
                     data.SetKV(titleAndContent);
                     Lookup.AddData(data);
                 }

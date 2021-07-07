@@ -93,6 +93,7 @@ namespace Channel
             HashSet<string> filePath = new HashSet<string>();
             FindDirValidFile(dirPath, filePath);
             RegisterFiles(filePath);
+            CLog.OutputAndClearCache("文件读取完成");
         }
 
         static void FindDirValidFile(string dirpath, HashSet<string> vessel)

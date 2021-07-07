@@ -43,7 +43,7 @@ namespace Channel
         };
 
         static Dictionary<string, EnumConverter> enumConverters = new Dictionary<string, EnumConverter>();
-        static EnumConverter GetEnumConvert(string name)
+        static EnumConverter GetEnumConvert(string name, string sourceInfo)
         {
             EnumConverter target = null;
             lock(enumConverters)
@@ -51,6 +51,7 @@ namespace Channel
                 if (!enumConverters.TryGetValue(name, out target))
                 {
                     target = new EnumConverter(name);
+                    target.SourceInfo = sourceInfo;
                     enumConverters.Add(name, target);
                 }
             }
@@ -58,7 +59,7 @@ namespace Channel
         }
 
         static Dictionary<string, CustomTypeConverter> customConverters = new Dictionary<string, CustomTypeConverter>();
-        static CustomTypeConverter GetCutomConvert(string name)
+        static CustomTypeConverter GetCutomConvert(string name, string sourceInfo)
         {
             CustomTypeConverter target = null;
             lock(customConverters)
@@ -66,6 +67,7 @@ namespace Channel
                 if (!customConverters.TryGetValue(name, out target))
                 {
                     target = new CustomTypeConverter(name);
+                    target.SourceInfo = sourceInfo;
                     customConverters.Add(name, target);
                 }
             }
@@ -81,6 +83,7 @@ namespace Channel
 
         public static void StartCompile()
         {
+
             FileAgent.LoadAllDefine();
 
             // 初始化定义完成后,遍历定义执行编译
@@ -91,6 +94,8 @@ namespace Channel
 
             // 编译完成后的检查
             Check.CompileOverCheck();
+
+            CLog.OutputAndClearCache("定义编译完成");
         }
 
 
@@ -158,20 +163,20 @@ namespace Channel
                     var eleType = rawType.Remove(rawType.Length - 2);
                     if (CheckIsEnum(eleType))
                     {
-                        field.Convert = new ListConverter(GetEnumConvert(eleType));
+                        field.Convert = new ListConverter(GetEnumConvert(eleType, field.Source()));
                     }
                     else
                     {
-                        field.Convert = new ListConverter(GetCutomConvert(eleType));
+                        field.Convert = new ListConverter(GetCutomConvert(eleType, field.Source()));
                     }
                 }
                 else if (CheckIsEnum(rawType))
                 {
-                    field.Convert = GetEnumConvert(rawType);
+                    field.Convert = GetEnumConvert(rawType, field.Source());
                 }
                 else
                 {
-                    field.Convert = GetCutomConvert(rawType);
+                    field.Convert = GetCutomConvert(rawType, field.Source());
                 }
 
                 objDef.AddField(field);

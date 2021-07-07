@@ -17,7 +17,7 @@ namespace Channel.Define
     }
 
 
-    public class Field
+    public class Field:ISource
     {
         /// <summary>
         /// 字段名称
@@ -67,6 +67,11 @@ namespace Channel.Define
         /// 原生定义关联
         /// </summary>
         internal RawDefine.RawFieldDef RawDefine;
+
+        public string Source()
+        {
+            return RawDefine.SourceInfo;
+        }
     }
 
 

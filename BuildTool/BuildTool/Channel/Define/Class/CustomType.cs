@@ -16,7 +16,7 @@ namespace Channel.Define.Class
             Lookup.AddObjDefine(this);
         }
 
-        Dictionary<string, Field> fields = new Dictionary<string, Field>();
+        internal Dictionary<string, Field> fields { get; private set; } = new Dictionary<string, Field>();
 
         Field KeyField;
 
@@ -55,6 +55,18 @@ namespace Channel.Define.Class
         public string[] AllFieldName()
         {
             return fields.Keys.ToArray();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var target = obj as CustomType;
+            if (target == null) return false;
+
+            if (!Name.Equals(target.Name, StringComparison.OrdinalIgnoreCase)) return false;
+
+            // 同类型字段名称必然相等
+
+            return true;
         }
     }
 

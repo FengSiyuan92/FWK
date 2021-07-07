@@ -7,7 +7,7 @@ using Channel.Define.Class;
 
 namespace Channel.Define.Converter
 {
-    internal class CustomTypeConverter : ExtendConverter
+    internal class CustomTypeConverter : ExtendConverter , ISource
     {
         public override Type GetResultType()
         {
@@ -20,7 +20,7 @@ namespace Channel.Define.Converter
             this.Name = name;
         }
 
-        Data.DataObject GenObj(string content, Field template, int depth)
+        Data.DataObject GenObj(Data.DataObject original, string content, Field template, int depth)
         {
             var sep = Utils.GetCustomSep(template, depth, ConstString.SEP_LEVEL_3);
             var t = Lookup.CustomType[Name];
@@ -40,6 +40,7 @@ namespace Channel.Define.Converter
                 kv.Add(fieldName, v);
             }
             var obj = new Data.DataObject(Name);
+            obj.SourceInfo = original.Source();
             obj.SetKV(kv);
             return obj;
         }
@@ -60,12 +61,12 @@ namespace Channel.Define.Converter
             return max + 1;
         }
 
-        public override object Convert(string originalValue, Field template, int depth = 0)
+        public override object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0)
         {
             Data.DataObject obj = null;
             if (!string.IsNullOrEmpty(originalValue))
             {
-                obj = GenObj(originalValue, template, depth);
+                obj = GenObj(original, originalValue, template, depth);
             }
             else if(depth == 0)
             {
@@ -75,10 +76,17 @@ namespace Channel.Define.Converter
                 {
                     return null;
                 }
-                obj = GenObj(template.OriginalDefaultValue, template, depth);
+                obj = GenObj(original, template.OriginalDefaultValue, template, depth);
             }
 
             return obj;
+        }
+
+        internal string SourceInfo;
+
+        public string Source()
+        {
+            return SourceInfo;
         }
     }
 }

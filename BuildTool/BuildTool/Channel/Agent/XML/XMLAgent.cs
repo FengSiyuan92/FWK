@@ -121,6 +121,8 @@ namespace Channel.Agent.XML
 
                 RawFieldDef fieldDef = new RawFieldDef();
                 fieldDef.FieldName = node.GetNodeAttributeValue(ConstString.XML_NAME_TITLE);
+                fieldDef.SourceInfo = string.Format("{0}:{1}.{2}", filePath, obj.Name, fieldDef.FieldName);
+
                 fieldDef.FieldType = RawFieldType.Int;
                 fieldDef.OutputType = node.GetNodeAttributeValue(ConstString.XML_OUTPUT_TYPE_TITLE);
                 fieldDef.CheckRule = node.GetNodeAttributeValue(ConstString.XML_CHECK_RULE_TITLE);
@@ -150,6 +152,7 @@ namespace Channel.Agent.XML
                 // 为Obj基础字段赋值
                 RawFieldDef fieldDefine = new RawFieldDef();
                 fieldDefine.FieldName = node.GetNodeAttributeValue(ConstString.XML_NAME_TITLE);
+                fieldDefine.SourceInfo = string.Format("{0}:{1}.{2}", filePath, objDef.Name, fieldDefine.FieldName);
                 if (string.IsNullOrEmpty(fieldDefine.FieldName))
                 {
                     CLog.LogError("{0}:{1}的Object定义必须使用 name=\"??\"格式来定义字段名", filePath, objDef.Name);

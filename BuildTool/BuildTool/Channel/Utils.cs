@@ -23,7 +23,7 @@ namespace Channel
             return fileName;
         }
 
-        public static decimal ParseFloat(string content)
+        public static decimal ParseFloat(string content, string source = ConstString.STR_EMPTY)
         {
             if (content.Equals(ConstString.STR_EMPTY) || string.IsNullOrEmpty(content))
             {
@@ -32,7 +32,7 @@ namespace Channel
             var res = 0M;
             if (!decimal.TryParse(content, out res))
             {
-                CLog.LogError("尝试把{0}转换成数值并失败", content);
+                CLog.LogError("尝试把'{0}'转换成数值并失败 => {1}", content, source);
             }
             return res;
         }
@@ -122,6 +122,32 @@ namespace Channel
                 res.Add(ConstString.STR_EMPTY);
             }
             return res;
+        }
+
+        /// <summary>
+        /// 从一个容器中检查是否存在相同的配置数据,比如Vector\和DataObject,即使不是同一个引用,也有可能是完全相等内容
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="vessel"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static bool EqualsContains<T>(IEnumerable<T> vessel, T a)
+        {
+            foreach (var item in vessel)
+            {
+                if (a == null)
+                {
+                    if (item == null) return true;
+                }
+                else
+                {
+                    if (a.Equals(item))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         internal static void Parallel<T>(IEnumerable<T> items, Action<T> action)

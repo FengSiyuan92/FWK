@@ -103,7 +103,7 @@ namespace Channel.RawDefine
             var key = def.FieldName;
             if (defines.ContainsKey(key))
             {
-                CLog.LogError("重复添加相同的字段名");
+                CLog.LogError("重复添加相同的字段名{0}",  def.Source() );
             }
 
             defines.Add(key, def);
@@ -113,7 +113,7 @@ namespace Channel.RawDefine
     /// <summary>
     /// 原生字段定义
     /// </summary>
-    internal class RawFieldDef
+    internal class RawFieldDef :ISource
     {
         /// <summary>
         /// 原生字段名
@@ -148,5 +148,12 @@ namespace Channel.RawDefine
         /// TODO:该字段对应的内容指定索引,部分功能需要使用
         /// </summary>
         internal int DefIndex = 0;
+
+        internal string SourceInfo;
+
+        public string Source()
+        {
+            return SourceInfo;
+        }
     }
 }

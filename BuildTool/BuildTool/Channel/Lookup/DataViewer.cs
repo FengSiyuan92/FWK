@@ -28,7 +28,9 @@ namespace Channel
                 var key = obj.KeyToString;
                 if (datas.ContainsKey(key))
                 {
-                    CLog.LogError("重复向类型:{0} 中添加key为{1}的数据", obj.ClassName, obj.KeyToString);
+                    CLog.LogError("重复向类型:{0}中添加key为{1}的数据,数据来源分别是=>\n\t{2}\n\t{3}",
+                        obj.ClassName, obj.KeyToString,
+                        datas[key].Source(), obj.Source());
                     return;
                 }
                 datas.Add(key, obj);

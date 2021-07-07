@@ -13,7 +13,7 @@ namespace Channel.Define.Converter
             return typeof(string);
         }
 
-        public override object Convert(string originalValue, Field template, int depth = 0)
+        public override object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0)
         {
             // 原值
             if (originalValue != ConstString.STR_EMPTY)

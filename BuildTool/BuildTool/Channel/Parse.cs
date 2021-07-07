@@ -12,6 +12,7 @@ namespace Channel
         {
             FileAgent.LoadContent();
             Check.OverParse();
+            CLog.OutputAndClearCache("数据解析完成");
         }
     }
 }

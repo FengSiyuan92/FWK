@@ -19,7 +19,6 @@ namespace BuildTool
             //HashSet<string> set = new HashSet<string>();
             //var a = 0;
 
-
             Console.ReadKey();
         }
 
