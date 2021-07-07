@@ -6,7 +6,7 @@
 			<var name="Circle" alias="圆的" value="3"/>
 	</enum>
 
-	<obj type="ObjType">
+	<obj type="Consume">
 			<var name="item_id" type="int" out="cs" index="1"/>
 			<var name="use_count" type="int" index="2"/>
 	</obj>
