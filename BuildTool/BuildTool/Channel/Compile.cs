@@ -84,7 +84,6 @@ namespace Channel
             FileAgent.LoadAllDefine();
 
             // 初始化定义完成后,遍历定义执行编译
-
             var defineNames = Lookup.RawDefine.AllName();
 
             // 第一次编译,编译初始定义的类型信息
@@ -125,14 +124,16 @@ namespace Channel
             {
                 var rawField = rawDef[filedName];
                 Field field = new Field();
+                // 关联原生定义
+                field.RawDefine = rawField;
                 // 字段名称
                 field.FieldName = filedName;
                 // 字段导出类型
                 field.OutputType = GetOutputType(rawField.OutputType);
                 // 字段是否需要作为key值
                 field.IsKey = !string.IsNullOrEmpty(GetContent(rawField.AppendDef, ConstString.STR_KEY));
-                // 字段值引用的别名信息
-                field.AliasRefPos = GetContent(rawField.AppendDef, ConstString.STR_ALIAS);
+                // 字段值引用内容信息
+                field.RefPos = GetContent(rawField.AppendDef, ConstString.STR_REF);
                 // 字段默认值,用于excel不填写时的默认填充
                 field.OriginalDefaultValue = GetContent(rawField.AppendDef, ConstString.STR_DEFAULT);
                 // 内置字段

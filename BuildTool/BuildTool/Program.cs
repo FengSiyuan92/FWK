@@ -15,9 +15,12 @@ namespace BuildTool
 
         static void Main(string[] args)
         {
-            //Channel.Test.Test.ParseTest();
-            HashSet<string> set = new HashSet<string>();
-            var a = 0;
+            Channel.Test.Test.ParseTest();
+            //HashSet<string> set = new HashSet<string>();
+            //var a = 0;
+
+
+            Console.ReadKey();
         }
 
     }

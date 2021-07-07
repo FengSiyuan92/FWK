@@ -24,7 +24,6 @@ namespace Channel
             "*.xlsx",
         };
 
-
         static Dictionary<string, IFileAgent> allAgents = new Dictionary<string, IFileAgent>();
         /// <summary>
         /// 注册一个源文件,可以使用多线程启动注册
@@ -32,6 +31,13 @@ namespace Channel
         /// <param name="filePath"></param>
         public static void RegisterFile(string filePath)
         {
+
+            var fileName = Path.GetFileName(filePath);
+            if (fileName.StartsWith("$") || fileName.StartsWith("~"))
+            {
+                return;
+            }
+
             var ex = Path.GetExtension(filePath);
             IFileAgent agent = null;
             switch (ex)

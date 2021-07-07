@@ -29,8 +29,14 @@ namespace Channel
                 if (datas.ContainsKey(key))
                 {
                     CLog.LogError("重复向类型:{0} 中添加key为{1}的数据", obj.ClassName, obj.KeyToString);
+                    return;
                 }
                 datas.Add(key, obj);
+            }
+
+            public DataObject[] AllDatas()
+            {
+                return datas.Values.ToArray();
             }
         }
 

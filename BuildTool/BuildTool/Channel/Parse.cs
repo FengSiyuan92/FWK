@@ -11,6 +11,7 @@ namespace Channel
         public static void StartParse()
         {
             FileAgent.LoadContent();
+            Check.OverParse();
         }
     }
 }

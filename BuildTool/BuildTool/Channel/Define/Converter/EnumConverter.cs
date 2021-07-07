@@ -14,7 +14,6 @@ namespace Channel.Define.Converter
             return typeof(int);
         }
 
-
         int TryGetValue(string name)
         {
             int v = 0;
@@ -37,7 +36,7 @@ namespace Channel.Define.Converter
                 var res = TryGetValue(value);
                 if (res == -1)
                 {
-                    CLog.LogError("枚举转换失败:{0}的{1}", e.Name, originalValue);
+                    CLog.LogError("枚举转换失败:想把数据'{0}'转换成{1}类型,返回值-1", originalValue, e.Name);
                 }
                 return res;
             }
@@ -48,7 +47,7 @@ namespace Channel.Define.Converter
                 if (res == -1 && 
                     !(value.Equals(ConstString.STR_NIL) || value.Equals(ConstString.STR_NULL)))
                 {
-                    CLog.LogError("枚举转换失败:{0}的{1}", e.Name, value);
+                    CLog.LogError("枚举转换失败:想把数据'{0}'转换成{1}类型,返回值-1", value,e.Name);
                 }
                 else
                 {

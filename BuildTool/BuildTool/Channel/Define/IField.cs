@@ -42,7 +42,7 @@ namespace Channel.Define
         /// <summary>
         /// 别名的指向,为string.Empty时说明不使用别名
         /// </summary>
-        public string AliasRefPos { get; internal set; }
+        public string RefPos { get; internal set; }
 
         /// <summary>
         /// 原始填入的默认值
@@ -58,8 +58,15 @@ namespace Channel.Define
         /// 自定义分隔符数组
         /// </summary>
         internal char[] Seps;
-
+        /// <summary>
+        /// 字段索引
+        /// </summary>
         internal int FieldIndex;
+
+        /// <summary>
+        /// 原生定义关联
+        /// </summary>
+        internal RawDefine.RawFieldDef RawDefine;
     }
 
 

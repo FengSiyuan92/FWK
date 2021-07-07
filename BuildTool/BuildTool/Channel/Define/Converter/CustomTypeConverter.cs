@@ -24,6 +24,10 @@ namespace Channel.Define.Converter
         {
             var sep = Utils.GetCustomSep(template, depth, ConstString.SEP_LEVEL_3);
             var t = Lookup.CustomType[Name];
+            if (t== null)
+            {
+                return null;
+            }
 
             var allFieldNames = t.AllFieldName();
             var slice = Utils.Split(content, sep);;
