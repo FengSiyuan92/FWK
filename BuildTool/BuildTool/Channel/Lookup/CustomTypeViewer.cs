@@ -64,9 +64,7 @@ namespace Channel
         {
             get
             {
- 
                 customTypeViewer = customTypeViewer ?? new CustomTypeViewer();
-      
                 return customTypeViewer;
             }
         }

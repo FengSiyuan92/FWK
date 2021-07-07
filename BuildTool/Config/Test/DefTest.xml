@@ -7,7 +7,7 @@
 	</enum>
 
 	<obj type="Consume">
-			<var name="item_id" type="int" out="cs" index="1"/>
+			<var name="item_id" type="int" out="cs" index="1" ref="Item.id"/>
 			<var name="use_count" type="int" index="2"/>
 	</obj>
 

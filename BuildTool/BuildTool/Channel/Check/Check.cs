@@ -58,36 +58,60 @@ namespace Channel
     internal class InnerCheckFunc
     {
 
-        const string errortip = "不存在名称为{0}的枚举类型,但是却有配置表要使用该类型=>{1}";
+        const string enumerrortip = "枚举类型{0}不存在,对应类型的数据将被忽略,无法解析与导出=>{1}";
+        const string customerrortip = "类型{0}不存在,对应类型的数据将被忽略,无法解析与导出=>{1}";
         /// <summary>
         /// 检查扩展的类型转换器是否可用
         /// </summary>
         public static void CheckConverterValid()
         {
-            var allextend = ExtendConverter.allExtend;
-            foreach (var item in allextend)
+
+            // 深度遍历所有customType的字段转换器,如果转换器不存在则标记不可用并提示
+            var customs = Lookup.CustomType.AllName();
+            Utils.Parallel(customs, CheckCustomConvertValid);
+
+        }
+
+        static void CheckCustomConvertValid(string name)
+        {
+            var t = Lookup.CustomType[name];
+            foreach (var item in t.fields)
             {
-                if (item is EnumConverter)
-                {
-                    var name = (item as EnumConverter).Name;
-                    var e = Lookup.Enum[name];
-                    if (e == null)
-                    {
-                        CLog.LogError(errortip, name);
-                    }
-                }
-                else if (item is CustomTypeConverter)
-                {
-                    var name = (item as CustomTypeConverter).Name;
-                    var c = Lookup.CustomType[name];
-                    if (c == null)
-                    {
-                        CLog.LogError(errortip, name);
-                    }
-                }
+                var field = item.Value;
+                var convert = field.Convert;
+                convert.Valid = CheckConverter(convert, field);
             }
         }
 
+        static bool CheckConverter(Converter convert, Field field)
+        {
+            if (convert is EnumConverter)
+            {
+                var e = convert as EnumConverter;
+                if (Lookup.Enum[e.Name] == null)
+                {
+                    CLog.LogError(enumerrortip, e.Name, field.Source());
+                    return false;
+                }
+           
+            }
+            else if (convert is CustomTypeConverter)
+            {
+                var c = convert as CustomTypeConverter;
+                if (Lookup.CustomType[c.Name] == null)
+                {
+                    CLog.LogError(customerrortip, c.Name, field.Source());
+                    return false;
+                }
+            }
+            else if (convert is ListConverter)
+            {
+                var l = convert as ListConverter;
+                var sub = l.element;
+                return CheckConverter(sub, field);
+            }
+            return true;
+        }
 
         /// <summary>
         /// 检查字段引用是否合规
@@ -167,6 +191,8 @@ namespace Channel
             Utils.Parallel(allCheckName, (i)=> CheckRef(i, refContent));
         }
 
+
+        const string refErrorTip = "{0}类型中不存在{1}={2}的数据,但是却想在=>{3}.{4}中使用";
         static void CheckRef(KeyValuePair<string, List<Field>> item,
             Dictionary<string, Dictionary<string, HashSet<object>>> refContent)
         {
@@ -194,7 +220,7 @@ namespace Channel
                     var objData = data[field.FieldName];
                     if (!Utils.EqualsContains(content, objData))
                     {
-                        CLog.LogError("{0}类型中不存在{1}={2}的数据,但是却想在=>{3}.{4}中使用",
+                        CLog.LogError(refErrorTip, 
                             targetClassName, targetFieldName, objData.ToString(),
                             data.Source(), field.FieldName);
                     }

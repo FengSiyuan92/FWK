@@ -160,7 +160,18 @@ namespace Channel.Agent.XML
                 }
                 fieldDefine.FieldType = node.GetNodeAttributeValue(ConstString.XML_TYPE_TITLE);
                 fieldDefine.OutputType = node.GetNodeAttributeValue(ConstString.XML_OUTPUT_TYPE_TITLE);
-                fieldDefine.AppendDef = node.GetNodeAttributeValue(ConstString.XML_DESC_TITLE);
+
+                var refPos = node.GetNodeAttributeValue(ConstString.XML_REF_TITLE);
+                refPos = string.IsNullOrEmpty(refPos) ? refPos : "ref=" + refPos;
+
+                var defaultValue = node.GetNodeAttributeValue(ConstString.XML_DEFAULT_TITLE);
+                defaultValue = string.IsNullOrEmpty(defaultValue) ? defaultValue : "default=" + refPos;
+
+                string[] append = new string[] {
+                    refPos,defaultValue
+                };
+
+                fieldDefine.AppendDef = string.Join("&", append);
                 fieldDefine.CheckRule = node.GetNodeAttributeValue(ConstString.XML_CHECK_RULE_TITLE);
                 var index = node.GetNodeAttributeValue(ConstString.XML_FIELD_INDEX);
                 int defIndex = 0;

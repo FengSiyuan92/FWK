@@ -38,6 +38,6 @@ namespace Channel
         }
 
 
-        public static bool ASYNC = true;
+        public static bool ASYNC = false;
     }
 }

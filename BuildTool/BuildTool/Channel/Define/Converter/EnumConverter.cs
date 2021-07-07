@@ -7,7 +7,7 @@ using Channel.Define.Class;
 
 namespace Channel.Define.Converter
 {
-    internal class EnumConverter : ExtendConverter,ISource
+    internal class EnumConverter : Converter, ISource
     {
         public override Type GetResultType()
         {

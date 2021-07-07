@@ -18,11 +18,12 @@ namespace Channel.Data
 
         CustomType t;
 
-        internal DataObject(string className)
+        internal DataObject(string className, string sourceInfo)
         {
             ClassName = className;
             ori = new Hashtable();
             t = Lookup.CustomType[className];
+            SourceInfo = sourceInfo;
         }
 
         internal void SetKV(Dictionary<string, string> originalKV)
@@ -32,7 +33,12 @@ namespace Channel.Data
                 var fieldName = item.Key;
                 var original = item.Value;
                 var fieldType = t[fieldName];
-                var res = fieldType.Convert.Convert(this, item.Value, fieldType);
+                var convert = fieldType.Convert;
+                if (!convert.Valid)
+                {
+                    continue;
+                }
+                var res = convert.Convert(this, item.Value, fieldType);
                 ori.Add(fieldName, res);
                 if (fieldType.IsKey)
                 {
@@ -50,10 +56,7 @@ namespace Channel.Data
         }
 
 
- 
-
-
-        internal string SourceInfo;
+        string SourceInfo;
         public string Source()
         {
             return SourceInfo;

@@ -332,13 +332,11 @@ namespace Channel.Agent.Excel
                         titleAndContent.Add(fieldName, content);
                     }
 
-                    DataObject data = new DataObject(tabName);
-                    data.SourceInfo = string.Format("{0}第{1}行", filePath, currentRow.RowNum+1);
+                    DataObject data = new DataObject(tabName, string.Format("{0} 第{1}行", filePath, currentRow.RowNum + 1));
                     data.SetKV(titleAndContent);
                     Lookup.AddData(data);
                 }
             }
-
         }
 
    

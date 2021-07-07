@@ -23,26 +23,10 @@ namespace Channel.Define.Converter
         }
 
         internal abstract int SepLevel();
-   
+
+        public bool Valid { get; internal set; } = true;
 
     }
-
-
-    internal abstract class ExtendConverter : Converter
-    {
-        internal static List<ExtendConverter> allExtend = new List<ExtendConverter>();
-
-        public override Type GetResultType()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ExtendConverter()
-        {
-            allExtend.Add(this);
-        }
-    }
-
 
     //public class ListConverter : Converter
     //{

@@ -9,7 +9,7 @@ namespace Channel.Define.Converter
     internal class ListConverter : Converter
     {
 
-        Converter element;
+        internal Converter element;
         DataArray defArray;
         Type arrType;
         char defSep;

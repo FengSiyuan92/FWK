@@ -44,6 +44,8 @@ namespace Channel
         public const string XML_NAME_TITLE = "name";
         public const string XML_VALUE_TITLE = "value";
         public const string XML_DESC_TITLE = "desc";
+        public const string XML_DEFAULT_TITLE = "default";
+        public const string XML_REF_TITLE = "ref";
         public const string XML_CHECK_RULE_TITLE = "check";
         public const string XML_OUTPUT_TYPE_TITLE = "out";
         public const string XML_ALIAS_TITLE = "alias";

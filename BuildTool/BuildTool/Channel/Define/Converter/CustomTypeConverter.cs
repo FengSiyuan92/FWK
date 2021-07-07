@@ -7,7 +7,7 @@ using Channel.Define.Class;
 
 namespace Channel.Define.Converter
 {
-    internal class CustomTypeConverter : ExtendConverter , ISource
+    internal class CustomTypeConverter : Converter , ISource
     {
         public override Type GetResultType()
         {
@@ -39,10 +39,10 @@ namespace Channel.Define.Converter
                 var v = slice.Count > targetIndex ? Utils.TrimSign(slice[targetIndex]) : ConstString.STR_EMPTY;
                 kv.Add(fieldName, v);
             }
-            var obj = new Data.DataObject(Name);
-            obj.SourceInfo = original.Source();
-            obj.SetKV(kv);
-            return obj;
+            var data = new Data.DataObject(Name, original.Source());
+            data.SetKV(kv);
+            Lookup.AddData(data);
+            return data;
         }
 
         internal override int SepLevel()
