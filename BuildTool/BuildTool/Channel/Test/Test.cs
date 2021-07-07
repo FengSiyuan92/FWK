@@ -33,8 +33,7 @@ namespace Channel.Test
                IntTest,FloatTest,StringTest,Vector2Test,DefTest,EnumTest,CustomTest,RefTest
             };
 
-
-            Utils.Parallel(filePath, FileAgent.RegisterFile);
+            FileAgent.RegisterFiles(filePath);
             Compile.StartCompile();
         }
 
