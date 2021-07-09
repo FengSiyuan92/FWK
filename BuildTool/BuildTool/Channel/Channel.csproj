@@ -63,6 +63,8 @@
     <Compile Include="Check\InnerCheck_CheckReferenceValid.cs" />
     <Compile Include="Check\InnerCheck_ConvertValid.cs" />
     <Compile Include="CLog.cs" />
+    <Compile Include="Output\LuaOutput\DevLuaWriter.cs" />
+    <Compile Include="Output\CodeWriter.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Agent\Excel\ExcelAgent.cs" />
     <Compile Include="Agent\Excel\Extend.cs" />
@@ -99,8 +101,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

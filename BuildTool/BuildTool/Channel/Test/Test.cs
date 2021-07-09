@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
-namespace Channel.Test
+namespace Channel
 {
     public class Test
     {
@@ -52,6 +52,8 @@ namespace Channel.Test
             Parser.ParseData();
             sw.Stop();
             Console.WriteLine("测试结束,总用时=" + sw.Elapsed.TotalSeconds + "s");
+            CodeWriter.WriteCode(@"F:\FWK\BuildTool\Config", CodeWriter.CodeType.DevLua);
+
         }
 
 

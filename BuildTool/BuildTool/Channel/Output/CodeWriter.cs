@@ -12,25 +12,25 @@ namespace Channel
     {
         public enum CodeType
         {
-            Lua = 0,
-
+            // 开发版本的lua代码. 注重可读性,不考虑文件体积压缩\common拆分等问题
+            DevLua = 0,
+            // 长字符走引用,重复table走引用,删除空格,使用数组存储数据而非kv形式,压缩配置文件大小.
+            Lua = 1,
         }
+
         public static void WriteCode(string outputDir, CodeType codeType)
         {
-
-            if (!Directory.Exists(outputDir))
-            {
-                Directory.CreateDirectory(outputDir);
-            }
-
+      
             switch (codeType)
             {
-                case CodeType.Lua:
-                    Output.LuaOutput.LuaWriter.Write(outputDir);
+                case CodeType.DevLua:
+                    Output.LuaOutput.DevLuaWriter.Write(outputDir);
                     break;
                 default:
                     break;
             }
+
+            CLog.OutputAndClearCache("写入文件结束");
         }
     }
 }

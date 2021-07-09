@@ -85,6 +85,14 @@ namespace Channel
             {
                 return KeyTable ? datas.Values.ToArray() : datasWithoutKey.ToArray();
             }
+
+            public DataObject[] GetAllSortedDatas()
+            {
+                var items = datas.Values.ToArray();
+                Array.Sort(items, (a, b) => a.KeyToString.CompareTo(b.KeyToString));
+                return items;
+            }
+
         }
         /// <summary>
         /// 通过k-v形式缓存了所有已经生成的数据对象, 其中k是对应数据对象实例的类型名称,v是对应类型的数据对象实例查看器

@@ -111,6 +111,13 @@ namespace Channel.Define
         }
 
 
+        public Item[] GetAllSortedItem()
+        {
+            var items = name2ItemMap.Values.ToArray();
+            Array.Sort(items, (a, b) => a.Value - b.Value);
+            return items;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

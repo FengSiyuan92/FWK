@@ -20,6 +20,8 @@ namespace Channel.Define
     {
         public CustomClass Belong;
 
+        public string Alias { get; internal set; }
+
         /// <summary>
         /// 字段名称
         /// </summary>

@@ -223,5 +223,20 @@ namespace Channel
 
             valieFieldNameChar.Add('_');
         }
+
+        internal static StreamWriter SafeCreateNewFile(string filePath)
+        {
+            var dir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            return new FileInfo(filePath).CreateText();
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace BuildTool
     {
         static void Main(string[] args)
         {
-            Channel.Test.Test.TestF();
+            Channel.Test.TestF();
             //HashSet<string> set = new HashSet<string>();
 
             Console.ReadKey();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.IO;
 namespace Channel
 {
     internal static class ConstString
@@ -52,5 +52,8 @@ namespace Channel
         public const string XML_ENUM_DEF_TYPE = "enum";
         public const string XML_OBJ_DEF_TYPE = "obj";
         public const string XML_FIELD_INDEX = "index";
+
+
+        public static string TempPath = Path.Combine(Path.GetTempPath(), "BuildExcelTempOutput");
     }
 }

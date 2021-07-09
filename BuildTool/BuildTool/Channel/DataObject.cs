@@ -16,13 +16,13 @@ namespace Channel
         // 内容存储器
         Hashtable ori;
 
-        public CustomClass t { get; private set; }
+        public CustomClass ClassInfo { get; private set; }
 
         internal DataObject(string className, string sourceInfo)
         {
             ClassName = className;
             ori = new Hashtable();
-            t = Lookup.CustomType[className];
+            ClassInfo = Lookup.CustomType[className];
             SourceInfo = sourceInfo;
         }
 
@@ -32,7 +32,7 @@ namespace Channel
             {
                 var fieldName = item.Key;
                 var original = item.Value;
-                var fieldType = t[fieldName];
+                var fieldType = ClassInfo[fieldName];
                 var convert = fieldType.Convert;
                 if (!convert.Valid)
                 {
@@ -88,8 +88,8 @@ namespace Channel
             var target = obj as DataObject;
             if (target == null) return false;
 
-            if (t != target.t) return false;
-            var allfieldName = t.AllFieldName();
+            if (ClassInfo != target.ClassInfo) return false;
+            var allfieldName = ClassInfo.AllFieldName();
 
             for (int i = 0; i < allfieldName.Length; i++)
             {
@@ -100,5 +100,20 @@ namespace Channel
             }
             return true;
         }
+
+
+        public KeyValuePair<string, object>[] GetAllSortedField()
+        {
+            var keys = ClassInfo.GetSortedFieldKeys();
+            KeyValuePair<string, object>[] result = new KeyValuePair<string, object>[keys.Length];
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                result[i] = new KeyValuePair<string, object>(keys[i], ori[keys[i]]);
+            }
+            return result;
+         
+        }
+
     }
 }

@@ -18,7 +18,25 @@ namespace Channel.Define
 
         internal Dictionary<string, Field> fields { get; private set; } = new Dictionary<string, Field>();
 
-        Field KeyField;
+        public Field KeyField { get; private set; }
+
+        object fieldKeysLock = new object();
+        string[] SortedFieldKeys;
+
+        public string[] GetSortedFieldKeys()
+        {
+            lock (fieldKeysLock)
+            {
+                if (SortedFieldKeys == null)
+                {
+                    SortedFieldKeys = fields.Keys.ToArray();
+                    Array.Sort(SortedFieldKeys, (a, b) => a.CompareTo(b));
+                }
+            }
+
+            return SortedFieldKeys;
+        }
+       
 
         public void AddField(Field field)
         {
