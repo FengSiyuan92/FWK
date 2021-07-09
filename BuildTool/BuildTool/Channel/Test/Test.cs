@@ -43,12 +43,6 @@ namespace Channel.Test
         const string ConfigDir = @"F:\FWK\BuildTool\Config";
 
 
-        public static void TypeDefineTest()
-        {
-            Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-           
-        }
-
        public static void TestF()
         {
             Stopwatch sw = new Stopwatch();
@@ -62,10 +56,7 @@ namespace Channel.Test
 
 
         public static void ParseTest()
-        {
-            TypeDefineTest();
-           
-
+        { 
             var namei = "arraydefaultsep";
             var i1 = Lookup.Datas["IntTest"][1][namei];
             var i2 = Lookup.Datas["IntTest"][2][namei];

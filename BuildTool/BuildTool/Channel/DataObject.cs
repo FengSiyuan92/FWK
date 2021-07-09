@@ -16,7 +16,7 @@ namespace Channel
         // 内容存储器
         Hashtable ori;
 
-        CustomClass t;
+        public CustomClass t { get; private set; }
 
         internal DataObject(string className, string sourceInfo)
         {
@@ -61,7 +61,6 @@ namespace Channel
         {
             return SourceInfo;
         }
-
 
         public override string ToString()
         {
