@@ -18,7 +18,7 @@ namespace Channel
             Clear();
         }
 
-        const string split = "********************{0}************************";
+        const string split = "******************** {0} ************************";
 
         public static void Output(string title= ConstString.STR_EMPTY)
         {

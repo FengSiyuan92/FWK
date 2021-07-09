@@ -150,6 +150,34 @@ namespace Channel
             return false;
         }
 
+        static HashSet<char> valieFieldNameChar = new HashSet<char>();
+   
+        public static bool FieldNameValid(string fieldName)
+        {
+            fieldName = fieldName.Trim();
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < fieldName.Length; i++)
+            {
+                var c = fieldName[i];
+                if (!valieFieldNameChar.Contains(c))
+                {
+                    CLog.LogError("字段名包含违法字符'{0}'", c);
+                    return false;
+                }
+            }
+
+            if ( fieldName[0] <= 57 && fieldName[0] >= 48)
+            {
+                CLog.LogError("字段名'{0}'不能以数值开头",fieldName);
+                return false;
+            }
+            return true;
+        }
+
         internal static void Parallel<T>(IEnumerable<T> items, Action<T> action)
         {
             if (GlobalArgs.ASYNC)
@@ -177,5 +205,23 @@ namespace Channel
             }
         }
 
+
+        static Utils()
+        {
+            for (int i = 'a'; i <= 'z'; i++)
+            {
+                valieFieldNameChar.Add((char)i);
+            }
+            for (int i = 'A'; i <= 'Z'; i++)
+            {
+                valieFieldNameChar.Add((char)i);
+            }
+            for (int i = '0'; i <= '9'; i++)
+            {
+                valieFieldNameChar.Add((char)i);
+            }
+
+            valieFieldNameChar.Add('_');
+        }
     }
 }

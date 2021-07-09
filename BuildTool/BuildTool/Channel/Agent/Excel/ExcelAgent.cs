@@ -216,6 +216,12 @@ namespace Channel.Agent.Excel
                 // 字段名称
                 fDef.FieldName = cell.GetValue();
                 fDef.SourceInfo = string.Format("{0}:{1}.{2}", filePath, def.Name, fDef.FieldName);
+                if (!Utils.FieldNameValid(fDef.FieldName))
+                {
+                    CLog.LogError("错误字段名 => {0}", fDef.SourceInfo);
+                    continue;
+                }
+
                 def.AddFieldDefine(fDef);
 
                 // 字段类型
@@ -288,13 +294,12 @@ namespace Channel.Agent.Excel
                         if (cell == null) continue;
                         // 没配置字段名
                         var value = cell.GetValue();
-                        if (string.IsNullOrEmpty(value)) continue;
+                        if (!Utils.FieldNameValid (value)) continue;
                         // 添加有效的字段名称
                         title.Add(i, value);
                     }
                 }
             }
-
             return title;
         }
 
