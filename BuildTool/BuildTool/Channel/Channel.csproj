@@ -60,14 +60,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check\Check.cs" />
+    <Compile Include="Check\InnerCheck_CheckReferenceValid.cs" />
+    <Compile Include="Check\InnerCheck_ConvertValid.cs" />
     <Compile Include="CLog.cs" />
-    <Compile Include="Compile.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Agent\Excel\ExcelAgent.cs" />
     <Compile Include="Agent\Excel\Extend.cs" />
     <Compile Include="ConstString.cs" />
-    <Compile Include="Data\Data.cs" />
-    <Compile Include="Define\Class\DataArray.cs" />
-    <Compile Include="Define\Class\Vector.cs" />
+    <Compile Include="DataObject.cs" />
+    <Compile Include="Define\DataArray.cs" />
+    <Compile Include="Define\Vector.cs" />
     <Compile Include="Define\Converter\ConverterBase.cs" />
     <Compile Include="Define\Converter\CustomTypeConverter.cs" />
     <Compile Include="Define\Converter\EnumConverter.cs" />
@@ -76,11 +78,10 @@
     <Compile Include="Define\Converter\ListConverter.cs" />
     <Compile Include="Define\Converter\StringConverter.cs" />
     <Compile Include="Define\Converter\VectorConverter.cs" />
-    <Compile Include="Define\IField.cs" />
-    <Compile Include="Define\Class\CustomType.cs" />
-    <Compile Include="Define\TypeConvert.cs" />
-    <Compile Include="Define\Class\Enum.cs" />
-    <Compile Include="FileAgent.cs" />
+    <Compile Include="Define\Field.cs" />
+    <Compile Include="Define\CustomClass.cs" />
+    <Compile Include="Define\Enum.cs" />
+    <Compile Include="Agent\FileAgent.cs" />
     <Compile Include="Agent\XML\Extend.cs" />
     <Compile Include="Agent\XML\XMLAgent.cs" />
     <Compile Include="GlobalArgs.cs" />
@@ -91,7 +92,6 @@
     <Compile Include="Lookup\EnumViewer.cs" />
     <Compile Include="Lookup\CustomTypeViewer.cs" />
     <Compile Include="Lookup\RawDefineViewer.cs" />
-    <Compile Include="Parse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\Test.cs" />
     <Compile Include="Utils.cs" />
@@ -99,6 +99,8 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

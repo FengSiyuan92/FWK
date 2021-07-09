@@ -9,9 +9,5 @@ namespace Channel
 {
     public static partial class Lookup
     { 
-        public static void Test()
-        {
-            var a = 0;
-        }
     }
 }

@@ -16,9 +16,10 @@ namespace Channel.Define
         OnlyServer,
     }
 
-
     public class Field:ISource
     {
+        public CustomClass Belong;
+
         /// <summary>
         /// 字段名称
         /// </summary>

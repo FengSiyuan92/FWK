@@ -4,11 +4,11 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Channel.Define.Class;
-using System.Text;
-namespace Channel.Data
+using Channel.Define;
+
+namespace Channel
 {
-    public class DataObject:ISource
+    public class DataObject : ISource
     { 
         public string ClassName { get; private set; }
         public string KeyToString { get; private set;}
@@ -16,7 +16,7 @@ namespace Channel.Data
         // 内容存储器
         Hashtable ori;
 
-        CustomType t;
+        CustomClass t;
 
         internal DataObject(string className, string sourceInfo)
         {

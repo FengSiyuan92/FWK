@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Threading;
+using System.Diagnostics;
 namespace Channel.Test
 {
     public class Test
@@ -44,16 +45,26 @@ namespace Channel.Test
 
         public static void TypeDefineTest()
         {
+            Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
            
-            FileAgent.RegisterDir(ConfigDir);
-            Compile.StartCompile();
+        }
+
+       public static void TestF()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            FileAgent.Register(ConfigDir);
+            Parser.Compile();
+            Parser.ParseData();
+            sw.Stop();
+            Console.WriteLine("测试结束,总用时=" + sw.Elapsed.TotalSeconds + "s");
         }
 
 
         public static void ParseTest()
         {
             TypeDefineTest();
-            Parse.StartParse();
+           
 
             var namei = "arraydefaultsep";
             var i1 = Lookup.Datas["IntTest"][1][namei];
@@ -93,39 +104,6 @@ namespace Channel.Test
             var a = 0;
         }
 
-        public static void TestFunc()
-        {
-
-            //var allEnums = Lookup.Enum.AllName();
-            //foreach (var enumName in allEnums)
-            //{
-            //    var e = Lookup.Enum[enumName];  //Lookup.LookEnum(enumName);
-
-            //    var fieldName = e.GetAllItemName();
-            //    foreach (var item in fieldName)
-            //    {
-            //        CLog.LogError(e.GetItemByFieldName(item).ToString());
-            //    }
-            //}
-
-            //foreach (var enumName in allEnums)
-            //{
-            //    var e = Lookup.Enum[enumName];
-            //    CLog.Log(e.ToString());
-            //}
-
-
-
-            //var s1 = "alias|key1";
-            //var s2 = "key|default=25|alias=Item.name";
-            //var s3 = "key";
-            //var s4 = "alias";
-
-            //var t = typeof(Channel.Define.CompileType.IntConverter);
-            //var i = (new Channel.Define.CompileType.IntConverter() )as Channel.Define.CompileType.Converter;
-            //var t2 = i.GetType();
-            //Console.ReadKey();
-            //var a = 0;
-        }
+   
     }
 }

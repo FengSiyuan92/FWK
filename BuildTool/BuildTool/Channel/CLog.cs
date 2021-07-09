@@ -12,7 +12,6 @@ namespace Channel
         static HashSet<string> warning = new HashSet<string>();
         static HashSet<string> error = new HashSet<string>();
 
-
         public static void OutputAndClearCache(string title)
         {
             Output(title);

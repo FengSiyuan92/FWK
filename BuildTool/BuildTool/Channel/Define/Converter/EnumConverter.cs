@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Channel.Define.Class;
+using Channel.Define;
 
 namespace Channel.Define.Converter
 {
@@ -29,7 +29,7 @@ namespace Channel.Define.Converter
         }
 
         const string errortip = "把数据'{0}'转换成枚举类型'{1}'失败,将返回错误值-1 => {2}.{3}";
-        public override object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0)
+        public override object Convert(DataObject original, string originalValue, Field template, int depth = 0)
         {
             if (!string.IsNullOrEmpty(originalValue))
             {
@@ -70,7 +70,7 @@ namespace Channel.Define.Converter
             return SourceInfo;
         }
 
-        Channel.Define.Class.Enum e = null;
+        Enum e = null;
         public string Name { get; private set; }
         public EnumConverter(string enumName):base()
         {

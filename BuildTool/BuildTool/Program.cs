@@ -10,14 +10,10 @@ namespace BuildTool
 {
     class Program
     {
-
-  
-
         static void Main(string[] args)
         {
-            Channel.Test.Test.ParseTest();
+            Channel.Test.Test.TestF();
             //HashSet<string> set = new HashSet<string>();
-            //var a = 0;
 
             Console.ReadKey();
         }

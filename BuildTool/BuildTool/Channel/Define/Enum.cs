@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Channel.Define;
-using System.Text;
 
-namespace Channel.Define.Class
+namespace Channel.Define
 {
     public class Enum
     {
@@ -26,6 +23,7 @@ namespace Channel.Define.Class
         public string FromFilePath { get; internal set; }
         public class Item
         {
+            public Enum Belong { get; internal set; }
             public string Name { get; internal set; }
             public int Value { get; internal set; }
             public string Alias { get; internal set; }
@@ -134,6 +132,7 @@ namespace Channel.Define.Class
         internal void AddEnumItem(string name, int value, OutputType outputType, string alias = "")
         {
             Item item = new Item();
+            item.Belong = this;
             item.Name = name;
             item.Value = value;
             item.OutputType = outputType;

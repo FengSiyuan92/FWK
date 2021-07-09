@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Channel.Define.Class;
+using Channel.Define;
 
 namespace Channel.Define.Converter
 {
@@ -14,7 +14,7 @@ namespace Channel.Define.Converter
             return typeof(Vector2);
         }
 
-        static Vector2 Parse(Data.DataObject original, string content, Field template, int depth = 0)
+        static Vector2 Parse(DataObject original, string content, Field template, int depth = 0)
         {
             var sep = Utils.GetCustomSep(template, depth);
             var slice = Utils.Split(content, sep);
@@ -27,7 +27,7 @@ namespace Channel.Define.Converter
                );
         }
 
-        public override object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0)
+        public override object Convert(DataObject original, string originalValue, Field template, int depth = 0)
         {
             Vector2 vec = null;
             if (!string.IsNullOrEmpty(originalValue))
@@ -68,7 +68,7 @@ namespace Channel.Define.Converter
             return typeof(Vector3);
         }
 
-        static Vector3 Parse(Data.DataObject original, string content, Field template, int depth = 0)
+        static Vector3 Parse(DataObject original, string content, Field template, int depth = 0)
         {
             var sep = Utils.GetCustomSep(template, depth);
             var slice = Utils.Split(content, sep);
@@ -84,7 +84,7 @@ namespace Channel.Define.Converter
                );
         }
 
-        public override object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0)
+        public override object Convert(DataObject original, string originalValue, Field template, int depth = 0)
         {
             Vector3 vec = null;
             if (!string.IsNullOrEmpty(originalValue))
@@ -120,7 +120,7 @@ namespace Channel.Define.Converter
             return typeof(Vector4);
         }
 
-        static Vector4 Parse(Data.DataObject original, string content, Field template, int depth = 0)
+        static Vector4 Parse(DataObject original, string content, Field template, int depth = 0)
         {
             var sep = Utils.GetCustomSep(template, depth);
             var slice = Utils.Split(content, sep);
@@ -139,7 +139,7 @@ namespace Channel.Define.Converter
                ); ;
         }
 
-        public override object Convert(Data.DataObject original,string originalValue, Field template, int depth = 0)
+        public override object Convert(DataObject original,string originalValue, Field template, int depth = 0)
         {
             Vector4 vec = null;
             if (!string.IsNullOrEmpty(originalValue))

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Channel.Define.Class
+namespace Channel.Define
 {
-    public class CustomType
+    public class CustomClass
     {
         public string Name { get; private set; }
 
-        public CustomType(string name)
+        public CustomClass(string name)
         {
             Name = name;
             Lookup.AddObjDefine(this);
@@ -59,7 +59,7 @@ namespace Channel.Define.Class
 
         public override bool Equals(object obj)
         {
-            var target = obj as CustomType;
+            var target = obj as CustomClass;
             if (target == null) return false;
 
             if (!Name.Equals(target.Name, StringComparison.OrdinalIgnoreCase)) return false;

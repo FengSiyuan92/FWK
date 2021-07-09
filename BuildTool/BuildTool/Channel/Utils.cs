@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using NPOI.SS.UserModel;
 using System.IO;
 using System.Threading;
-
+using Channel.Define;
 namespace Channel
 {
     public class Utils
@@ -45,7 +45,7 @@ namespace Channel
         };
 
 
-        internal static char GetCustomSep(Define.Field field, int depth, char defaultSep = ConstString.SEP_LEVEL_2)
+        internal static char GetCustomSep(Field field, int depth, char defaultSep = ConstString.SEP_LEVEL_2)
         {
             if (field.Seps!= null && field.Seps.Length > depth)
             {
@@ -155,7 +155,6 @@ namespace Channel
             if (GlobalArgs.ASYNC)
             {
                 var resetEvents = new List<ManualResetEvent>();
-
                 foreach (var item in items)
                 {
                     var evt = new ManualResetEvent(false);
@@ -165,10 +164,9 @@ namespace Channel
                         action((T)i);
                         evt.Set();
                     }, item);
-          
                 }
-
                 WaitHandle.WaitAll(resetEvents.ToArray());
+                Thread.CurrentThread.Priority = ThreadPriority.Normal;
             }
             else
             {

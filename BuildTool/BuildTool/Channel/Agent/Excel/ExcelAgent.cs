@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NPOI.SS.UserModel;
 using System.IO;
 using Channel.RawDefine;
-using Channel.Data;
+using Channel;
 
 namespace Channel.Agent.Excel
 {

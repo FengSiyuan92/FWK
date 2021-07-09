@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Channel.Define.Class;
+using Channel.Define;
 
 namespace Channel.Define.Converter
 {
@@ -11,7 +11,7 @@ namespace Channel.Define.Converter
     {
         public override Type GetResultType()
         {
-            return typeof(Data.DataObject);
+            return typeof(DataObject);
         }
 
         public string Name { get; private set; }
@@ -20,7 +20,7 @@ namespace Channel.Define.Converter
             this.Name = name;
         }
 
-        Data.DataObject GenObj(Data.DataObject original, string content, Field template, int depth)
+        DataObject GenObj(DataObject original, string content, Field template, int depth)
         {
             var sep = Utils.GetCustomSep(template, depth, ConstString.SEP_LEVEL_3);
             var t = Lookup.CustomType[Name];
@@ -39,7 +39,7 @@ namespace Channel.Define.Converter
                 var v = slice.Count > targetIndex ? Utils.TrimSign(slice[targetIndex]) : ConstString.STR_EMPTY;
                 kv.Add(fieldName, v);
             }
-            var data = new Data.DataObject(Name, original.Source());
+            var data = new DataObject(Name, original.Source());
             data.SetKV(kv);
             Lookup.AddData(data);
             return data;
@@ -61,9 +61,9 @@ namespace Channel.Define.Converter
             return max + 1;
         }
 
-        public override object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0)
+        public override object Convert(DataObject original, string originalValue, Field template, int depth = 0)
         {
-            Data.DataObject obj = null;
+            DataObject obj = null;
             if (!string.IsNullOrEmpty(originalValue))
             {
                 obj = GenObj(original, originalValue, template, depth);

@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Channel.RawDefine;
 using Channel.Define;
-using Enum = Channel.Define.Class.Enum;
+using Enum = Channel.Define.Enum;
 using System.Text.RegularExpressions;
 using Channel.Define.Converter;
-using Channel.Define.Class;
+using System.Diagnostics;
 
 namespace Channel
 {
-    public class Compile
+    public class Parser
     {
         // 基础数据类型
         // TODO: 支持DataTime
@@ -81,11 +81,20 @@ namespace Channel
             return Lookup.Enum[name] != null;
         }
 
-        public static void StartCompile()
+        /// <summary>
+        ///  开始执行定义编译操作
+        /// </summary>
+        public static void Compile()
         {
-
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             FileAgent.LoadAllDefine();
+            sw.Stop();
 
+            CLog.OutputAndClearCache(string.Format("读取定义完成,总耗时{0}s", sw.Elapsed.TotalSeconds));
+
+            sw.Reset();
+            sw.Start();
             // 初始化定义完成后,遍历定义执行编译
             var defineNames = Lookup.RawDefine.AllName();
 
@@ -94,8 +103,8 @@ namespace Channel
 
             // 编译完成后的检查
             Check.CompileOverCheck();
-
-            CLog.OutputAndClearCache("定义编译完成");
+            sw.Stop();
+            CLog.OutputAndClearCache(string.Format("定义编译完成,总耗时{0}s", sw.Elapsed.TotalSeconds));
         }
 
 
@@ -115,15 +124,9 @@ namespace Channel
             }
         }
 
-
-        static void GetFieldIndex(string ori)
-        {
-    
-        }
-
         static void CompileObjDefine1(RawObjDef rawDef)
         {
-            CustomType objDef = new CustomType(rawDef.Name);
+            CustomClass objDef = new CustomClass(rawDef.Name);
             var filedNames = rawDef.GetAllRawFieldName();
             foreach (var filedName in filedNames)
             {
@@ -266,7 +269,15 @@ namespace Channel
 
 
 
-        
+        public static void ParseData()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            FileAgent.LoadContent();
+            Check.OverParse();
+            sw.Stop();
+            CLog.OutputAndClearCache(string.Format("数据解析完成,总耗时{0}s", sw.Elapsed.TotalSeconds));
+        }
 
 
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Channel.Define.Class;
+using Channel.Define;
 namespace Channel.Define.Converter
 {
     internal class ListConverter : Converter
@@ -32,7 +32,7 @@ namespace Channel.Define.Converter
         /// <param name="defaultValue"></param>
         /// <param name="pms"></param>
         /// <returns></returns>
-        public override object Convert(Data.DataObject original, string originalValue, Field template, int depth = 0)
+        public override object Convert(DataObject original, string originalValue, Field template, int depth = 0)
         {
             if (string.IsNullOrEmpty(originalValue))
             {
@@ -47,7 +47,7 @@ namespace Channel.Define.Converter
             return _ConvertArray(original, originalValue, template, depth);
         }
 
-        object _ConvertArray(Data.DataObject original, string value, Field template, int depth)
+        object _ConvertArray(DataObject original, string value, Field template, int depth)
         {
             if (string.IsNullOrEmpty(value))
             {
