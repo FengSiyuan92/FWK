@@ -49,11 +49,6 @@ namespace Channel.Define
         public bool IsKey { get; internal set; }
 
         /// <summary>
-        /// 引用内容指向,为string.Empty时说明没有引用检查
-        /// </summary>
-        public string RefPos { get; internal set; }
-
-        /// <summary>
         /// 原始填入的默认值
         /// </summary>
         public string OriginalDefaultValue { get; internal set; }

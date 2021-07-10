@@ -9,51 +9,37 @@ namespace Channel
 {
     class InnerCheck_CheckReferenceValid
     {
-        /// <summary>
-        /// 检查字段引用是否合规
-        /// </summary>
-        public static void CheckReference()
-        {
-            // 缓存了所有需要检查的类名和下属字段名
-            Dictionary<string, List<Field>> allCheckName = new Dictionary<string, List<Field>>();
 
+        public static void Check(List<Rule.RuleInfo> infos)
+        {
             // 类型名 需要做内容备份的字段名
             Dictionary<string, HashSet<string>> contentIndex = new Dictionary<string, HashSet<string>>();
-            // 获取所有的类型定义名称
-            var allCustomType = Lookup.ClassInfo.AllName();
-            List<Field> targetFieldName = new List<Field>();
+            // 缓存了所有需要检查的类名和下属字段名
+            Dictionary<string, List<Rule.RuleInfo>> allCheckName = new Dictionary<string, List<Rule.RuleInfo>>();
 
-            // 通过标记引用的字段索引内容字段
-            foreach (var item in allCustomType)
+            List<Field> targetFieldName = new List<Field>();
+            foreach (var fieldInfo in infos)
             {
-                // 取到对应类型定义
-                var custom = Lookup.ClassInfo[item];
-                // 取到该类型下的所有字段定义名称
-                var fields = custom.AllFieldName();
-                foreach (var fieldName in fields)
+                var checkClassName = fieldInfo.field.Belong.Name;
+                List<Rule.RuleInfo> checkFields = null;
+                if (!allCheckName.TryGetValue(checkClassName, out checkFields))
                 {
-                    // 取到字段定义
-                    var field = custom[fieldName];
-                    // 有引用信息
-                    if (!string.IsNullOrEmpty(field.RefPos))
-                    {
-                        targetFieldName.Add(field);
-                        var candf = field.RefPos.Split('.');
-                        var targetClassName = candf[0];
-                        HashSet<string> names = null;
-                        if (!contentIndex.TryGetValue(targetClassName, out names))
-                        {
-                            names = new HashSet<string>();
-                            contentIndex.Add(targetClassName, names);
-                        }
-                        names.Add(candf[1]);
-                    }
+                    checkFields = new List<Rule.RuleInfo>();
+                    allCheckName.Add(checkClassName, checkFields);
                 }
-                if (targetFieldName.Count != 0)
+                checkFields.Add(fieldInfo);
+
+
+                var targetInfo = fieldInfo.ruleInfo;
+                var candf = targetInfo.Split('.');
+                var targetClassName = candf[0];
+                HashSet<string> names = null;
+                if (!contentIndex.TryGetValue(targetClassName, out names))
                 {
-                    allCheckName.Add(item, targetFieldName);
-                    targetFieldName = new List<Field>();
+                    names = new HashSet<string>();
+                    contentIndex.Add(targetClassName, names);
                 }
+                names.Add(candf[1]);
             }
 
             // 做引用内容备份 key classname key1 fieldname list objects
@@ -83,28 +69,26 @@ namespace Channel
 
                 refContent.Add(className, c);
             }
-
             Utils.Parallel(allCheckName, (i) => CheckRef(i, refContent));
         }
 
-
         const string refErrorTip = "{0}类型中不存在{1}={2}的数据,但是却想在=>{3}.{4}中使用";
-        static void CheckRef(KeyValuePair<string, List<Field>> item,
+        static void CheckRef(KeyValuePair<string, List<Rule.RuleInfo>> item,
             Dictionary<string, Dictionary<string, HashSet<object>>> refContent)
         {
-            var className = item.Key;
-            var fields = item.Value;
+            var checkClassName = item.Key;
+            var fieldInfos = item.Value;
 
-            var getter = Lookup.Datas[className];
+            var getter = Lookup.Datas[checkClassName];
             if (getter == null)
             {
                 return;
             }
             var allData = getter.AllDatas();
 
-            foreach (var field in fields)
+            foreach (var info in fieldInfos)
             {
-                var refPos = field.RefPos;
+                var refPos = info.ruleInfo;
                 var splitInfo = refPos.Split('.');
                 var targetClassName = splitInfo[0];
                 var targetFieldName = splitInfo[1];
@@ -113,12 +97,12 @@ namespace Channel
                 foreach (var data in allData)
                 {
                     // obj自己的数据
-                    var objData = data[field.FieldName];
+                    var objData = data[info.field.FieldName];
                     if (!Utils.EqualsContains(content, objData))
                     {
                         CLog.LogError(refErrorTip,
                             targetClassName, targetFieldName, objData.ToString(),
-                            data.Source(), field.FieldName);
+                            data.Source(), info.field.FieldName);
                     }
                 }
             }

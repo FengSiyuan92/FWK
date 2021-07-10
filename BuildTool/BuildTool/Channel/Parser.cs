@@ -102,7 +102,8 @@ namespace Channel
             Utils.Parallel(defineNames, CompileRawDef);
 
             // 编译完成后的检查
-            Check.CompileOverCheck();
+            Checker.CheckOnOverCompile();
+
             sw.Stop();
             CLog.OutputAndClearCache(string.Format("定义编译完成,总耗时{0}s", sw.Elapsed.TotalSeconds));
         }
@@ -141,17 +142,47 @@ namespace Channel
                 field.OutputType = GetOutputType(rawField.OutputType);
                 // 字段是否需要作为key值
                 field.IsKey = !string.IsNullOrEmpty(GetContent(rawField.AppendDef, ConstString.STR_KEY));
-                // 字段值引用内容信息
-                field.RefPos = GetContent(rawField.AppendDef, ConstString.STR_REF);
                 // 字段默认值,用于excel不填写时的默认填充
                 field.OriginalDefaultValue = GetContent(rawField.AppendDef, ConstString.STR_DEFAULT);
                 // 内置字段
                 field.FieldIndex = Math.Max(rawField.DefIndex - 1, 0);
+                var valid = objDef.AddField(field);
 
+                // 如果不是有效字段,就不再进行进一步解析编译
+                if (!valid) continue;
+         
+                // 解析自定义分隔符
                 var seps = GetContent(rawField.AppendDef, ConstString.STR_SEP);
                 if (!string.IsNullOrEmpty(seps))
                 {
                     field.Seps = seps.ToCharArray();
+                }
+
+                // 根据检查规则分组
+                var checkInfo = GetCheckInfo(rawField.CheckRule);
+                if (checkInfo != null)
+                {
+                    for (int i = 0; i < checkInfo.Count; i++)
+                    {
+                        var info = checkInfo[i];
+                        if (string.IsNullOrEmpty(info)) continue;
+      
+                        var index = info.IndexOf("=");
+                        string ruleName = info;
+                        string ruleInfo = ConstString.STR_EMPTY;
+                        if (index != -1)
+                        {
+                            ruleName = info.Substring(0, index);
+                            ruleInfo = index < info.Length - 1 ? info.Substring(index + 1) : ruleInfo;
+                        }
+                        var rule = Checker.MeetRule(ruleName);
+                        if (rule == null)
+                        {
+                            CLog.LogError("没有找到对应的检查规则 =>" + field.Source());
+                            continue;
+                        }
+                        rule.AddCareforField(field, ruleInfo);
+                    }
                 }
 
                 // 字段编译类型
@@ -182,9 +213,23 @@ namespace Channel
                 {
                     field.Convert = GetCutomConvert(rawType, field.Source());
                 }
-
-                objDef.AddField(field);
             }
+        }
+
+        /// <summary>
+        /// 获取检查规则信息
+        /// </summary>
+        /// <param name="check"></param>
+        /// <returns></returns>
+        static List<string> GetCheckInfo(string check)
+        {
+            if (string.IsNullOrEmpty(check))
+            {
+                return null;
+            }
+    
+            var spt = Utils.Split(check, '&');
+            return spt;
         }
 
         static void CompileEnumDefine1(RawObjDef def)
@@ -269,14 +314,12 @@ namespace Channel
             return ConstString.STR_DEFAULT;
         }
 
-
-
         public static void ParseData()
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
             FileAgent.LoadContent();
-            Check.OverParse();
+            Checker.CheckOnOverParse();
             sw.Stop();
             CLog.OutputAndClearCache(string.Format("数据解析完成,总耗时{0}s", sw.Elapsed.TotalSeconds));
         }

@@ -33,12 +33,12 @@ namespace Channel.Define
 
         object fieldKeysLock = new object();
      
-        internal void AddField(Field field)
+        internal bool AddField(Field field)
         {
             if (fields.ContainsKey(field.FieldName))
             {
                 CLog.LogError("{0}出现重复的字段名:{1}", Name, field.FieldName);
-                return;
+                return false;
             }
 
             if (field.IsKey)
@@ -46,14 +46,15 @@ namespace Channel.Define
                 if (KeyField != null)
                 {
                     CLog.LogError("不支持多个字段同时作为数据表的key,存在多个key配置的表名为:{0}", Name);
-                    return;
+                    return false;
                 }
                 KeyField = field;
                 KeyFieldName = field.FieldName;
             }
-
+            field.Belong = this;
             fields.Add(field.FieldName, field);
             sortedFieldNams.Add(field.FieldName);
+            return true;
         }
 
    

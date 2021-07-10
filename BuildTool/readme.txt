@@ -116,9 +116,9 @@ excel中第一列的剩余单元格内,可以继续写对应行数据的导出�
 						<var name="listint" type="int[]" index ="3" />
 				</obj>
 				有一个UseObj类型的字段,则可以填入(10_20)_Long_(1,2,3),其中'_'为类型默认分隔符, (1,2,3)中的','为int数组默认分隔符
-	4)引用定义 'ref=xxx.xxx'
+5. 内置检查规则
+	1> 数据引用定义 'ref=xxx.xxx'
 		让数据间产生强依赖,保证一个基础数据的使用处必须填入存在的基础数据,如果基础数据不存在,会给出对应位置和提示,并且不会再导出该行数据
-
 		比如在自定义类型Consume的item_id字段,很明显就是必须要依赖item表中的一个已经存在的道具id
 		在xml中添加 'ref="Item.id"'属性
 		在excel中的附加内容行使用&连接多个附加定义 'ref=Item.id'
@@ -135,8 +135,33 @@ excel中第一列的剩余单元格内,可以继续写对应行数据的导出�
 
 		'Error: UseItem类型中不存在upgrade=Channel.Data.DataObject[2]={Consume[item_id=100,use_count=1000],Consume[item_id=2000,use_count=2000]}的数据,但是却想在=>F:\FWK\BuildTool\Config\Test\RefTest.xlsx 第10行.upgradeRef中使用'
 
-	完整的例子:  比如一个vector2[]类型的字段,需要保证后面填入的内容都在ValidPos表中的value项中出现过
-	default=(0,0)+(1,1)&sep=+,&ref=ValidPos.value
+		完整的例子:  比如一个vector2[]类型的字段,需要保证后面填入的内容都在ValidPos表中的value项中出现过
+		default=(0,0)+(1,1)&sep=+,&ref=ValidPos.value
+	2> 游戏资源路径检查 定义 'res=asset/img/icon/' TODO: res后面的内容为资源前缀路径
+		可以检查配置路径的文件是否在工程中存在,如果不存在将会提示
+
+	** xml中需要使用资源检查功能,需要定义'res="path"'属性,但基本上不会在xml中进行定义,否则组织数据时会变得特别长,虽然支持但是实际使用意义有限
+	** 多个检查规则之间使用&号连接
+
+6. 添加自定义检查规则的方法:
+	1>  创建一个Rule,以内置ref检查规则为例
+			Rule checkReference = new Rule("ref", InnerCheck_CheckReferenceValid.Check);
+		其中'ref'称为规则名称, 后面的是规则检查回调.Action<List<Rule.RuleInfo>>
+		规则创建好后,调用
+			Checker.AddRule(checkReference, CheckStage.ParseOver)
+		第二个参数为检查的时机,如果是需要检查定义的,可以在CheckStage.CompileOver(编译完成时)执行,如果是要检查内容,则需要在ParseOver时执行
+	2> 在需要使用该规则的excel的'检查规则'一列,填入对应的规则名称,以及所需要的信息,excel的填入格式为 'ref=Item.id'.则在对应时机时,调用回调时,将会把标记了该规则的字段以及该字段所需要使用的信息一同组织到RuleInfo中,等待在规则执行时调用返回.
+		然后可以根据所需参数,以及lookup的所有数据缓存进行检查\定义\提示等等功能.
+
+
+TODO: 常量表的支持,需要支持横向配置不同类型
+TODO: 数据类型支持常量
+TODO: 别名机制
+TODO: 支持使用lua脚本添加rule
+TODO: DevJava, ReleaseJava, ReleaseLua版本的代码导出
+
+
+
 
 
 

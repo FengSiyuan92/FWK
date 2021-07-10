@@ -135,10 +135,8 @@ namespace Channel.Agent.XML
 
                 fieldDef.FieldType = RawFieldType.Int;
                 fieldDef.OutputType = node.GetNodeAttributeValue(ConstString.XML_OUTPUT_TYPE_TITLE);
-                fieldDef.CheckRule = node.GetNodeAttributeValue(ConstString.XML_CHECK_RULE_TITLE);
                 fieldDef.DefaultValue = enumValue.ToString();
                 fieldDef.AppendDef +=  "alias=" + node.GetNodeAttributeValue(ConstString.XML_ALIAS_TITLE);
-
                 obj.AddFieldDefine(fieldDef);
             }
 
@@ -178,18 +176,19 @@ namespace Channel.Agent.XML
                 fieldDefine.FieldType = node.GetNodeAttributeValue(ConstString.XML_TYPE_TITLE);
                 fieldDefine.OutputType = node.GetNodeAttributeValue(ConstString.XML_OUTPUT_TYPE_TITLE);
 
+                var defaultValue = node.GetNodeAttributeValue(ConstString.XML_DEFAULT_TITLE);
+                defaultValue = string.IsNullOrEmpty(defaultValue) ? defaultValue : "default=" + defaultValue;
+                fieldDefine.AppendDef = defaultValue;
+
                 var refPos = node.GetNodeAttributeValue(ConstString.XML_REF_TITLE);
                 refPos = string.IsNullOrEmpty(refPos) ? refPos : "ref=" + refPos;
-
-                var defaultValue = node.GetNodeAttributeValue(ConstString.XML_DEFAULT_TITLE);
-                defaultValue = string.IsNullOrEmpty(defaultValue) ? defaultValue : "default=" + refPos;
-
-                string[] append = new string[] {
-                    refPos,defaultValue
+                var path = node.GetNodeAttributeValue(ConstString.XML_PATH_TITLE).Trim();
+                path = string.IsNullOrEmpty(path) ? path : "res=" + path;
+                string[] check = new string[] {
+                    refPos, path
                 };
+                fieldDefine.CheckRule = string.Join("&", check);
 
-                fieldDefine.AppendDef = string.Join("&", append);
-                fieldDefine.CheckRule = node.GetNodeAttributeValue(ConstString.XML_CHECK_RULE_TITLE);
                 var index = node.GetNodeAttributeValue(ConstString.XML_FIELD_INDEX);
                 int defIndex = 0;
                 if (!string.IsNullOrEmpty(index))

@@ -15,7 +15,7 @@ namespace Channel
         /// <summary>
         /// 检查扩展的类型转换器是否可用
         /// </summary>
-        public static void CheckConverterValid()
+        public static void CheckConverterValid(List<Rule.RuleInfo> infos)
         {
 
             // 深度遍历所有customType的字段转换器,如果转换器不存在则标记不可用并提示
