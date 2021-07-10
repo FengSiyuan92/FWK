@@ -1,0 +1,53 @@
+
+文件载入Agent
+根据不同文件格式,生成文件代理,用来统一将数据解析成 '原生定义(没经过编译的类型信息等)'
+主要负责外界注册数据用,对外接口Register(IEnumerable<string> pathCollect)和 Register(string path)
+需要导出的excel文件和xml文件都需要通过该类注册进代码汇总
+
+编译和解析: Parser.cs中的代码,需要配合Define\Lookup\和Instance文件夹中的代码一起使用
+Parser 通过Parser.Compile(称之为编译) 可以将载入文件中的类型定义进行编译,编译时会生成N多个类型信息,这一步模拟代码的'定义操作'
+Parser 通过Parser.ParseData(称之为解析) 可以将载入文件中的数据解析成 类型信息的具体实例,这一步相当模拟代码的'New'操作
+
+检查扩展器 Check  TODO: 自定义检查规则的设计
+Check  待扩展的检查规则,可以根据类型选择是在编译结束后进行类型信息检查,还是在解析完成后对类型实例进行检查
+	目前只一样加了一个innercheck,用来检查字段类型正确性以及检查数据间的引用关系
+
+类型信息 Define
+Field 自定义类型的字段信息   CustomClass 自定义类型的类信息, 类信息中有多个字段信息
+Enum 定义的枚举信息
+RawDefine 原生定义信息,从文件中直接读取过来的,未经编译的字符串数据
+
+转换器 Converter: 根据字段类型能将string数据内容转换为所需类型数据的转换器.
+根据支持的类型,划分了
+基础数据类型转换器: int\float\enum\string\vector 转换器
+复合转换器:DataArrayConverter(转换为数组)\DataObjectConverter(转换为一个自定义对象)
+
+对象实例 Instance
+DataArray一个数组数据,支持任意类型的数组
+DataObject 一个自定义对象数据 支持任意类型的自定义对象转换
+Vector 一个向量数据
+因为int float等不再需要单独定义类型,所以这里目前只有三个实例定义
+实例对象  每个CustomClass类型信息可能生成多个实例对象,就好像在用New关键字根据类型信息创建的对象一样
+	在代码中对应的类型为 DataObject,DataObject 可以通过ClassInfo 获取其对应的CustomClass,并且可以像代码使用一样
+	使用[]来获取对应名称字段的值.
+
+
+查看器 Lookup
+	针对自定义类型信息\枚举定义\原生定义\自定义类型实例 四种数据,实现了四种查看器,方便在外界通过统一方式获取所需数据
+	RawDefine为internal访问权限,不希望也不允许外界使用
+
+数据的查询方式:
+查询枚举  var e = Lookup.Enum["枚举名称"]即可获取到对应枚举的定义, 使用int value = e["枚举字段名"]即可获取到枚举对应字段的值
+查询类型信息 var ci = Lookup.ClassInfo["类型名"]可以获取到对应类型信息, 使用var f = ci["类型下的字段名"],可以获取到类型信息中对应字段的信息
+查询类型实例 var instance =Lookup.Datas["类型名"]["实例的key值"] 可以去到对应实例的信息, var v = instance["字段名"],即可获取到配置的对应字段的具体值
+特殊的是,字段的具体值,是一个object类型的数据,实际类型可能是int\string\vector\或者数据,还可能是一个嵌套的类型实例
+
+代码转换Output  TODO: 不同版本的代码转换,目前已经转换完成devlua代码,还需要一个releaseLua才算完成lua语言的转换
+Output.Write 通过传入不同的代码格式,可以将解析出来的所有Enum定义以及对象实例转换成代码文件,并输出拷贝
+
+
+
+
+
+
+

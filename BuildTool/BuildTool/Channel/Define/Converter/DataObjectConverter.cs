@@ -7,7 +7,7 @@ using Channel.Define;
 
 namespace Channel.Define.Converter
 {
-    internal class CustomTypeConverter : Converter , ISource
+    internal class DataObjectConverter : Converter , ISource
     {
         public override Type GetResultType()
         {
@@ -15,7 +15,7 @@ namespace Channel.Define.Converter
         }
 
         public string Name { get; private set; }
-        public CustomTypeConverter(string name):base()
+        public DataObjectConverter(string name):base()
         {
             this.Name = name;
         }
@@ -23,7 +23,7 @@ namespace Channel.Define.Converter
         DataObject GenObj(DataObject original, string content, Field template, int depth)
         {
             var sep = Utils.GetCustomSep(template, depth, ConstString.SEP_LEVEL_3);
-            var t = Lookup.CustomType[Name];
+            var t = Lookup.ClassInfo[Name];
             if (t== null)
             {
                 return null;
@@ -47,7 +47,7 @@ namespace Channel.Define.Converter
 
         internal override int SepLevel()
         {
-            var t = Lookup.CustomType[Name];
+            var t = Lookup.ClassInfo[Name];
             var max = 0;
             foreach (var item in t.AllFieldName())
             {

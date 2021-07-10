@@ -20,14 +20,14 @@ namespace Channel
             // 类型名 需要做内容备份的字段名
             Dictionary<string, HashSet<string>> contentIndex = new Dictionary<string, HashSet<string>>();
             // 获取所有的类型定义名称
-            var allCustomType = Lookup.CustomType.AllName();
+            var allCustomType = Lookup.ClassInfo.AllName();
             List<Field> targetFieldName = new List<Field>();
 
             // 通过标记引用的字段索引内容字段
             foreach (var item in allCustomType)
             {
                 // 取到对应类型定义
-                var custom = Lookup.CustomType[item];
+                var custom = Lookup.ClassInfo[item];
                 // 取到该类型下的所有字段定义名称
                 var fields = custom.AllFieldName();
                 foreach (var fieldName in fields)

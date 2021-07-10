@@ -19,14 +19,14 @@ namespace Channel
         {
 
             // 深度遍历所有customType的字段转换器,如果转换器不存在则标记不可用并提示
-            var customs = Lookup.CustomType.AllName();
+            var customs = Lookup.ClassInfo.AllName();
             Utils.Parallel(customs, CheckCustomConvertValid);
 
         }
 
         static void CheckCustomConvertValid(string name)
         {
-            var t = Lookup.CustomType[name];
+            var t = Lookup.ClassInfo[name];
             foreach (var item in t.fields)
             {
                 var field = item.Value;
@@ -47,18 +47,18 @@ namespace Channel
                 }
 
             }
-            else if (convert is CustomTypeConverter)
+            else if (convert is DataObjectConverter)
             {
-                var c = convert as CustomTypeConverter;
-                if (Lookup.CustomType[c.Name] == null)
+                var c = convert as DataObjectConverter;
+                if (Lookup.ClassInfo[c.Name] == null)
                 {
                     CLog.LogError(customerrortip, c.Name, field.Source());
                     return false;
                 }
             }
-            else if (convert is ListConverter)
+            else if (convert is DataArrayConverter)
             {
-                var l = convert as ListConverter;
+                var l = convert as DataArrayConverter;
                 var sub = l.element;
                 return CheckConverter(sub, field);
             }

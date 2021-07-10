@@ -31,7 +31,7 @@ namespace Channel
         {
             ClassName = className;
             ori = new Hashtable();
-            ClassInfo = Lookup.CustomType[className];
+            ClassInfo = Lookup.ClassInfo[className];
             SourceInfo = sourceInfo;
         }
 

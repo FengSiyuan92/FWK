@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using Channel.Define;
 namespace Channel.Define.Converter
 {
-    internal class ListConverter : Converter
+    internal class DataArrayConverter : Converter
     {
 
         internal Converter element;
         DataArray defArray;
         Type arrType;
         char defSep;
-        public ListConverter( Converter elementConvert, char defSep = ConstString.SEP_LEVEL_2)
+        public DataArrayConverter( Converter elementConvert, char defSep = ConstString.SEP_LEVEL_2)
         {
             element = elementConvert;
             defArray = DataArray.CreateInstance(element.GetResultType(), 0);

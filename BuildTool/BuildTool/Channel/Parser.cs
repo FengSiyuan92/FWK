@@ -30,16 +30,16 @@ namespace Channel
             { "vec3", new Vector3Converter()},
             { "vec4", new Vector4Converter()},
 
-            { "int[]", new ListConverter(new IntConverter())},
-            { "float[]", new ListConverter(new FloatConverter())},
-            { "string[]", new ListConverter(new StringConverter(), ConstString.SEP_LEVEL_1)},
-            { "vector2[]", new ListConverter( new Vector2Converter(),ConstString.SEP_LEVEL_1)},
-            { "vector3[]", new ListConverter( new Vector3Converter(),ConstString.SEP_LEVEL_1)},
-            { "vector4[]", new ListConverter( new Vector4Converter(),ConstString.SEP_LEVEL_1)},
+            { "int[]", new DataArrayConverter(new IntConverter())},
+            { "float[]", new DataArrayConverter(new FloatConverter())},
+            { "string[]", new DataArrayConverter(new StringConverter(), ConstString.SEP_LEVEL_1)},
+            { "vector2[]", new DataArrayConverter( new Vector2Converter(),ConstString.SEP_LEVEL_1)},
+            { "vector3[]", new DataArrayConverter( new Vector3Converter(),ConstString.SEP_LEVEL_1)},
+            { "vector4[]", new DataArrayConverter( new Vector4Converter(),ConstString.SEP_LEVEL_1)},
 
-            { "vec2[]", new ListConverter( new Vector2Converter(),ConstString.SEP_LEVEL_1)},
-            { "vec3[]", new ListConverter( new Vector3Converter(),ConstString.SEP_LEVEL_1)},
-            { "vec4[]", new ListConverter( new Vector4Converter(),ConstString.SEP_LEVEL_1)},
+            { "vec2[]", new DataArrayConverter( new Vector2Converter(),ConstString.SEP_LEVEL_1)},
+            { "vec3[]", new DataArrayConverter( new Vector3Converter(),ConstString.SEP_LEVEL_1)},
+            { "vec4[]", new DataArrayConverter( new Vector4Converter(),ConstString.SEP_LEVEL_1)},
         };
 
         static Dictionary<string, EnumConverter> enumConverters = new Dictionary<string, EnumConverter>();
@@ -58,15 +58,15 @@ namespace Channel
             return target;
         }
 
-        static Dictionary<string, CustomTypeConverter> customConverters = new Dictionary<string, CustomTypeConverter>();
-        static CustomTypeConverter GetCutomConvert(string name, string sourceInfo)
+        static Dictionary<string, DataObjectConverter> customConverters = new Dictionary<string, DataObjectConverter>();
+        static DataObjectConverter GetCutomConvert(string name, string sourceInfo)
         {
-            CustomTypeConverter target = null;
+            DataObjectConverter target = null;
             lock(customConverters)
             {
                 if (!customConverters.TryGetValue(name, out target))
                 {
-                    target = new CustomTypeConverter(name);
+                    target = new DataObjectConverter(name);
                     target.SourceInfo = sourceInfo;
                     customConverters.Add(name, target);
                 }
@@ -167,11 +167,11 @@ namespace Channel
                     var eleType = rawType.Remove(rawType.Length - 2);
                     if (CheckIsEnum(eleType))
                     {
-                        field.Convert = new ListConverter(GetEnumConvert(eleType, field.Source()));
+                        field.Convert = new DataArrayConverter(GetEnumConvert(eleType, field.Source()));
                     }
                     else
                     {
-                        field.Convert = new ListConverter(GetCutomConvert(eleType, field.Source()));
+                        field.Convert = new DataArrayConverter(GetCutomConvert(eleType, field.Source()));
                     }
                 }
                 else if (CheckIsEnum(rawType))

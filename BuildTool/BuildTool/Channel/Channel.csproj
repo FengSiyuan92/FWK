@@ -69,9 +69,9 @@
     <Compile Include="Agent\Excel\ExcelAgent.cs" />
     <Compile Include="Agent\Excel\Extend.cs" />
     <Compile Include="ConstString.cs" />
-    <Compile Include="DataObject.cs" />
-    <Compile Include="Define\DataArray.cs" />
-    <Compile Include="Define\Vector.cs" />
+    <Compile Include="Instance\DataObject.cs" />
+    <Compile Include="Instance\DataArray.cs" />
+    <Compile Include="Instance\Vector.cs" />
     <Compile Include="Define\Converter\ConverterBase.cs" />
     <Compile Include="Define\Converter\CustomTypeConverter.cs" />
     <Compile Include="Define\Converter\EnumConverter.cs" />

@@ -8,7 +8,7 @@ namespace Channel
 {
     namespace Channel.Viewer
     {
-        public class CustomTypeViewer
+        public class ClassInfoViewer
         {
             internal Dictionary<string, CustomClass> defines = new Dictionary<string, CustomClass>();
             /// <summary>
@@ -58,15 +58,15 @@ namespace Channel
         {
             lock (customLock)
             {
-                CustomType.defines.Add(objDef.Name, objDef);
+                ClassInfo.defines.Add(objDef.Name, objDef);
             }
         }
 
-        static Channel.Viewer.CustomTypeViewer customTypeViewer = new Channel.Viewer.CustomTypeViewer();
+        static Channel.Viewer.ClassInfoViewer customTypeViewer = new Channel.Viewer.ClassInfoViewer();
         /// <summary>
         /// 自定义类型查看器
         /// </summary>
-        public static Channel.Viewer.CustomTypeViewer CustomType => customTypeViewer;
+        public static Channel.Viewer.ClassInfoViewer ClassInfo => customTypeViewer;
 
 
     }
