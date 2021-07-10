@@ -83,6 +83,9 @@ namespace Channel
             // 内置的检查字段引用的代码
             Rule checkReference = new Rule("ref", InnerCheck_CheckReferenceValid.Check);
             AddRule(checkReference, CheckStage.ParseOver);
+
+            Rule checkResExist = new Rule("res", InnerCheck_ValidField.Check);
+            AddRule(checkResExist, CheckStage.ParseOver);
         }
 
     }

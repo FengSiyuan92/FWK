@@ -37,6 +37,9 @@ namespace Channel
             return platform.Contains(targetPlatform);
         }
 
+
+        public static string ClientAssetPath;
+
         public static bool ASYNC = true;
     }
 }

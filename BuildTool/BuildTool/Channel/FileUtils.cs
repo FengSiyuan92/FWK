@@ -46,5 +46,12 @@ namespace Channel
             }
             return new FileInfo(filePath).CreateText();
         }
+
+
+        public static bool IsValidAssetPath(string path)
+        {
+            var fullPath = Path.Combine(GlobalArgs.ClientAssetPath, path);
+            return File.Exists(fullPath);
+        }
     }
 }

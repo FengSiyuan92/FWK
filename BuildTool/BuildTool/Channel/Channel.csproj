@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check\Checker.cs" />
+    <Compile Include="Check\InnerCheck_ValidField.cs" />
     <Compile Include="Check\Rule.cs" />
     <Compile Include="Check\InnerCheck_CheckReferenceValid.cs" />
     <Compile Include="Check\InnerCheck_ConvertValid.cs" />

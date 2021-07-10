@@ -25,6 +25,12 @@ namespace Channel
         }
 
         /// <summary>
+        /// 元素类型
+        /// </summary>
+        public Type ElementType => t;
+
+
+        /// <summary>
         /// 获取数组索引对应的值,可以使用索引器代替
         /// </summary>
         /// <param name="index"></param>
