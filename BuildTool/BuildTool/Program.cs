@@ -14,7 +14,9 @@ namespace BuildTool
         {
             Channel.Test.TestF();
             //HashSet<string> set = new HashSet<string>();
-
+            var custom = Lookup.CustomType[""];
+            var e = Lookup.Enum[""];
+            var d = Lookup.Datas[""];
             Console.ReadKey();
         }
 

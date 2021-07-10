@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace Channel.Define
 {
-    public class CustomClass
+    public class CustomClass : ISource
     {
+        /// <summary>
+        /// 类型名称
+        /// </summary>
         public string Name { get; private set; }
 
+        internal RawDefine.RawObjDef RawDefine;
         public CustomClass(string name)
         {
             Name = name;
@@ -17,28 +21,19 @@ namespace Channel.Define
         }
 
         internal Dictionary<string, Field> fields { get; private set; } = new Dictionary<string, Field>();
-
+        internal List<string> sortedFieldNams = new List<string>();
+        /// <summary>
+        /// 需要作为key的字段信息
+        /// </summary>
         public Field KeyField { get; private set; }
+        /// <summary>
+        /// 需要作为key的字段名称
+        /// </summary>
+        public string KeyFieldName { get; private set; }
 
         object fieldKeysLock = new object();
-        string[] SortedFieldKeys;
-
-        public string[] GetSortedFieldKeys()
-        {
-            lock (fieldKeysLock)
-            {
-                if (SortedFieldKeys == null)
-                {
-                    SortedFieldKeys = fields.Keys.ToArray();
-                    Array.Sort(SortedFieldKeys, (a, b) => a.CompareTo(b));
-                }
-            }
-
-            return SortedFieldKeys;
-        }
-       
-
-        public void AddField(Field field)
+     
+        internal void AddField(Field field)
         {
             if (fields.ContainsKey(field.FieldName))
             {
@@ -54,25 +49,35 @@ namespace Channel.Define
                     return;
                 }
                 KeyField = field;
+                KeyFieldName = field.FieldName;
             }
+
             fields.Add(field.FieldName, field);
+            sortedFieldNams.Add(field.FieldName);
         }
 
+   
+        public Field this[string fieldName]=> GetFieldInfoByFieldName(fieldName);
 
-        public Field this[string fieldName]
+        /// <summary>
+        /// 通过字段名称索引该类型下的字段信息,可以使用索引器替换该方法
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
+        public Field GetFieldInfoByFieldName(string fieldName)
         {
-            get
-            {
-                Field field = null;
-                fields.TryGetValue(fieldName, out field);
-                return field;
-            }
+            Field field = null;
+            fields.TryGetValue(fieldName, out field);
+            return field;
         }
 
-
+        /// <summary>
+        /// 获取所有字段的名称
+        /// </summary>
+        /// <returns></returns>
         public string[] AllFieldName()
         {
-            return fields.Keys.ToArray();
+            return sortedFieldNams.ToArray();
         }
 
         public override bool Equals(object obj)
@@ -83,8 +88,12 @@ namespace Channel.Define
             if (!Name.Equals(target.Name, StringComparison.OrdinalIgnoreCase)) return false;
 
             // 同类型字段名称必然相等
-
             return true;
+        }
+
+        public string Source()
+        {
+            return RawDefine.Source() ;
         }
     }
 

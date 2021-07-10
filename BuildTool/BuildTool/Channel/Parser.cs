@@ -127,6 +127,7 @@ namespace Channel
         static void CompileObjDefine1(RawObjDef rawDef)
         {
             CustomClass objDef = new CustomClass(rawDef.Name);
+            objDef.RawDefine = rawDef;
             var filedNames = rawDef.GetAllRawFieldName();
             foreach (var filedName in filedNames)
             {
@@ -189,6 +190,7 @@ namespace Channel
         static void CompileEnumDefine1(RawObjDef def)
         {
             Enum en = new Enum(def.Name);
+            en.RawDefine = def;
             var filedNames = def.GetAllRawFieldName();
 
             foreach (var filedName in filedNames)

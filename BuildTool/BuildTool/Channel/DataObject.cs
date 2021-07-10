@@ -10,12 +10,21 @@ namespace Channel
 {
     public class DataObject : ISource
     { 
+        /// <summary>
+        /// 类型名
+        /// </summary>
         public string ClassName { get; private set; }
-        public string KeyToString { get; private set;}
+
+        /// <summary>
+        /// 该对象的key值
+        /// </summary>
+        public object Key { get; private set; }
 
         // 内容存储器
         Hashtable ori;
-
+        /// <summary>
+        /// 该对象的类型信息
+        /// </summary>
         public CustomClass ClassInfo { get; private set; }
 
         internal DataObject(string className, string sourceInfo)
@@ -42,26 +51,29 @@ namespace Channel
                 ori.Add(fieldName, res);
                 if (fieldType.IsKey)
                 {
-                    KeyToString = res.ToString();
+                    Key = res;
                 }
             }
         }
 
-        public object this[string fieldName]
+        public object this[string fieldName]=> GetFieldValuefoByName(fieldName);
+        /// <summary>
+        /// 通过字段名获取字段信息
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
+        public Field GetFieldInfoByName(string fieldName)
         {
-            get
-            {
-                return ori[fieldName];
-            }
+            return ClassInfo[fieldName];
         }
 
-
-        string SourceInfo;
-        public string Source()
+        /// <summary>
+        /// 通过字段名获取字段值
+        /// </summary>
+        public object GetFieldValuefoByName(string fieldName)
         {
-            return SourceInfo;
+            return ori[fieldName];
         }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -100,20 +112,34 @@ namespace Channel
             }
             return true;
         }
+        KeyValuePair<string, object>[] result;
 
-
+        /// <summary>
+        /// 获取所有以字段名排好序的[字段名,值]数组
+        /// </summary>
+        /// <returns></returns>
         public KeyValuePair<string, object>[] GetAllSortedField()
         {
-            var keys = ClassInfo.GetSortedFieldKeys();
-            KeyValuePair<string, object>[] result = new KeyValuePair<string, object>[keys.Length];
-
-            for (int i = 0; i < keys.Length; i++)
+            if (result != null)
             {
-                result[i] = new KeyValuePair<string, object>(keys[i], ori[keys[i]]);
+                return result;
+            }
+
+            var fieldName = ClassInfo.AllFieldName();
+            result = new KeyValuePair<string, object>[fieldName.Length];
+            for (int i = 0; i < fieldName.Length; i++)
+            {
+                result[i] = new KeyValuePair<string, object>(fieldName[i], ori[fieldName[i]]);
             }
             return result;
-         
         }
+
+        string SourceInfo;
+        public string Source()
+        {
+            return SourceInfo;
+        }
+
 
     }
 }

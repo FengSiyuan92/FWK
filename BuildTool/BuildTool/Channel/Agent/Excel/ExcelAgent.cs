@@ -146,7 +146,12 @@ namespace Channel.Agent.Excel
 
                 /*     数据校验合格,开始执行定义生成        */
                 // 对sheet创建一个Object定义,并赋值Object名称
-                RawObjDef objDef = new RawObjDef(Utils.GetObjectTypeName(filePath), RawObjType.OBJECT);
+
+                RawObjDef objDef = new RawObjDef(
+                    Utils.GetObjectTypeName(filePath),
+                    RawObjType.OBJECT,
+                    string.Format("{0}  sheet={1}", filePath, sheet.SheetName)
+                    );
                 // 使用表头行填充定义
                 InjectObjectDef(objDef, rows);
                 Lookup.AddRawDef(objDef);

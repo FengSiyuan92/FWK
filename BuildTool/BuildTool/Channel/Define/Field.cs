@@ -18,8 +18,14 @@ namespace Channel.Define
 
     public class Field:ISource
     {
-        public CustomClass Belong;
+        /// <summary>
+        /// 属于哪个自定义类型
+        /// </summary>
+        public CustomClass Belong { get; internal set; }
 
+        /// <summary>
+        /// 字段注释
+        /// </summary>
         public string Alias { get; internal set; }
 
         /// <summary>
@@ -43,7 +49,7 @@ namespace Channel.Define
         public bool IsKey { get; internal set; }
 
         /// <summary>
-        /// 别名的指向,为string.Empty时说明不使用别名
+        /// 引用内容指向,为string.Empty时说明没有引用检查
         /// </summary>
         public string RefPos { get; internal set; }
 
@@ -61,8 +67,9 @@ namespace Channel.Define
         /// 自定义分隔符数组
         /// </summary>
         internal char[] Seps;
+
         /// <summary>
-        /// 字段索引
+        /// 字段内容填充索引
         /// </summary>
         internal int FieldIndex;
 
@@ -71,6 +78,10 @@ namespace Channel.Define
         /// </summary>
         internal RawDefine.RawFieldDef RawDefine;
 
+        /// <summary>
+        /// 字段来源
+        /// </summary>
+        /// <returns></returns>
         public string Source()
         {
             return RawDefine.SourceInfo;

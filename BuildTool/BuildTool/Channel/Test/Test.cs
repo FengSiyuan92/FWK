@@ -52,6 +52,8 @@ namespace Channel
             Parser.ParseData();
             sw.Stop();
             Console.WriteLine("测试结束,总用时=" + sw.Elapsed.TotalSeconds + "s");
+
+
             CodeWriter.WriteCode(@"F:\FWK\BuildTool\Config", CodeWriter.CodeType.DevLua);
 
         }

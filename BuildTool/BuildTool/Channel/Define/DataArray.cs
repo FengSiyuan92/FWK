@@ -10,7 +10,13 @@ namespace Channel.Define
     {
         Array array;
         Type t;
-        public static DataArray CreateInstance(Type t, int length)
+        /// <summary>
+        /// 创建一个对应type的数据
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        internal static DataArray CreateInstance(Type t, int length)
         {
             var classArray = new DataArray();
             classArray.array = Array.CreateInstance(t, length);
@@ -18,16 +24,31 @@ namespace Channel.Define
             return classArray;
         }
 
+        /// <summary>
+        /// 获取数组索引对应的值,可以使用索引器代替
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public object GetValue(int index)
         {
             return array.GetValue(index);
         }
 
+        /// <summary>
+        /// 设置数组索引对应的值,可以使用索引器代替
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="index"></param>
         public void SetValue(object value, int index)
         {
             array.SetValue(value, index);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public object this[int index]
         {
             get
@@ -40,9 +61,16 @@ namespace Channel.Define
             }
         }
 
+        /// <summary>
+        /// 数组的长度,可能为0
+        /// </summary>
         public int Length => array.Length;
 
-
+        /// <summary>
+        /// 两个数组里的内容是否相等
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             var target = obj as DataArray;

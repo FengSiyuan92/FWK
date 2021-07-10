@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Diagnostics;
 
 namespace Channel
 {
@@ -20,7 +21,9 @@ namespace Channel
 
         public static void WriteCode(string outputDir, CodeType codeType)
         {
-      
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             switch (codeType)
             {
                 case CodeType.DevLua:
@@ -29,8 +32,8 @@ namespace Channel
                 default:
                     break;
             }
-
-            CLog.OutputAndClearCache("写入文件结束");
+            sw.Stop();
+            CLog.OutputAndClearCache(string.Format("写入文件结束, 写入文件耗时{0}s", sw.Elapsed.TotalSeconds) );
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,11 @@ namespace Channel
 {
     namespace Channel.Viewer
     {
-        public class DataObjGetter
+        public class DataObjGetter : IEnumerable
         {
-            internal Dictionary<string, DataObject> datas = new Dictionary<string, DataObject>();
+            internal Dictionary<object, DataObject> datas = new Dictionary<object, DataObject>();
+            internal List<object> keys = new List<object>();
+
             internal List<DataObject> datasWithoutKey = new List<DataObject>();
 
             /// <summary>
@@ -27,7 +30,7 @@ namespace Channel
             public DataObject GetDataByKey(object key)
             {
                 DataObject data = null;
-                datas.TryGetValue(key.ToString(), out data);
+                datas.TryGetValue(key, out data);
                 return data;
             }
 
@@ -47,8 +50,8 @@ namespace Channel
 
             internal void AddObject(DataObject obj)
             {
-                var key = obj.KeyToString;
-                if (string.IsNullOrEmpty(key))
+                var key = obj.Key;
+                if (key == null)
                 {
                     datasWithoutKey.Add(obj);
                 }
@@ -57,11 +60,12 @@ namespace Channel
                     if (datas.ContainsKey(key))
                     {
                         CLog.LogError("重复向类型:{0}中添加key为{1}的数据,数据来源分别是=>\n\t{2}\n\t{3}",
-                            obj.ClassName, obj.KeyToString,
+                            obj.ClassName, obj.Key.ToString(),
                             datas[key].Source(), obj.Source());
                         return;
                     }
                     datas.Add(key, obj);
+                    keys.Add(key);
                 }
             }
 
@@ -85,14 +89,28 @@ namespace Channel
             {
                 return KeyTable ? datas.Values.ToArray() : datasWithoutKey.ToArray();
             }
-
+            /// <summary>
+            /// 获取所有已经排好序的实例数据对象
+            /// </summary>
+            /// <returns></returns>
             public DataObject[] GetAllSortedDatas()
             {
-                var items = datas.Values.ToArray();
-                Array.Sort(items, (a, b) => a.KeyToString.CompareTo(b.KeyToString));
-                return items;
+                if (KeyTable)
+                {
+                    DataObject[] res = new DataObject[keys.Count];
+                    for (int i = 0; i < keys.Count; i++)
+                    {
+                        res[i] = datas[keys[i]];
+                    }
+                    return res;
+                }
+                return datasWithoutKey.ToArray();
             }
 
+            public IEnumerator GetEnumerator()
+            {
+                return KeyTable ? datas.Values.ToArray().GetEnumerator() : datasWithoutKey.GetEnumerator();
+            }
         }
         /// <summary>
         /// 通过k-v形式缓存了所有已经生成的数据对象, 其中k是对应数据对象实例的类型名称,v是对应类型的数据对象实例查看器
@@ -153,8 +171,6 @@ namespace Channel
         /// 对象数据查看器
         /// </summary>
         public static Channel.Viewer.DataViewer Datas => datasInstance; 
- 
-
     }
 }
  

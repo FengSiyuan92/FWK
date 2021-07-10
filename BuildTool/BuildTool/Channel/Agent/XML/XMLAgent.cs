@@ -92,7 +92,12 @@ namespace Channel.Agent.XML
         void LoadEnumDef(XmlNode enumNode)
         {
             // 创建一个新的enum定义
-            RawObjDef obj = new RawObjDef(enumNode.Attributes[ConstString.XML_TYPE_TITLE].Value, RawObjType.ENUM);
+            var name = enumNode.Attributes[ConstString.XML_TYPE_TITLE].Value;
+            RawObjDef obj = new RawObjDef(
+                name,
+                RawObjType.ENUM,
+                string.Format("{0}:{1}", filePath, name)
+            );
 
             // 遍历enum下所有node,用来生成枚举的字段定义
             var nodelist = enumNode.ChildNodes;
@@ -144,12 +149,17 @@ namespace Channel.Agent.XML
         /// <summary>
         /// 通过xmlNode创建一个Object类型的定义
         /// </summary>
-        /// <param name="enumNode"></param>
-        void LoadObjDef(XmlNode enumNode)
+        /// <param name="objNode"></param>
+        void LoadObjDef(XmlNode objNode)
         {
-            RawObjDef objDef = new RawObjDef(enumNode.Attributes[ConstString.XML_TYPE_TITLE].Value, RawObjType.OBJECT);
+            var objName = objNode.Attributes[ConstString.XML_TYPE_TITLE].Value;
+            RawObjDef objDef = new RawObjDef(
+                objName, 
+                RawObjType.OBJECT,
+                string.Format("{0}:{1}", filePath, objName)
+                );
     
-            var nodelist = enumNode.ChildNodes;
+            var nodelist = objNode.ChildNodes;
 
             for (int i = 0; i < nodelist.Count; i++)
             {

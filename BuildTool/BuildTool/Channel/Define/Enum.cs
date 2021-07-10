@@ -5,13 +5,14 @@ using System.Text;
 
 namespace Channel.Define
 {
-    public class Enum
+    public class Enum :ISource
     {
         /// <summary>
         /// 枚举类型名
         /// </summary>
         public string Name { get; private set; }
 
+        internal RawDefine.RawObjDef RawDefine;
         public Enum(string name)
         {
             Name = name;
@@ -20,14 +21,31 @@ namespace Channel.Define
         /// <summary>
         /// TODO:该枚举数据来源于哪个文件
         /// </summary>
-        public string FromFilePath { get; internal set; }
+        internal string FromFilePath;
+
         public class Item
         {
+            /// <summary>
+            /// 归属于哪个枚举
+            /// </summary>
             public Enum Belong { get; internal set; }
+            /// <summary>
+            /// 枚举字段名
+            /// </summary>
             public string Name { get; internal set; }
+            /// <summary>
+            /// 枚举值,int
+            /// </summary>
             public int Value { get; internal set; }
+            /// <summary>
+            /// 枚举值别名
+            /// </summary>
             public string Alias { get; internal set; }
+            /// <summary>
+            /// cs导出类型
+            /// </summary>
             public OutputType OutputType { get; internal set; }
+
             public override string ToString()
             {
                 if (!string.IsNullOrEmpty(Alias))
@@ -110,7 +128,10 @@ namespace Channel.Define
             return alias2ItemMap.Keys.ToArray();
         }
 
-
+        /// <summary>
+        /// 获取所有已经按照值从小到大排好序的枚举item数组
+        /// </summary>
+        /// <returns></returns>
         public Item[] GetAllSortedItem()
         {
             var items = name2ItemMap.Values.ToArray();
@@ -176,6 +197,10 @@ namespace Channel.Define
             }
         }
 
+        public string Source()
+        {
+            return RawDefine.Source();
+        }
     }
 
 }

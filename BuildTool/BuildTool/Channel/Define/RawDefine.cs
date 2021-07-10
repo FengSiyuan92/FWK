@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Channel.RawDefine
 {
-
     internal enum RawObjType
     {
         ERROR = 0,
@@ -15,17 +14,15 @@ namespace Channel.RawDefine
         OBJECT,
     }
 
-
     internal static class RawFieldType
     {
         public const string Int = "int";
-
     }
 
     /// <summary>
     /// 原生对象定义
     /// </summary>
-    internal class RawObjDef 
+    internal class RawObjDef :ISource
     {
         /// <summary>
         /// 类名
@@ -43,10 +40,11 @@ namespace Channel.RawDefine
         /// </summary>
         /// <param name="name">定义对象类名</param>
         /// <param name="type">定义对象类型</param>
-        public RawObjDef(string name, RawObjType type)
+        public RawObjDef(string name, RawObjType type, string sourceInfo)
         {
             this.Name = name;
             this.DefType = type;
+            SourceInfo = sourceInfo;
         }
 
         /// <summary>
@@ -107,6 +105,12 @@ namespace Channel.RawDefine
             }
 
             defines.Add(key, def);
+        }
+
+        string SourceInfo;
+        public string Source()
+        {
+            return SourceInfo;
         }
     }
 
