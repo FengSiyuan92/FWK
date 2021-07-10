@@ -55,13 +55,12 @@ namespace Channel
             CodeWriter.WriteCode(@"F:\FWK\BuildTool\Config", CodeWriter.CodeType.DevLua);
         }
 
+        const string LuaRuleDir = @"F:\FWK\BuildTool\Rule";
 
         public static void TestLua()
         {
-            Lua.LuaCheckManager.AddCheckFile(@"F:\FWK\BuildTool\Rule\test.lua");
+            Checker.AddLuaRuleDirectory(LuaRuleDir);
         }
-
-  
 
         public static void ParseTest()
         { 

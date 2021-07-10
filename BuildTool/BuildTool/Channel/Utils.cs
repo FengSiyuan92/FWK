@@ -12,17 +12,7 @@ namespace Channel
 {
     public class Utils
     {
-        public static string GetObjectTypeName(string filePath)
-        {
-            var fileName = Path.GetFileNameWithoutExtension(filePath);
-            var subTabSignIndex = fileName.IndexOf("(");
-            if (subTabSignIndex != -1)
-            {
-                fileName = fileName.Substring(0, subTabSignIndex);
-            }
-            return fileName;
-        }
-
+        
         public static decimal ParseFloat(string content, string source = ConstString.STR_EMPTY)
         {
             if (content.Equals(ConstString.STR_EMPTY) || string.IsNullOrEmpty(content))
@@ -227,19 +217,5 @@ namespace Channel
             valieFieldNameChar.Add('_');
         }
 
-        internal static StreamWriter SafeCreateNewFile(string filePath)
-        {
-            var dir = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-            return new FileInfo(filePath).CreateText();
-        }
     }
 }

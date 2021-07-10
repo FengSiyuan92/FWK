@@ -56,7 +56,7 @@ namespace Channel.Output.LuaOutput
 
             sb.Append("return Enum");
             var targetEnumFilePath = Path.Combine(ConstString.TempPath, "DevLua", "Enum.lua");
-            var file = Utils.SafeCreateNewFile(targetEnumFilePath);
+            var file = FileUtils.SafeCreateNewFile(targetEnumFilePath);
             file.Write(sb.ToString());
             file.Flush();
             file.Close();
@@ -101,7 +101,7 @@ namespace Channel.Output.LuaOutput
             sb.AppendLine(string.Format("return {0}", objClassName));
 
             var targetEnumFilePath = Path.Combine(ConstString.TempPath, "DevLua", objClassName+".lua");
-            var file = Utils.SafeCreateNewFile(targetEnumFilePath);
+            var file = FileUtils.SafeCreateNewFile(targetEnumFilePath);
             file.Write(sb.ToString());
             file.Flush();
             file.Close();

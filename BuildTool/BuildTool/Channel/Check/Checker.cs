@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.IO;
 namespace Channel
 {
     public enum CheckStage
@@ -28,6 +28,25 @@ namespace Channel
         static Dictionary<string, Rule> onCompileOverRule;
         static Dictionary<string, Rule> onParseOverRule;
 
+        /// <summary>
+        /// 通过该接口添加复合条件的lua 规则
+        /// </summary>
+        /// <param name="luaRuleDirPath"></param>
+        public static void AddLuaRuleDirectory(string luaRuleDirPath)
+        {
+            HashSet<string> luaPaths = new HashSet<string>();
+            FileUtils.FindDirValidFile(luaRuleDirPath, luaPaths, "*.lua");
+            foreach (var path in luaPaths)
+            {
+                LuaCheckManager.AddCheckFile(path);
+            }
+        }
+
+        /// <summary>
+        /// 添加一个自定义规则
+        /// </summary>
+        /// <param name="rule"></param>
+        /// <param name="stage"></param>
         public static void AddRule(Rule rule, CheckStage stage)
         {
             switch (stage)

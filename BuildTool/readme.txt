@@ -152,12 +152,17 @@ excel中第一列的剩余单元格内,可以继续写对应行数据的导出�
 		第二个参数为检查的时机,如果是需要检查定义的,可以在CheckStage.CompileOver(编译完成时)执行,如果是要检查内容,则需要在ParseOver时执行
 	2> 在需要使用该规则的excel的'检查规则'一列,填入对应的规则名称,以及所需要的信息,excel的填入格式为 'ref=Item.id'.则在对应时机时,调用回调时,将会把标记了该规则的字段以及该字段所需要使用的信息一同组织到RuleInfo中,等待在规则执行时调用返回.
 		然后可以根据所需参数,以及lookup的所有数据缓存进行检查\定义\提示等等功能.
+	3> 使用lua自定义检查规则
+		1)在目标文件夹下创建一个'规则名.lua'文件,例如'test.lua'
+		2)然后在文件中写一个检查函数,并且在最后返回检查函数以及检查时期 0是编译完成时,1是数据结束后
+			function CheckTest(infoList) end return CheckTest, 0
+		3)通过Checker.AddLuaRuleDirectory(string luaRuleDirPath)接口添加lua规则文件夹
 
+		**检查规则如果比较通用,建议修改C#代码添加为inner规则
 
 TODO: 常量表的支持,需要支持横向配置不同类型
 TODO: 数据类型支持常量
 TODO: 别名机制
-TODO: 支持使用lua脚本添加rule
 TODO: DevJava, ReleaseJava, ReleaseLua版本的代码导出
 
 

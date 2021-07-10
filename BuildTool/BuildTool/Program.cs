@@ -20,6 +20,7 @@ namespace BuildTool
             //var custom = Lookup.ClassInfo[""];
             //var e = Lookup.Enum[""];
             //var d = Lookup.Datas[""];
+  
             Console.ReadKey();
         }
 

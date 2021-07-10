@@ -148,7 +148,7 @@ namespace Channel.Agent.Excel
                 // 对sheet创建一个Object定义,并赋值Object名称
 
                 RawObjDef objDef = new RawObjDef(
-                    Utils.GetObjectTypeName(filePath),
+                    FileUtils.GetObjectTypeName(filePath),
                     RawObjType.OBJECT,
                     string.Format("{0}  sheet={1}", filePath, sheet.SheetName)
                     );
@@ -317,7 +317,7 @@ namespace Channel.Agent.Excel
                 if (!IsValidSheet(sheet)) continue;
 
                 // table 类型名称
-                var tabName = Utils.GetObjectTypeName(filePath);
+                var tabName = FileUtils.GetObjectTypeName(filePath);
 
                 // 选择标题头,并跳过表头信息
                 var rows = sheet.GetRowEnumerator();

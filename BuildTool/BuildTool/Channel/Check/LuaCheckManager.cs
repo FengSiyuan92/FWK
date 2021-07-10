@@ -8,7 +8,7 @@ using Neo.IronLua;
 using Channel.Define;
 using System.IO;
 using System.Diagnostics;
-namespace Channel.Lua
+namespace Channel
 {
     internal class LuaCheckManager
     {

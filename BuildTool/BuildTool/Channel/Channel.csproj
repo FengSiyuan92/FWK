@@ -70,6 +70,7 @@
     <Compile Include="Check\InnerCheck_ConvertValid.cs" />
     <Compile Include="CLog.cs" />
     <Compile Include="Check\LuaCheckManager.cs" />
+    <Compile Include="FileUtils.cs" />
     <Compile Include="Output\LuaOutput\DevLuaWriter.cs" />
     <Compile Include="Output\CodeWriter.cs" />
     <Compile Include="Parser.cs" />

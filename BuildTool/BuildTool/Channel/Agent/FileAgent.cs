@@ -122,21 +122,11 @@ namespace Channel
                 return;
             }
             HashSet<string> filePath = new HashSet<string>();
-            FindDirValidFile(dirPath, filePath);
+            FileUtils.FindDirValidFile(dirPath, filePath, ValidExtend);
             Utils.Parallel(filePath, RegisterFile);
         }
 
-        static void FindDirValidFile(string dirpath, HashSet<string> vessel)
-        {
-            DirectoryInfo dir = new DirectoryInfo(dirpath);
-
-            for (int i = 0;  i < ValidExtend.Length; i++)
-            {
-                var files = dir.GetFiles(ValidExtend[i], SearchOption.AllDirectories).Select(f=>f.FullName);
-                vessel.UnionWith(files);
-            }
-        }
-
+ 
         internal static void LoadAllDefine()
         {
             Utils.Parallel(allAgents.Values, LoadItemDefine);
