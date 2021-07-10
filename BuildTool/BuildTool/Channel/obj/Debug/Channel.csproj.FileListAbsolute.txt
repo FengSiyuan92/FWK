@@ -36,3 +36,7 @@ D:\FWK\BuildTool\BuildTool\Channel\obj\Debug\Channel.csproj.CoreCompileInputs.ca
 D:\FWK\BuildTool\BuildTool\Channel\obj\Debug\Channel.csproj.CopyComplete
 D:\FWK\BuildTool\BuildTool\Channel\obj\Debug\Channel.dll
 D:\FWK\BuildTool\BuildTool\Channel\obj\Debug\Channel.pdb
+F:\FWK\BuildTool\BuildTool\Channel\bin\Debug\Neo.Lua.dll
+F:\FWK\BuildTool\BuildTool\Channel\bin\Debug\Neo.Lua.pdb
+F:\FWK\BuildTool\BuildTool\Channel\bin\Debug\Neo.Lua.xml
+F:\FWK\BuildTool\BuildTool\Channel\bin\Debug\de\Neo.Lua.resources.dll

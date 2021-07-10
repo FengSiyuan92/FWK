@@ -22,6 +22,7 @@ namespace Channel
 
         public static void Output(string title= ConstString.STR_EMPTY)
         {
+            Console.ForegroundColor = ConsoleColor.White;
             foreach (var item in log)
             {
                 Console.WriteLine(item);
@@ -30,7 +31,7 @@ namespace Channel
             {
                 Console.WriteLine();
             }
-       
+            Console.ForegroundColor = ConsoleColor.Yellow;
             foreach (var item in warning)
             {
                 Console.WriteLine(item);
@@ -39,13 +40,14 @@ namespace Channel
             {
                 Console.WriteLine();
             }
+            Console.ForegroundColor = ConsoleColor.Red;
             foreach (var item in error)
             {
                 Console.WriteLine(item);
             }
-        
             Console.WriteLine(string.Format(split, title));
-        
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public static void Clear()
@@ -57,7 +59,11 @@ namespace Channel
 
         public static void Log(string fmt, params object[] pms)
         {
-            var s = string.Format(fmt, pms);
+            string s =  fmt;
+            if (pms != null && pms.Length != 0)
+            {
+                s = string.Format(s, pms);
+            }
             lock (log)
             {
                 log.Add(s);
@@ -67,7 +73,14 @@ namespace Channel
         const string Warning = "Warning: ";
         public static void LogWarning(string fmt, params object[] pms)
         {
-            var s = string.Format(Warning + fmt, pms);
+
+            string s = Warning + fmt;
+            if (pms != null && pms.Length != 0)
+            {
+                s = string.Format(s, pms);
+            }
+
+        
             lock (warning)
             {
                 warning.Add(s);
@@ -77,7 +90,12 @@ namespace Channel
         const string Error = "Error: ";
         public static void LogError(string fmt, params object[] pms)
         {
-            var s = string.Format(Error + fmt, pms);
+            string s = Error+fmt;
+            if (pms != null&& pms.Length != 0)
+            {
+                s = string.Format(s, pms);
+            }
+
             lock (error)
             {
                 error.Add(s);

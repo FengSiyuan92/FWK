@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 using Channel;
 using System.Text.RegularExpressions;
 using System.IO;
+
 namespace BuildTool
 {
     class Program
     {
         static void Main(string[] args)
         {
+           
+            Channel.Test.TestLua();
             Channel.Test.TestF();
-            //HashSet<string> set = new HashSet<string>();
-            var custom = Lookup.ClassInfo[""];
-            var e = Lookup.Enum[""];
-            var d = Lookup.Datas[""];
+            ////HashSet<string> set = new HashSet<string>();
+            //var custom = Lookup.ClassInfo[""];
+            //var e = Lookup.Enum[""];
+            //var d = Lookup.Datas[""];
             Console.ReadKey();
         }
 

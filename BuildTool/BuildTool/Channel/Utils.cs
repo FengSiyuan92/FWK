@@ -193,8 +193,11 @@ namespace Channel
                         evt.Set();
                     }, item);
                 }
+                if (resetEvents.Count == 0)
+                {
+                    return;
+                }
                 WaitHandle.WaitAll(resetEvents.ToArray());
-                Thread.CurrentThread.Priority = ThreadPriority.Normal;
             }
             else
             {

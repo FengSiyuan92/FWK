@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +38,9 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Neo.Lua, Version=5.3.0.0, Culture=neutral, PublicKeyToken=fdb0cd4fe8a6e3b2, processorArchitecture=MSIL">
+      <HintPath>..\packages\NeoLua.1.3.13\lib\net45\Neo.Lua.dll</HintPath>
     </Reference>
     <Reference Include="NPOI, Version=2.5.3.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.5.3\lib\net45\NPOI.dll</HintPath>
@@ -64,6 +69,7 @@
     <Compile Include="Check\InnerCheck_CheckReferenceValid.cs" />
     <Compile Include="Check\InnerCheck_ConvertValid.cs" />
     <Compile Include="CLog.cs" />
+    <Compile Include="Check\LuaCheckManager.cs" />
     <Compile Include="Output\LuaOutput\DevLuaWriter.cs" />
     <Compile Include="Output\CodeWriter.cs" />
     <Compile Include="Parser.cs" />

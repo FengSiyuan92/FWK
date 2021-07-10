@@ -42,3 +42,7 @@ D:\FWK\BuildTool\BuildTool\obj\Debug\BuildTool.csproj.CoreCompileInputs.cache
 D:\FWK\BuildTool\BuildTool\obj\Debug\BuildTool.csproj.CopyComplete
 D:\FWK\BuildTool\BuildTool\obj\Debug\BuildTool.exe
 D:\FWK\BuildTool\BuildTool\obj\Debug\BuildTool.pdb
+F:\FWK\BuildTool\BuildTool\bin\Debug\Neo.Lua.dll
+F:\FWK\BuildTool\BuildTool\bin\Debug\Neo.Lua.pdb
+F:\FWK\BuildTool\BuildTool\bin\Debug\Neo.Lua.xml
+F:\FWK\BuildTool\BuildTool\bin\Debug\de\Neo.Lua.resources.dll
