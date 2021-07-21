@@ -1,23 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 /*
-    定义了常用数据结构的对象池，减少频繁new临时变量产生的gc。每次新增一个静态类对象池之前需要先考虑gc是否频繁，如不频繁，建议构建Object对象缓存在自己身上即可。
+    定义了常用数据结构的对象池，减少频繁new临时变量产生的gc。每次新增一个静态类对象池之前需要先考虑gc是否频繁，
+    如不频繁，建议构建Object对象缓存在自己身上即可。
 
-    获取一个List的方法    ListPool<T>.Get()   使用完成之后 需要手动调用 ListPool<T>.Put()
+    获取一个List的方法    ListPool<T>.Get()   使用完成之后 需要手动调用 ListPool<T>.Push()
 
  */
 public class ObjectPool<T> where T : new()
 {
     Stack<T> pool = new Stack<T>();
-    System.Action<T> onPush;
+    Action<T> _onPush;
+    Action<T> _onPop;
+    Action<T> _onDispose;
+    int _maximum;
 
     public T Pop()
     {
         if (pool.Count > 0)
         {
-            return pool.Pop();
+            T item = pool.Pop();
+            if (_onPop != null)
+            {
+                _onPop(item);
+            }
+            return item;
         }
         return new T();
     }
@@ -26,9 +35,9 @@ public class ObjectPool<T> where T : new()
     {
         if (instance != null)
         {
-            if (onPush!= null)
+            if (_onPush!= null)
             {
-                onPush(instance);
+                _onPush(instance);
             }
             pool.Push(instance);
         }
@@ -36,35 +45,49 @@ public class ObjectPool<T> where T : new()
 
     public ObjectPool() { }
 
-    public ObjectPool(System.Action<T> onPush)
+    public ObjectPool(Action<T> onPop, Action<T> onPush, Action<T> onDispose, int maximum = -1)
     {
-        this.onPush = onPush;
+        this._onPop = onPop;
+        this._onPush = onPush;
+        this._onDispose = onDispose;
+        this._maximum = maximum;
     }
-    
-    public void Cut(int maxSize)
+
+    /// <summary>
+    /// 将池容量进行裁剪,被裁剪掉的对象将会执行onDispose回调(如果有的话)
+    /// 传入负数将使用默认数量(构造时传入的值),如果默认数量也为-1,则不进行裁剪
+    /// </summary>
+    /// <param name="targetCount">目标数量</param>
+    public void Cut(int targetCount = -1)
     {
-        if (pool.Count > maxSize)
+        targetCount = targetCount == -1 ? _maximum : targetCount;
+
+        if (pool.Count > targetCount)
         {
-            for (int i = 0; i < pool.Count - maxSize; i++)
+            for (int i = 0; i < pool.Count - _maximum; i++)
             {
-                pool.Pop();
+                T item = pool.Pop();
+                if (_onDispose != null)
+                {
+                    _onDispose(item);
+                }
             }
         }
     }
 }
 
 
-#region  集合对象池
 public class ListPool<T>
 {
     public static ObjectPool<List<T>> pool;
 
     static ListPool()
     {
-        pool = new ObjectPool<List<T>>((list)=>
+
+        pool = new ObjectPool<List<T>>(null, (list) =>
         {
             list.Clear();
-        });
+        }, null, 5);
     }
 
     public static List<T> Get()
@@ -72,7 +95,7 @@ public class ListPool<T>
         return pool.Pop();
     }
 
-    public static void Put(List<T> instance)
+    public static void Push(List<T> instance)
     {
         pool.Push(instance);
     }
@@ -84,10 +107,10 @@ public class HashSetPool<T>
 
     static HashSetPool()
     {
-        pool = new ObjectPool<HashSet<T>>((table) =>
+        pool = new ObjectPool<HashSet<T>>(null, (table) =>
         {
             table.Clear();
-        });
+        }, null, 3);
     }
 
     public static HashSet<T> Get()
@@ -95,13 +118,12 @@ public class HashSetPool<T>
         return pool.Pop();
     }
 
-    public static void Put(HashSet<T> instance)
+    public static void Push(HashSet<T> instance)
     {
         pool.Push(instance);
     }
 }
 
-#endregion
 
 public class MAssetBundleCreateRequestPool
 {
@@ -109,10 +131,10 @@ public class MAssetBundleCreateRequestPool
 
     static MAssetBundleCreateRequestPool()
     {
-        pool = new ObjectPool<MAssetBundleCreateRequest>((handler) =>
-        {
-            handler.Dispose();
-        });
+        pool = new ObjectPool<MAssetBundleCreateRequest>(null, (handler) =>
+         {
+             handler.Dispose();
+         }, null, 10);
     }
     public static MAssetBundleCreateRequest Get(AssetBundleCreateRequest request)
     {
@@ -121,7 +143,7 @@ public class MAssetBundleCreateRequestPool
         return handler;
     }
 
-    public static void Put(MAssetBundleCreateRequest instance)
+    public static void Push(MAssetBundleCreateRequest instance)
     {
         pool.Push(instance);
     }
@@ -132,10 +154,10 @@ public class MAssetBundleRequestPool
     public static ObjectPool<MAssetBundleRequest> pool;
     static MAssetBundleRequestPool()
     {
-        pool = new ObjectPool<MAssetBundleRequest>((handler) =>
-        {
-            handler.Dispose();
-        });
+        pool = new ObjectPool<MAssetBundleRequest>(null, (handler) =>
+         {
+             handler.Dispose();
+         }, null, 5);
     }
 
     public static MAssetBundleRequest Get(AssetBundleRequest request)
@@ -145,7 +167,7 @@ public class MAssetBundleRequestPool
         return handler;
     }
 
-    public static void Put(MAssetBundleRequest instance)
+    public static void Push(MAssetBundleRequest instance)
     {
         pool.Push(instance);
     }
@@ -156,10 +178,10 @@ public class LoadedBundlePool
     public static ObjectPool<LoadedAssetBundle> pool;
     static LoadedBundlePool()
     {
-        pool = new ObjectPool<LoadedAssetBundle>((loaded) =>
+        pool = new ObjectPool<LoadedAssetBundle>(null, (loaded) =>
         {
             loaded.Clear();
-        });
+        }, null, 10);
     }
     public static LoadedAssetBundle Get(AssetBundle bundle)
     {
@@ -168,7 +190,7 @@ public class LoadedBundlePool
         return loaded;
     }
 
-    public static void Put(LoadedAssetBundle instance)
+    public static void Push(LoadedAssetBundle instance)
     {
         pool.Push(instance);
     }

@@ -10,17 +10,11 @@ using UnityEditor;
 public class AssetManager
 {
     #region 常量， 字段， 容器定义
-    // 这个字段可以根据宏定义来确定不同平台下的不同文件夹
-    const string PREFILE = "StandaloneWindows";
-
     static Dictionary<string, LoadedAssetBundle> m_abCaches;
     static Dictionary<string, string> m_abPaths;
-
-    static AssetBundleManifestHelper m_manifest;
+    static ManifestHelper m_manifest;
     static Dictionary<string, RequestHandler> m_requestHandlers;
     static Dictionary<string, string[]> m_depends;
-    static string m_BaseDownloadingURL;
-    static string pre;
 
 #if UNITY_EDITOR
     const string simulateKey = "ASSET_BUNDLE_SIMULATE";
@@ -41,56 +35,12 @@ public class AssetManager
             m_simulateModel = value ? 1 : 0;
         }
     }
-
 #endif
-
-    /// <summary>
-    /// manifest暂时使用同步加载方案，如果出现问题，可以改成异步加载
-    /// </summary>
-    class AssetBundleManifestHelper
-    {
-        const string manifest = "assetbundlemanifest";
-
-        string m_manifestPath;
-        AssetBundle m_manifestBundle;
-        AssetBundleManifest m_manifest;
-
-        public AssetBundleManifestHelper(string manifestPath)
-        {
-            m_manifestPath = manifestPath;
-#if UNITY_EDITOR
-            if (!File.Exists(m_manifestPath))
-            {
-                Debug.LogError("bundle资源不存在， 点击Assets -> AssetBundleHelpe r-> Build AssetBundle -> Build For StandaloneWindows后重新启动");
-                EditorApplication.isPlaying = false;
-                return;
-            }
-#endif
-            m_manifestBundle = AssetBundle.LoadFromFile(m_manifestPath);
-            m_manifest = m_manifestBundle.LoadAsset<AssetBundleManifest>(manifest);
-        }
-
-        public string[] GetAllDependencies(string assetBundleName)
-        {
-            return m_manifest.GetAllDependencies(assetBundleName);
-        }
-
-        public void InitAssetPath(Dictionary<string, string> vessel)
-        {
-            pre = Application.streamingAssetsPath + "/" + PREFILE;
-            var allABs = m_manifest.GetAllAssetBundles();
-            for (int i = 0; i < allABs.Length; i++)
-            {
-                vessel.Add(allABs[i], Path.Combine(pre, allABs[i]));
-            }
-        }
-    }
 
     #endregion
 
 
     #region 对外接口
-
 
     /// <summary>
     /// 初始化方法
@@ -98,9 +48,9 @@ public class AssetManager
     public static void Initialize()
     {
         // 容器初始化
-        m_abCaches = new Dictionary<string, LoadedAssetBundle>();
+        m_abCaches = new Dictionary<string, LoadedAssetBundle>(100);
         m_abPaths = new Dictionary<string, string>();
-        m_requestHandlers = new Dictionary<string, RequestHandler>();
+        m_requestHandlers = new Dictionary<string, RequestHandler>(5);
         m_depends = new Dictionary<string, string[]>();
 
 #if UNITY_EDITOR
@@ -109,10 +59,8 @@ public class AssetManager
             return;
         }
 #endif
-
-        m_BaseDownloadingURL = AssetUtils.GetRelativePath();
         // manifest初始化
-        m_manifest = new AssetBundleManifestHelper(GetManifestPath());
+        m_manifest = new ManifestHelper();
         m_manifest.InitAssetPath(m_abPaths);
 
         CallFuncManager.InstallRepeatFunc(CallFuncType.update, LoadAsyncHandler, false);
@@ -126,19 +74,21 @@ public class AssetManager
     /// <returns></returns>
     public static T LoadAsset<T>(string assetName) where T : UnityEngine.Object
     {
+
 #if UNITY_EDITOR
         if (simulateModel)
         {
             return LoadAssetSimulate<T>(assetName);
         }
 #endif
-
-        if (!m_abPaths.ContainsKey(assetName))
+        string bundleName = AssetNameHelper.LookBundleName(assetName);
+        if (!m_abPaths.ContainsKey(bundleName))
         {
-            LogBundleDtExist(assetName);
+            LogBundleDtExist(bundleName);
             return null;
         }
-        var bundle = GetAssetBundle(assetName);
+
+        var bundle = GetAssetBundle(bundleName);
         return bundle.assetBundle.LoadAsset<T>(assetName);
     }
 
@@ -160,14 +110,14 @@ public class AssetManager
             return;
         }
 #endif
-
-        if (!m_abPaths.ContainsKey(assetName))
+        string bundleName = AssetNameHelper.LookBundleName(assetName);
+        if (!m_abPaths.ContainsKey(bundleName))
         {
-            LogBundleDtExist(assetName);
+            LogBundleDtExist(bundleName);
             return;
         }
 
-        LoadBundleAndDepends(assetName, (bundle) =>
+        LoadBundleAndDepends(bundleName, (bundle) =>
         {
             GetAssetAsync<T>(assetName, bundle, (asset) =>
             {
@@ -187,6 +137,7 @@ public class AssetManager
         if (paths.Length == 0)
         {
             LogAssetEmpty(assetName, typeof(T).ToString());
+            return null;
         }
         var result = AssetDatabase.LoadAssetAtPath<T>(paths[0]);
         return result;
@@ -259,13 +210,13 @@ public class AssetManager
     /// </summary>
     /// <param name="assetName">资源名</param>
     /// <param name="onBundlesLoaded"> 回调</param>
-    static void LoadBundleAndDepends(string assetName, System.Action<AssetBundle> onBundlesLoaded)
+    static void LoadBundleAndDepends(string assetBundleName, System.Action<AssetBundle> onBundlesLoaded)
     {
         string[] depends = null;
-        if (!m_depends.TryGetValue(assetName, out depends))
+        if (!m_depends.TryGetValue(assetBundleName, out depends))
         {
-            depends = m_manifest.GetAllDependencies(assetName);
-            m_depends.Add(assetName, depends);
+            depends = m_manifest.GetAllDependencies(assetBundleName);
+            m_depends.Add(assetBundleName, depends);
         }
 
         var all = depends.Length + 1;
@@ -277,11 +228,11 @@ public class AssetManager
             loaded.AddReferenceCount();
             if (over == all)
             {
-                onBundlesLoaded(m_abCaches[assetName].assetBundle);
+                onBundlesLoaded(m_abCaches[assetBundleName].assetBundle);
             }
         };
 
-        LoadAssetBundleAsync(assetName, onBundleLoaded);
+        LoadAssetBundleAsync(assetBundleName, onBundleLoaded);
         for (int i = 0; i < depends.Length; i++)
         {
             LoadAssetBundleAsync(depends[i], onBundleLoaded);
@@ -381,16 +332,6 @@ public class AssetManager
     }
 
     /// <summary>
-    /// 获取不同平台下的manifest路径
-    /// </summary>
-    /// <returns></returns>
-    static string GetManifestPath()
-    {
-        return string.Format("{0}/{1}/{2}", Application.streamingAssetsPath, PREFILE, PREFILE);
-    }
-
-
-    /// <summary>
     /// 异步加载处理（不使用协程直接加载,为了减少在资源加载峰值时产生的无用GC）
     /// </summary>
     static void LoadAsyncHandler()
@@ -418,17 +359,17 @@ public class AssetManager
                 var handler = m_requestHandlers[key];
                 if (handler is MAssetBundleCreateRequest)
                 {
-                    MAssetBundleCreateRequestPool.Put(handler as MAssetBundleCreateRequest);
+                    MAssetBundleCreateRequestPool.Push(handler as MAssetBundleCreateRequest);
                 }
                 else
                 {
-                    MAssetBundleRequestPool.Put(handler as MAssetBundleRequest);
+                    MAssetBundleRequestPool.Push(handler as MAssetBundleRequest);
                 }
                 m_requestHandlers.Remove(key);
                 needDeleteHandlers.RemoveAt(last);
             }
-            ListPool<string>.Put(keys);
-            ListPool<string>.Put(needDeleteHandlers);
+            ListPool<string>.Push(keys);
+            ListPool<string>.Push(needDeleteHandlers);
         }
     }
 

@@ -45,7 +45,7 @@ public class Message
             if (list.Count == 0)
             {
                 m_handlers.Remove(msgType);
-                ListPool<MessageListener>.Put(list);
+                ListPool<MessageListener>.Push(list);
             }
         }
     }
