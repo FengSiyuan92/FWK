@@ -197,4 +197,16 @@ public class AssetUtils {
                 m.shader = newShader;
         }
     }
+
+    public static void LogBundleDtExist(string bundleName)
+    {
+        Debug.LogErrorFormat("AssetBundle what's bundleName = {0} don't exist", bundleName);
+    }
+
+
+    public static void LogAssetEmpty(string assetName, string type)
+    {
+        Debug.LogErrorFormat("nonexistent assetname = {0}  or  unconformable type(T) = {1} ", assetName, type);
+    }
+
 }

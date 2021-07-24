@@ -147,27 +147,29 @@ public class MAssetBundleCreateRequestPool
     {
         pool.Push(instance);
     }
+
+    public Loaded loaded;
 }
 
-public class MAssetBundleRequestPool
+public class MAssetRequestPool
 {
-    public static ObjectPool<MAssetBundleRequest> pool;
-    static MAssetBundleRequestPool()
+    public static ObjectPool<MAssetRequest> pool;
+    static MAssetRequestPool()
     {
-        pool = new ObjectPool<MAssetBundleRequest>(null, (handler) =>
+        pool = new ObjectPool<MAssetRequest>(null, (handler) =>
          {
              handler.Dispose();
          }, null, 5);
     }
 
-    public static MAssetBundleRequest Get(AssetBundleRequest request)
+    public static MAssetRequest Get(AssetBundleRequest request)
     {
         var handler = pool.Pop();
         handler.SetRequest(request);
         return handler;
     }
 
-    public static void Push(MAssetBundleRequest instance)
+    public static void Push(MAssetRequest instance)
     {
         pool.Push(instance);
     }
@@ -191,6 +193,30 @@ public class LoadedBundlePool
     }
 
     public static void Push(LoadedAssetBundle instance)
+    {
+        pool.Push(instance);
+    }
+}
+
+public class LoadedAssetPool
+{
+    public static ObjectPool<LoadedAsset> pool;
+
+    static LoadedAssetPool()
+    {
+        pool = new ObjectPool<LoadedAsset>(null, (loaded) =>
+        {
+            loaded.Clear();
+        }, null, 10);
+    }
+    public static LoadedAsset Get( UnityEngine.Object asset, LoadedAssetBundle bundle)
+    {
+        var loaded = pool.Pop();
+        loaded.SetInfo(bundle, asset);
+        return loaded;
+    }
+
+    public static void Push(LoadedAsset instance)
     {
         pool.Push(instance);
     }

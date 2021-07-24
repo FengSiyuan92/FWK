@@ -24,6 +24,7 @@ public class GameDrive : MonoBehaviour {
         {
             var module = modules[i];
             module.onInitialize();
+            CallFuncManager.InstallRepeatFunc(CallFuncType.update, module.onRefresh, false);
         }
     }
 }

@@ -18,7 +18,7 @@ public abstract class RequestHandler
     {
         if (onRequestDone != null)
         {
-            onRequestDone();
+            onRequestDone(m_Loaded);
         }
     }
 
@@ -31,14 +31,26 @@ public abstract class RequestHandler
     {
         return m_id == id;
     }
+
+    Loaded m_Loaded;
+
+    public void CreateLoaded()
+    {
+        if (createLoaded != null)
+        {
+            m_Loaded = createLoaded();
+        }
+    }
+    internal CreateLoaded createLoaded;
 }
 
-public delegate void OnRequestDone();
 
-public class MAssetBundleCreateRequest :  RequestHandler
+public delegate Loaded CreateLoaded();
+
+public class MAssetBundleCreateRequest : RequestHandler
 {
     AssetBundleCreateRequest request;
-
+  
 
     public AssetBundle assetBundle
     {
@@ -72,9 +84,13 @@ public class MAssetBundleCreateRequest :  RequestHandler
     {
         this.request = request;
     }
+
+
 }
 
-public class MAssetBundleRequest : RequestHandler
+
+public delegate void OnRequestDone(Loaded loaded);
+public class MAssetRequest : RequestHandler
 {
     AssetBundleRequest request;
 
@@ -104,11 +120,10 @@ public class MAssetBundleRequest : RequestHandler
         request = null;
     }
 
-    public MAssetBundleRequest() { }
+    public MAssetRequest() { }
 
     public void SetRequest(AssetBundleRequest request)
     {
         this.request = request;
     }
 }
-
