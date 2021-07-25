@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 #if UNITY_EDITOR
-public class AssetSimulate 
+    public class AssetSimulate 
 {
 
     const string simulateKey = "ASSET_BUNDLE_SIMULATE";

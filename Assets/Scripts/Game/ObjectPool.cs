@@ -87,7 +87,7 @@ public class ListPool<T>
         pool = new ObjectPool<List<T>>(null, (list) =>
         {
             list.Clear();
-        }, null, 5);
+        }, null, 10);
     }
 
     public static List<T> Get()
@@ -110,7 +110,7 @@ public class HashSetPool<T>
         pool = new ObjectPool<HashSet<T>>(null, (table) =>
         {
             table.Clear();
-        }, null, 3);
+        }, null, 5);
     }
 
     public static HashSet<T> Get()
@@ -125,99 +125,33 @@ public class HashSetPool<T>
 }
 
 
-public class MAssetBundleCreateRequestPool
+public interface IReuseObject
 {
-    public static ObjectPool<MAssetBundleCreateRequest> pool;
-
-    static MAssetBundleCreateRequestPool()
-    {
-        pool = new ObjectPool<MAssetBundleCreateRequest>(null, (handler) =>
-         {
-             handler.Dispose();
-         }, null, 10);
-    }
-    public static MAssetBundleCreateRequest Get(AssetBundleCreateRequest request)
-    {
-        var handler = pool.Pop();
-        handler.SetRequest(request);
-        return handler;
-    }
-
-    public static void Push(MAssetBundleCreateRequest instance)
-    {
-        pool.Push(instance);
-    }
-
-    public Loaded loaded;
+    void Clear();
 }
 
-public class MAssetRequestPool
+public class ReuseObjectPool<T> where T : IReuseObject , new()
 {
-    public static ObjectPool<MAssetRequest> pool;
-    static MAssetRequestPool()
+    public ObjectPool<T> pool;
+    public ReuseObjectPool(int maxCount = -1)
     {
-        pool = new ObjectPool<MAssetRequest>(null, (handler) =>
-         {
-             handler.Dispose();
-         }, null, 5);
-    }
-
-    public static MAssetRequest Get(AssetBundleRequest request)
-    {
-        var handler = pool.Pop();
-        handler.SetRequest(request);
-        return handler;
-    }
-
-    public static void Push(MAssetRequest instance)
-    {
-        pool.Push(instance);
-    }
-}
-
-public class LoadedBundlePool
-{
-    public static ObjectPool<LoadedAssetBundle> pool;
-    static LoadedBundlePool()
-    {
-        pool = new ObjectPool<LoadedAssetBundle>(null, (loaded) =>
+        maxCount = maxCount < 0 ? 10 : maxCount;
+        pool = new ObjectPool<T>(null, (loaded) =>
         {
             loaded.Clear();
-        }, null, 10);
+        }, null, maxCount);
     }
-    public static LoadedAssetBundle Get(AssetBundle bundle)
+
+    public T Get()
     {
         var loaded = pool.Pop();
-        loaded.SetBundle(bundle);
         return loaded;
     }
 
-    public static void Push(LoadedAssetBundle instance)
+    public void Push(T instance)
     {
+        instance.Clear();
         pool.Push(instance);
     }
 }
 
-public class LoadedAssetPool
-{
-    public static ObjectPool<LoadedAsset> pool;
-
-    static LoadedAssetPool()
-    {
-        pool = new ObjectPool<LoadedAsset>(null, (loaded) =>
-        {
-            loaded.Clear();
-        }, null, 10);
-    }
-    public static LoadedAsset Get( UnityEngine.Object asset, LoadedAssetBundle bundle)
-    {
-        var loaded = pool.Pop();
-        loaded.SetInfo(bundle, asset);
-        return loaded;
-    }
-
-    public static void Push(LoadedAsset instance)
-    {
-        pool.Push(instance);
-    }
-}

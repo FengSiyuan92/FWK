@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
-public class AssetUtils {
+    public class AssetUtils {
     public const string AppName = "";           
     /// <summary>
     /// 计算字符串的MD5值

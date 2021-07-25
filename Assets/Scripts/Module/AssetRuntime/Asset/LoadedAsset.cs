@@ -1,27 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class LoadedAsset : Loaded
+namespace AssetRuntime
 {
-    LoadedAssetBundle m_belongBundle;
-    Object m_asset;
-    public Object Asset => m_asset;
-    protected override void OnUnload()
+    public class LoadedAsset : Loaded
     {
-        Resources.UnloadAsset(m_asset);
-        m_asset = null;
-    }
+        LoadedBundle m_belongBundle;
+        Object m_asset;
+        public Object Asset => m_asset;
 
-    public void Clear()
-    {
-        m_asset = null;
-        m_belongBundle = null;
-    }
+        protected override void OnUnload()
+        {
+            Resources.UnloadAsset(m_asset);
+            m_asset = null;
+        }
 
-    public void SetInfo(LoadedAssetBundle bundle, UnityEngine.Object asset)
-    {
-        m_belongBundle = bundle;
-        m_asset = asset;
+        public void Clear()
+        {
+            m_asset = null;
+            m_belongBundle = null;
+        }
+
+        public void SetInfo(LoadedBundle bundle, UnityEngine.Object asset)
+        {
+            m_belongBundle = bundle;
+            m_asset = asset;
+        }
     }
 }

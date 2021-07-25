@@ -1,64 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class RequestHandleDrive : FMonoModule
+namespace AssetRuntime
 {
-    static Dictionary<string, RequestHandler> m_requestHandlers;
-
-    public override void onRefresh()
+    public class RequestHandleDriver
     {
-        if (m_requestHandlers.Count > 0)
+        static Dictionary<string, AsyncRequest> m_requestHandlers;
+
+        public static void Drive()
         {
-            var keys = ListPool<string>.Get();
-            var needDeleteHandlers = ListPool<string>.Get();
-
-            keys.AddRange(m_requestHandlers.Keys);
-            for (int i = 0; i < keys.Count; i++)
+            if (m_requestHandlers.Count > 0)
             {
-                var handler = m_requestHandlers[keys[i]];
-                if (handler.isDone)
-                {
-                    handler.CreateLoaded();
-                    handler.InvokeCallback();
-                    needDeleteHandlers.Add(keys[i]);
-                }
-            }
+                var keys = ListPool<string>.Get();
+                var needDeleteHandlers = ListPool<string>.Get();
 
-            while (needDeleteHandlers.Count > 0)
-            {
-                var last = needDeleteHandlers.Count - 1;
-                var key = needDeleteHandlers[last];
-                var handler = m_requestHandlers[key];
-                if (handler is MAssetBundleCreateRequest)
+                keys.AddRange(m_requestHandlers.Keys);
+                for (int i = 0; i < keys.Count; i++)
                 {
-                    MAssetBundleCreateRequestPool.Push(handler as MAssetBundleCreateRequest);
+                    var handler = m_requestHandlers[keys[i]];
+                    if (handler.isDone)
+                    {
+                        handler.OnRequestOver();
+                        needDeleteHandlers.Add(keys[i]);
+                    }
                 }
-                else
+
+                while (needDeleteHandlers.Count > 0)
                 {
-                    MAssetRequestPool.Push(handler as MAssetRequest);
+                    var last = needDeleteHandlers.Count - 1;
+                    var key = needDeleteHandlers[last];
+                    var handler = m_requestHandlers[key];
+                    m_requestHandlers.Remove(key);
+                    needDeleteHandlers.RemoveAt(last);
                 }
-                m_requestHandlers.Remove(key);
-                needDeleteHandlers.RemoveAt(last);
+
+                ListPool<string>.Push(keys);
+                ListPool<string>.Push(needDeleteHandlers);
             }
-            ListPool<string>.Push(keys);
-            ListPool<string>.Push(needDeleteHandlers);
         }
+
+
+        public static AsyncRequest GetRequestHandler(string handlerKey)
+        {
+            AsyncRequest handler = null;
+            m_requestHandlers.TryGetValue(handlerKey, out handler);
+            return handler;
+        }
+
+
+        public static void RegisterRequestHandler(string key, AsyncRequest handler)
+        {
+            m_requestHandlers.Add(key, handler);
+        }
+
+
     }
-
-
-    public static RequestHandler GetRequestHandler(string handlerKey)
-    {
-        RequestHandler handler = null;
-        m_requestHandlers.TryGetValue(handlerKey, out handler);
-        return handler;
-    }
-
-
-    public static void RegisterRequestHandler(string key, RequestHandler handler)
-    {
-        m_requestHandlers.Add(key, handler);
-    }
-
-
 }
