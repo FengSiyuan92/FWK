@@ -25,13 +25,13 @@ public interface FModuleInterface
 {
     F_MODULE_STATE STATE { get; }
 
-    IEnumerator onPrepare();
+    IEnumerator OnPrepare();
 
-    void onInitialize ();
+    void OnInitialize ();
 
-    void onRefresh();
+    void OnRefresh();
 
-    void onPause();
+    void OnPause();
 
-    void onResume();
+    void OnResume();
 }

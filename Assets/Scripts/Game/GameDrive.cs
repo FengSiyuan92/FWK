@@ -17,14 +17,19 @@ public class GameDrive : MonoBehaviour {
         for (int i = 0; i < modules.Length; i++)
         {
             var module = modules[i];
-            yield return module.onPrepare();
+            yield return module.OnPrepare();
         }
 
         for (int i = 0; i < modules.Length; i++)
         {
             var module = modules[i];
-            module.onInitialize();
-            CallFuncManager.InstallRepeatFunc(CallFuncType.update, module.onRefresh, false);
+            module.OnInitialize();
+        }
+
+        for (int i = 0; i < modules.Length; i++)
+        {
+            var module = modules[i];
+            CallFuncManager.InstallRepeatFunc(CallFuncType.update, module.OnRefresh, false);
         }
     }
 }

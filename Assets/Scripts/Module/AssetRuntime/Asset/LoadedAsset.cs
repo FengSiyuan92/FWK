@@ -12,6 +12,7 @@ namespace AssetRuntime
         protected override void OnUnload()
         {
             Resources.UnloadAsset(m_asset);
+            m_belongBundle.TryUnload();
             m_asset = null;
         }
 

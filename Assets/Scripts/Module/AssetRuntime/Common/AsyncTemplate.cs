@@ -21,13 +21,13 @@ namespace AssetRuntime
                 return;
             }
             // 看当前是否已经存在了相同的加载申请
-            AsyncRequest request = RequestHandleDrive.GetRequestHandler(targetName);
+            AsyncRequest request = RequestHandleDriver.GetRequestHandler(targetName);
 
             // 没有申请则创建申请
             if (request == null)
             {
                 request = onNeedCreateRequest(targetName, note);
-                RequestHandleDrive.RegisterRequestHandler(targetName, request);
+                RequestHandleDriver.RegisterRequestHandler(targetName, request);
             }
             // 往异步申请的结束回调上绑定note的签名
             request.onRequestDone += note.RequestOver;

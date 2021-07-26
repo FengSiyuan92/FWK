@@ -10,29 +10,29 @@ public class FMonoModule : MonoBehaviour, FModuleInterface
         private set;
     }
 
-    public IEnumerator onPrepare()
+    public virtual IEnumerator OnPrepare()
     {
         STATE = F_MODULE_STATE.RUNNING;
         yield break;
     }
 
-    public virtual void onInitialize()
+    public virtual void OnInitialize()
     {
       
     }
 
-    public virtual void onPause()
+    public virtual void OnPause()
     {
        
     }
 
 
-    public virtual void onRefresh()
+    public virtual void OnRefresh()
     {
         
     }
 
-    public virtual void onResume()
+    public virtual void OnResume()
     {
       
     } 

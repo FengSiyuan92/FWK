@@ -23,6 +23,12 @@ namespace AssetRuntime
         static ReuseObjectPool<LoadAssetNote> m_LoadAssetNotePool = new ReuseObjectPool<LoadAssetNote>();
         static ReuseObjectPool<GetAssetNote> m_GetAssetNotePool = new ReuseObjectPool<GetAssetNote>();
 
+        static AssetMap m_AssetMap;
+
+        public static void Initialize()
+        {
+            m_AssetMap = new AssetMap(null);
+        }
 #if UNITY_EDITOR
         static string[] assetsFolder = new string[] { "AssetBundles" };
 
@@ -38,8 +44,6 @@ namespace AssetRuntime
             return result;
         }
 #endif
-
-
         /// <summary>
         /// 异步加载资源
         /// </summary>
@@ -56,7 +60,7 @@ namespace AssetRuntime
                 return;
             }
 #endif
-            string bundlePath = AssetNameHelper.LookBundleName(assetName);
+            string bundlePath = m_AssetMap.GetAssetBundleName(assetName);
             if (bundlePath == null)
             {
                 AssetUtils.LogAssetEmpty(assetName, typeof(Object).ToString());
@@ -70,6 +74,14 @@ namespace AssetRuntime
             Bundle.LoadBundleAsync(bundlePath, loadAssetNote);
         }
 
+        public static void ReturnAsset(string assetName)
+        {
+            LoadedAsset loaded = null;
+            if (m_LoadedAsset.TryGetValue(assetName, out loaded))
+            {
+                loaded.TryUnload();
+            }
+        }
 
         static AsyncRequest CreateLoadAssetHandler(string targetName, IRequestNote note)
         {

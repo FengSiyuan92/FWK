@@ -22,7 +22,7 @@ public sealed partial class CoroutineManager : FMonoModule
     /// <summary>
     /// 模块初始化
     /// </summary>
-    public override void onInitialize()
+    public override void OnInitialize()
     {
         _carrier = this;
     }
