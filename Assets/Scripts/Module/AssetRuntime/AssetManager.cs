@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using AssetRuntime;
 using System;
+using System.IO;
 /// <summary>
 /// 
 /// </summary>
 public class AssetManager : FMonoModule
 {
+    public override int RelativeOrder => -1;
+
     public override IEnumerator OnPrepare()
     {
-        Asset.Initialize();
+        var filePath = GetAssetMapFilePath();
+        AssetMap assetMap = new AssetMap(new FileInfo(filePath));
+        Asset.Initialize(assetMap);
+
+        var bundlePath = GetBundleMapFilePath();
+        BundleMap bundleMap = new BundleMap(new FileInfo(bundlePath));
+        Bundle.Initialize(bundleMap);
         yield break;
-    }
-
-
-    public override void OnInitialize()
-    {
-       
     }
 
     public override void OnRefresh()
@@ -54,4 +57,28 @@ public class AssetManager : FMonoModule
     {
         Asset.ReturnAsset(prefabName);
     }
+
+    static string GetAssetMapFilePath()
+    {
+
+        var perPath = AssetUtils.GetPersistentFilePath("__assetmap");
+        if (File.Exists(perPath)) return perPath;
+        var strPath = AssetUtils.GetStreamFilePath("__assetmap");
+        if (File.Exists(perPath)) return strPath;
+
+        throw new Exception("没有找到资源映射文件");
+
+    }
+
+    static string GetBundleMapFilePath()
+    {
+
+        var perPath = AssetUtils.GetPersistentFilePath("__bundleMap");
+        if (File.Exists(perPath)) return perPath;
+        var strPath = AssetUtils.GetStreamFilePath("__bundleMap");
+        if (File.Exists(perPath)) return strPath;
+
+        throw new Exception("没有找到Bundle信息文件");
+    }
+
 }

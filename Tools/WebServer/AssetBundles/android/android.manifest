@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 1153251673
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: testmat2
+      Dependencies: {}
+    Info_1:
+      Name: testmat1
+      Dependencies:
+        Dependency_0: testimg1
+    Info_2:
+      Name: testimg1
+      Dependencies: {}
+    Info_3:
+      Name: cube1
+      Dependencies:
+        Dependency_0: testmat1
+    Info_4:
+      Name: sphera
+      Dependencies:
+        Dependency_0: testmat2

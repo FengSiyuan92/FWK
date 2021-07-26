@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
-    public class AssetUtils {
+public class AssetUtils {
     public const string AppName = "";           
     /// <summary>
     /// 计算字符串的MD5值
@@ -52,110 +52,27 @@ using UnityEngine;
         }
     }
 
-    /// <summary>
-    /// 清除所有子节点
-    /// </summary>
-    public static void ClearChild(Transform go)
+    static string m_PersistentPath;
+    public static string PersistentPath => m_PersistentPath;
+
+    static string m_StreamAssetPath;
+    public static string StreamAssetPath => m_StreamAssetPath;
+
+
+    public static string GetStreamFilePath(string filePath)
     {
-        if (go == null) return;
-        for (int i = go.childCount - 1; i >= 0; i--)
-        {
-            GameObject.Destroy(go.GetChild(i).gameObject);
-        }
+        Debug.Log("m_StreamAssetPath = " + m_StreamAssetPath);
+        return string.Format("file://{0}/{1}", m_StreamAssetPath, filePath);
     }
 
-    /// <summary>
-    /// 取得数据存放目录
-    /// </summary>
-    public static string dataSavePath
-    {
-        get
-        {
-            string game = AppConst.AppName.ToLower();
-            if (Application.isMobilePlatform)
-            {
-                return Application.persistentDataPath + "/" + game + "/";
-            }
-            if (AppConst.DebugMode)
-            {
-                return Application.dataPath + "/" + AppConst.AssetDir + "/";
-            }
-            if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-                int i = Application.dataPath.LastIndexOf('/');
-                return Application.dataPath.Substring(0, i + 1) + game + "/";
-            }
-            return "c:/" + game + "/";
-        }
-    }
 
-    /// <summary>
-    /// 获取资源加载路径
-    /// </summary>
-    /// <returns></returns>
-    public static string GetRelativePath()
+    public static string GetPersistentFilePath(string filePath)
     {
-        if (Application.isEditor)
-            return "file://" + System.Environment.CurrentDirectory.Replace("\\", "/") + "/Assets/" + AppConst.AssetDir + "/";
-        else if (Application.isMobilePlatform || Application.isConsolePlatform)
-            return "file:///" + dataSavePath;
-        else // For standalone player.
-            return "file://" + Application.streamingAssetsPath + "/";
+        Debug.Log("m_PersistentPath = " + m_PersistentPath);
+        return string.Format("file://{0}/{1}", m_PersistentPath, filePath);
     }
+}
 
-    /// <summary>
-    /// 取得行文本
-    /// </summary>
-    public static string GetFileText(string path)
-    {
-        return File.ReadAllText(path);
-    }
-
-    /// <summary>
-    /// 网络可用
-    /// </summary>
-    public static bool NetAvailable
-    {
-        get
-        {
-            return Application.internetReachability != NetworkReachability.NotReachable;
-        }
-    }
-
-    /// <summary>
-    /// 是否是无线
-    /// </summary>
-    public static bool IsWifi
-    {
-        get
-        {
-            return Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork;
-        }
-    }
-
-    /// <summary>
-    /// 应用程序内容路径
-    /// </summary>
-    public static string appContentPath
-    {
-        get
-        {
-            string path = string.Empty;
-            switch (Application.platform)
-            {
-                case RuntimePlatform.Android:
-                    path = "jar:file://" + Application.dataPath + "!/assets/";
-                    break;
-                case RuntimePlatform.IPhonePlayer:
-                    path = Application.dataPath + "/Raw/";
-                    break;
-                default:
-                    path = Application.dataPath + "/" + AppConst.AssetDir + "/";
-                    break;
-            }
-            return path;
-        }
-    }
     /// <summary>
     /// 重置加载的资源的shader，解决加载资源shader丢失的问题
     /// </summary>
@@ -209,4 +126,10 @@ using UnityEngine;
         Debug.LogErrorFormat("nonexistent assetname = {0}  or  unconformable type(T) = {1} ", assetName, type);
     }
 
+    static AssetUtils()
+    {
+        m_PersistentPath = Application.persistentDataPath;
+
+        m_StreamAssetPath = Application.streamingAssetsPath;
+    }
 }

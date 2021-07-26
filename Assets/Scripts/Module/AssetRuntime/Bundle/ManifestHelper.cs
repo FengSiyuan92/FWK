@@ -47,6 +47,7 @@ namespace AssetRuntime
 
         public void InitAssetPath(Dictionary<string, string> vessel)
         {
+
             m_bundlePre = Application.streamingAssetsPath + "/" + PREFILE;
             var allABs = m_manifest.GetAllAssetBundles();
             for (int i = 0; i < allABs.Length; i++)

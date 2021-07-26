@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
+using System.Collections;
 namespace AssetsRuntime
 {
     public enum UpdateType
@@ -46,8 +42,9 @@ namespace AssetsRuntime
         /// <param name="oldVersion"></param>
         /// <param name="newVersion"></param>
         /// <returns></returns>
-        public static UpdateType CaculateUpdateType(Version oldVersion, Version newVersion)
+        public  UpdateType Compare(Version newVersion)
         {
+            Version oldVersion = this;
             if (newVersion.apk > oldVersion.apk)
             {
                 return UpdateType.ReInstall;
@@ -65,6 +62,11 @@ namespace AssetsRuntime
                 return UpdateType.UpdateOnly;
             }
             return UpdateType.None;
+        }
+
+        public IEnumerator UpdateTo(Version newVersion)
+        {
+            yield return null;
         }
     }
 }

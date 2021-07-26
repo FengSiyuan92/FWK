@@ -16,17 +16,19 @@ namespace AssetRuntime
         static Dictionary<string, string[]> m_depends;
         static ReuseObjectPool<MLoadBundleRequest> m_requestPool = new ReuseObjectPool<MLoadBundleRequest>();
         static ReuseObjectPool<LoadBundleNote> m_notePool = new ReuseObjectPool<LoadBundleNote>();
+        static BundleMap m_BundleMap;
 
         /// <summary>
         /// 初始化方法
         /// </summary>
-        public static void Initialize()
+        public static void Initialize(BundleMap bundleMap)
         {
             // 容器初始化
             m_abCaches = new Dictionary<string, LoadedBundle>(500);
             m_abPaths = new Dictionary<string, string>(500);
 
             m_depends = new Dictionary<string, string[]>(100);
+            m_BundleMap = bundleMap;
 
             // manifest初始化
             m_manifest = new ManifestHelper();
@@ -38,13 +40,13 @@ namespace AssetRuntime
         /// </summary>
         /// <param name="assetName">资源名</param>
         /// <param name="onBundlesLoaded"> 回调</param>
-        internal static void LoadBundleAsync(string bundlePath, IRequestNote note)
+        internal static void LoadBundleAsync(string bundleName, IRequestNote note)
         {
-            string[] depends = GetDepends(bundlePath);
+            string[] depends = GetDepends(bundleName);
             var depCount = depends == null ? 0 : depends.Length;
 
             var bundleNote = m_notePool.Get();
-            bundleNote.mainBundlePath = bundlePath;
+            bundleNote.mainBundleName = bundleName;
             bundleNote.dependCount = depCount;
             bundleNote.onBundlesLoaded = note.RequestOver;
 
@@ -52,24 +54,24 @@ namespace AssetRuntime
             {
                 GetOrRequestLoaded(depends[i], note, CreateLoadBundleRequest);
             }
-            GetOrRequestLoaded(bundlePath, note, CreateLoadBundleRequest);
+            GetOrRequestLoaded(bundleName, note, CreateLoadBundleRequest);
         }
 
-        static string[] GetDepends(string mainBundlePath)
+        static string[] GetDepends(string mainBundleName)
         {
             string[] depends = null;
-            if (!m_depends.TryGetValue(mainBundlePath, out depends))
+            if (!m_depends.TryGetValue(mainBundleName, out depends))
             {
-                depends = m_manifest.GetAllDependencies(mainBundlePath);
-                m_depends.Add(mainBundlePath, depends);
+                depends = m_manifest.GetAllDependencies(mainBundleName);
+                m_depends.Add(mainBundleName, depends);
             }
             return depends;
         }
 
-        static LoadedBundle GetLoadedtBundle(string assetBundlePath)
+        static LoadedBundle GetLoadedtBundle(string bundleName)
         {
             LoadedBundle bundle = null;
-            m_abCaches.TryGetValue(assetBundlePath, out bundle);
+            m_abCaches.TryGetValue(bundleName, out bundle);
             return bundle;
         }
 

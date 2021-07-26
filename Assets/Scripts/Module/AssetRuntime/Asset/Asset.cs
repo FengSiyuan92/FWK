@@ -25,9 +25,9 @@ namespace AssetRuntime
 
         static AssetMap m_AssetMap;
 
-        public static void Initialize()
+        public static void Initialize(AssetMap assetMap)
         {
-            m_AssetMap = new AssetMap(null);
+            m_AssetMap = assetMap;
         }
 #if UNITY_EDITOR
         static string[] assetsFolder = new string[] { "AssetBundles" };
@@ -37,8 +37,8 @@ namespace AssetRuntime
             string[] paths = AssetDatabase.FindAssets(assetName, assetsFolder);
             if (paths.Length == 0)
             {
-                AssetUtils.LogAssetEmpty(assetName, typeof(Object).ToString());
-                return null;
+                throw new System.Exception("没有找到对应资源");
+     
             }
             var result = AssetDatabase.LoadAssetAtPath<Object>(paths[0]);
             return result;
@@ -63,8 +63,7 @@ namespace AssetRuntime
             string bundlePath = m_AssetMap.GetAssetBundleName(assetName);
             if (bundlePath == null)
             {
-                AssetUtils.LogAssetEmpty(assetName, typeof(Object).ToString());
-                return;
+                throw new System.Exception("资源映射中没有找到所在bundle,检查是否生成过资源映射");
             }
 
             var loadAssetNote = new LoadAssetNote();

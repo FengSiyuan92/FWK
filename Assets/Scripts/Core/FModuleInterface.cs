@@ -27,6 +27,8 @@ public interface FModuleInterface
 
     IEnumerator OnPrepare();
 
+    int RelativeOrder { get; }
+
     void OnInitialize ();
 
     void OnRefresh();

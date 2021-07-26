@@ -10,6 +10,8 @@ public class FMonoModule : MonoBehaviour, FModuleInterface
         private set;
     }
 
+    public virtual int RelativeOrder => 100;
+
     public virtual IEnumerator OnPrepare()
     {
         STATE = F_MODULE_STATE.RUNNING;
