@@ -188,7 +188,7 @@ public class ResourceChecker
                 {
                     // 比价本地文件和远程文件的md5码是否相同，不相同则删除本地文件
                     string remoteMd5 = keyValue[1].Trim();
-                    string localMd5 = AssetUtils.GetMd5(localfile);
+                    string localMd5 = AssetUtils.GetFileMD5ByPath(localfile);
                     needUpdate = !remoteMd5.Equals(localMd5);
                     if (needUpdate)
                     {

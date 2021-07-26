@@ -80,7 +80,7 @@ public class BuildAssetBundle
             BundleInfo info = new BundleInfo();
             info.BundleName = GetBundleName(fullName);
             Debug.Log(info.BundleName);
-            info.md5 = AssetUtils.GetMd5(file.FullName);
+            info.md5 = AssetUtils.GetFileMD5ByPath(file.FullName);
             info.size = file.Length;
 
             map.Add(info.BundleName, info);

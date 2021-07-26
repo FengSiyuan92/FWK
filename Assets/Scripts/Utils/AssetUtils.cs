@@ -7,11 +7,12 @@ using System.Text;
 using UnityEngine;
 
 public class AssetUtils {
-    public const string AppName = "";           
+    public const string AppName = "";
+    
     /// <summary>
     /// 计算字符串的MD5值
     /// </summary>
-    public static string md5(string source)
+    public static string GetStringMD5(string source)
     {
         MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
         byte[] data = System.Text.Encoding.UTF8.GetBytes(source);
@@ -30,7 +31,7 @@ public class AssetUtils {
     /// <summary>
     /// 计算文件的MD5值
     /// </summary>
-    public static string GetMd5(string file)
+    public static string GetFileMD5ByPath(string file)
     {
         try
         {
@@ -58,63 +59,6 @@ public class AssetUtils {
     static string m_StreamAssetPath;
     public static string StreamAssetPath => m_StreamAssetPath;
 
-
-    public static string GetStreamFilePath(string filePath)
-    {
-        Debug.Log("m_StreamAssetPath = " + m_StreamAssetPath);
-        return string.Format("file://{0}/{1}", m_StreamAssetPath, filePath);
-    }
-
-
-    public static string GetPersistentFilePath(string filePath)
-    {
-        Debug.Log("m_PersistentPath = " + m_PersistentPath);
-        return string.Format("file://{0}/{1}", m_PersistentPath, filePath);
-    }
-}
-
-    /// <summary>
-    /// 重置加载的资源的shader，解决加载资源shader丢失的问题
-    /// </summary>
-    /// <param name="obj"></param>
-    public static void ResetShader(UnityEngine.Object obj)
-    {
-
-        List<Material> listMat = new List<Material>();
-        if (obj is Material)
-        {
-
-            Material m = obj as Material;
-
-            listMat.Add(m);
-
-        }
-        else if (obj is GameObject)
-        {
-            GameObject go = obj as GameObject;
-            Renderer[] rends = go.GetComponentsInChildren<Renderer>();
-            if (null != rends)
-            {
-                foreach (Renderer item in rends)
-                {
-                    Material[] materialsArr = item.sharedMaterials;
-                    foreach (Material m in materialsArr)
-                        listMat.Add(m);
-                }
-            }
-        }
-        for (int i = 0; i < listMat.Count; i++)
-        {
-            Material m = listMat[i];
-            if (null == m)
-                continue;
-            var shaderName = m.shader.name;
-            var newShader = Shader.Find(shaderName);
-            if (newShader != null)
-                m.shader = newShader;
-        }
-    }
-
     public static void LogBundleDtExist(string bundleName)
     {
         Debug.LogErrorFormat("AssetBundle what's bundleName = {0} don't exist", bundleName);
@@ -129,7 +73,9 @@ public class AssetUtils {
     static AssetUtils()
     {
         m_PersistentPath = Application.persistentDataPath;
-
         m_StreamAssetPath = Application.streamingAssetsPath;
+
+        Debug.Log("m_PersistentPath = " + m_PersistentPath);
+        Debug.Log("m_StreamAssetPath = " + m_StreamAssetPath);
     }
 }
