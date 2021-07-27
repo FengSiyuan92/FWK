@@ -24,8 +24,8 @@ namespace AssetRuntime
                 if (m_currentLoadedCount == dependCount + 1 && onBundlesLoaded != null)
                 {
                     SafeCall.Call(onBundlesLoaded, GetLoadedtBundle(mainBundleName));
+                    m_notePool.Push(this);
                 }
-                m_notePool.Push(this);
             }
 
             public void Clear()

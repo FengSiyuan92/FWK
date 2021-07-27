@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2374066511
+CRC: 4198754526
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e4cfab639abbd4fa7ae62c36fa209efc
+    Hash: c668ac6e7adced33ee1ebf13cb86319d
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 7652f69dff3dcd0741269161f69220a7
+    Hash: a8d3d02d32e7a2b7037277cfb99be447
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -21,10 +21,10 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 43
   Script: {instanceID: 0}
-- Class: 65
+- Class: 135
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/AssetBundles/Cube1.prefab
+- Assets/AssetBundles/Sphere.prefab
 Dependencies:
-- F:/FWK/Tools/WebServer/AssetBundles/android/testmat1
+- F:/FWK//Tools/WebServer/Assets/android/testmat2

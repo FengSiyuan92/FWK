@@ -7,12 +7,7 @@ using System.IO;
 
 public class BuildAssetBundle
 {
-
-    const string assetMapFileName = "__assetmap";
-    const string bundleMapFileName = "__bundleMap";
-
     static int BundleStartWith = 0;
-
 
     static string Combine(string str1, string str2)
     {
@@ -60,7 +55,7 @@ public class BuildAssetBundle
             var assets = AssetDatabase.GetAssetPathsFromAssetBundle(bundle);
             foreach (var asset in assets)
             {
-                assetToBundleMap.Add(Path.GetFileName(asset),  bundle);
+                assetToBundleMap.Add(Path.GetFileNameWithoutExtension(asset),  bundle);
             }
         }
         return assetToBundleMap;
@@ -75,7 +70,9 @@ public class BuildAssetBundle
         {
             var fullName = file.FullName;
             var fileName = Path.GetFileNameWithoutExtension(fullName);
-            if (fullName.EndsWith(".manifest") || fileName == bundleMapFileName || fileName == assetMapFileName) continue;
+            if (fullName.EndsWith(".manifest") || 
+                fileName == AssetUtils.FileDetail ||
+                fileName == AssetUtils.AssetMap) continue;
 
             BundleInfo info = new BundleInfo();
             info.BundleName = GetBundleName(fullName);
@@ -139,7 +136,7 @@ public class BuildAssetBundle
     {
         var dataPath = Application.dataPath;
         var projectPath = dataPath.Remove(dataPath.Length - "Assets".Length);
-        return Combine(projectPath, "Tools/WebServer/AssetBundles");
+        return Combine(projectPath, "Tools/WebServer/Assets");
     }
 
     /// <summary>
@@ -162,7 +159,7 @@ public class BuildAssetBundle
 
     static string GetBundleName(string bundlePath)
     {
-        return bundlePath.Replace("\\", "/").Substring(BundleStartWith -1);
+        return bundlePath.Replace("\\", "/").Substring(BundleStartWith);
     }
 
     class BundleInfo
@@ -174,7 +171,7 @@ public class BuildAssetBundle
 
     static void WriteBundleMap(Dictionary<string, BundleInfo> map, string outputPath)
     {
-        var filePath = Combine(outputPath, bundleMapFileName);
+        var filePath = Combine(outputPath, AssetUtils.FileDetail);
         FileInfo file = new FileInfo(filePath);
         if (file.Exists)
         {
@@ -202,7 +199,7 @@ public class BuildAssetBundle
     /// <param name="target"></param>
     static void WriteAssetMap(Dictionary<string, string> map, string outputPath)
     {
-        var filePath = Combine(outputPath, assetMapFileName);
+        var filePath = Combine(outputPath, AssetUtils.AssetMap);
         FileInfo file = new FileInfo(filePath);
         if (file.Exists)
         {
@@ -217,7 +214,7 @@ public class BuildAssetBundle
         {
             var assetName = item.Key;
             var bundleName = item.Value;
-            sb.AppendLine(string.Format("{0}|/{1}", assetName, bundleName));
+            sb.AppendLine(string.Format("{0}|{1}", assetName, bundleName));
         }
         stream.Write(sb.ToString());
         stream.Flush();

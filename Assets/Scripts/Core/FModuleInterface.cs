@@ -23,7 +23,7 @@ public enum F_MODULE_STATE
 }
 public interface FModuleInterface
 {
-    F_MODULE_STATE STATE { get; }
+    F_MODULE_STATE STATE { get; set; }
 
     IEnumerator OnPrepare();
 
@@ -36,4 +36,6 @@ public interface FModuleInterface
     void OnPause();
 
     void OnResume();
+
+    void Restart();
 }

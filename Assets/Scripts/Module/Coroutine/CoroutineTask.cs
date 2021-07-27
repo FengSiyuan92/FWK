@@ -32,6 +32,8 @@ public enum TASK_STATE
 /// </summary>
 public class Task : IEnumerator
 {
+    static int counter;
+
     // unity启动起来的协程对象
     Coroutine _coroutine;
     // 外界的迭代器函数
@@ -42,7 +44,8 @@ public class Task : IEnumerator
     Delegate _action;
     // 委托函数调用参数
     object[] _args;
-
+    int m_TaskID;
+    public int TaskID => m_TaskID;
 
     private TASK_STATE _currentState;
     /// <summary>
@@ -163,6 +166,6 @@ public class Task : IEnumerator
     {
         _carrier = carrier;
         _currentState = TASK_STATE.WAIT;
+        m_TaskID = ++counter;
     }
-
 }

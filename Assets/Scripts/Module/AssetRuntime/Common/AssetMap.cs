@@ -7,16 +7,17 @@ namespace AssetRuntime
 {
     public class AssetMap 
     {
-        Dictionary<string, string> asset2Bundle;
-        public const char AssetSplit = '|';
-        public AssetMap(FileInfo content)
+        Dictionary<string, string> asset2Bundle = new Dictionary<string, string>();
+        public AssetMap()
         {
-            TextReader reader = content.OpenText();
+            var validPath = AssetUtils.GetValidFilePath(AssetUtils.AssetMap);
+            Debug.Log("AssetMap Path= " + validPath);
+            TextReader reader = File.OpenText(validPath);
             while (true)
             {
                 var line = reader.ReadLine();
                 if (string.IsNullOrEmpty(line)) break;
-                var fmt = line.Split(AssetSplit);
+                var fmt = line.Split(AssetUtils.AssetMapSplit);
 #if UNITY_EDITOR
                 if (asset2Bundle.ContainsKey(fmt[0]))
                 {
@@ -26,7 +27,6 @@ namespace AssetRuntime
 #endif
                 asset2Bundle.Add(fmt[0], fmt[1]);
             }
-            
         }
 
         public bool ContainsAsset(string assetName)
@@ -40,5 +40,7 @@ namespace AssetRuntime
             asset2Bundle.TryGetValue(assetName, out res);
             return res;
         }
+
+      
     }
 }

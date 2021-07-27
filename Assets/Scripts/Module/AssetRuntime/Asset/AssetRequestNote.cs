@@ -48,8 +48,7 @@ namespace AssetRuntime
                 note.onAssetLoaded = onAssetLoaded;
                 note.loadedBundle = bundle;
 
-                GetOrRequestLoaded(targetAssetName, note, CreateLoadAssetHandler);
-
+                GetOrRequestLoaded(targetAssetName, note, CreateLoadAssetHandler, GetHandlerName);
                 m_LoadAssetNotePool.Push(this);
             }
 

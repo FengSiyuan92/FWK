@@ -4,31 +4,32 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
-/// <summary>
-/// 资源管理器,主要目的是为了对外界屏蔽assetbundle的概念
-/// 提供同步加载\异步加载接口
-/// 同步加载和异步加载都受 资源加载模拟模式 SIMULATE MODEL 的影响
-/// 当勾选模拟加载时,在编辑器下也会强行使用editor下打好的bundle进行加载
-///     在勾选模拟加载的前提先,并且勾选了部分模拟,则会使用assetpathmap以及assetdatabase来同时加载
-/// 当不勾选时,在编辑器下将直接使用AssetDataBase来加载对应资源
-/// </summary>
-
 namespace AssetRuntime
 {
     public partial class Asset : AsyncTemplate<LoadedAsset>
     {
-        static Dictionary<string, LoadedAsset> m_LoadedAsset;
-        static ReuseObjectPool<MLoadAssetRequest> m_RequestPool = new ReuseObjectPool<MLoadAssetRequest>();
-        static ReuseObjectPool<LoadAssetNote> m_LoadAssetNotePool = new ReuseObjectPool<LoadAssetNote>();
-        static ReuseObjectPool<GetAssetNote> m_GetAssetNotePool = new ReuseObjectPool<GetAssetNote>();
+
+        static ReuseObjectPool<MLoadAssetRequest> m_RequestPool;
+        static ReuseObjectPool<LoadAssetNote> m_LoadAssetNotePool;
+        static ReuseObjectPool<GetAssetNote> m_GetAssetNotePool;
 
         static AssetMap m_AssetMap;
 
-        public static void Initialize(AssetMap assetMap)
+        public static void Initialize()
         {
-            m_AssetMap = assetMap;
+            m_AssetMap = new AssetMap();
+            m_loadedCache = new Dictionary<string, LoadedAsset>(300);
+            m_RequestPool = new ReuseObjectPool<MLoadAssetRequest>(100);
+            m_LoadAssetNotePool= new ReuseObjectPool<LoadAssetNote>();
+            m_GetAssetNotePool = new ReuseObjectPool<GetAssetNote>();
         }
+
+        public static void ReStart()
+        {
+            m_AssetMap = new AssetMap();
+
+        }
+
 #if UNITY_EDITOR
         static string[] assetsFolder = new string[] { "AssetBundles" };
 
@@ -44,6 +45,19 @@ namespace AssetRuntime
             return result;
         }
 #endif
+
+        public void ReduceAssetReferenct()
+        {
+
+        }
+
+        static LoadedAsset GetLoadedAsset(string assetName)
+        {
+            LoadedAsset loaded;
+            m_loadedCache.TryGetValue(assetName, out loaded);
+            return loaded;
+        }
+
         /// <summary>
         /// 异步加载资源
         /// </summary>
@@ -52,21 +66,32 @@ namespace AssetRuntime
         /// <param name="callback">当资源加载完毕之后的回调</param>
         public static void GetAssetAsync(string assetName, System.Action<Object> callback)
         {
+          
 #if UNITY_EDITOR
-            if (!AssetSimulate.simulateModel)
+            if (!AssetSimulate.USE_ASSET_BUNDLE)
             {
                 var asset = LoadAssetInEditor(assetName);
                 SafeCall.Call(callback, asset);
                 return;
             }
 #endif
+            // 获取一个已经加载好的资源
+            var loaded = GetLoadedAsset(assetName);
+            if (loaded != null)
+            {
+                loaded.AddReferenceCount();
+                SafeCall.Call(callback, loaded.Asset);
+                return;
+            }
+            
+            //  开始异步加载asset
             string bundlePath = m_AssetMap.GetAssetBundleName(assetName);
             if (bundlePath == null)
             {
                 throw new System.Exception("资源映射中没有找到所在bundle,检查是否生成过资源映射");
             }
 
-            var loadAssetNote = new LoadAssetNote();
+            var loadAssetNote = m_LoadAssetNotePool.Get();
             loadAssetNote.onAssetLoaded = callback;
             loadAssetNote.targetAssetName = assetName;
 
@@ -75,8 +100,8 @@ namespace AssetRuntime
 
         public static void ReturnAsset(string assetName)
         {
-            LoadedAsset loaded = null;
-            if (m_LoadedAsset.TryGetValue(assetName, out loaded))
+            var loaded = GetLoadedAsset(assetName);
+            if (loaded != null)
             {
                 loaded.TryUnload();
             }
@@ -94,12 +119,17 @@ namespace AssetRuntime
             {
                 var loaded = new LoadedAsset();
                 loaded.SetInfo(getAssetNote.loadedBundle, loadAssetHandler.Asset);
-                m_LoadedAsset.Add(targetName, loaded);
+                m_loadedCache.Add(targetName, loaded);
                 return loaded;
             };
 
             loadAssetHandler.SetLoadedCreater(creater);
             return loadAssetHandler;
+        }
+
+        static string GetHandlerName(string targetName)
+        {
+            return targetName;
         }
 
     }

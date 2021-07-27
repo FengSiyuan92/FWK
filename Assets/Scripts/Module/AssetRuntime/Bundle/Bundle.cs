@@ -10,29 +10,39 @@ namespace AssetRuntime
 {
     public partial class Bundle : AsyncTemplate<LoadedBundle>
     {
-        static Dictionary<string, LoadedBundle> m_abCaches;
-        static Dictionary<string, string> m_abPaths;
+        
         static ManifestHelper m_manifest;
         static Dictionary<string, string[]> m_depends;
         static ReuseObjectPool<MLoadBundleRequest> m_requestPool = new ReuseObjectPool<MLoadBundleRequest>();
         static ReuseObjectPool<LoadBundleNote> m_notePool = new ReuseObjectPool<LoadBundleNote>();
-        static BundleMap m_BundleMap;
+        static Version m_CurrentVersion;
 
         /// <summary>
         /// 初始化方法
         /// </summary>
-        public static void Initialize(BundleMap bundleMap)
+        public static void Initialize(Version version)
         {
+            m_CurrentVersion = version;
             // 容器初始化
-            m_abCaches = new Dictionary<string, LoadedBundle>(500);
-            m_abPaths = new Dictionary<string, string>(500);
+            m_loadedCache = new Dictionary<string, LoadedBundle>(100);
 
             m_depends = new Dictionary<string, string[]>(100);
-            m_BundleMap = bundleMap;
 
             // manifest初始化
             m_manifest = new ManifestHelper();
-            m_manifest.InitAssetPath(m_abPaths);
+        }
+
+        public static void ReStart(Version version)
+        {
+            m_CurrentVersion = version;
+            foreach (var item in m_loadedCache)
+            {
+                item.Value.FocusUnload();
+            }
+            m_loadedCache.Clear();
+            m_depends.Clear();
+
+            m_manifest.ReStart(version);
         }
 
         /// <summary>
@@ -50,11 +60,11 @@ namespace AssetRuntime
             bundleNote.dependCount = depCount;
             bundleNote.onBundlesLoaded = note.RequestOver;
 
+            GetOrRequestLoaded(bundleName, bundleNote, CreateLoadBundleRequest, GetHandlerName);
             for (int i = 0; i < depCount; i++)
             {
-                GetOrRequestLoaded(depends[i], note, CreateLoadBundleRequest);
+                GetOrRequestLoaded(depends[i], bundleNote, CreateLoadBundleRequest, GetHandlerName);
             }
-            GetOrRequestLoaded(bundleName, note, CreateLoadBundleRequest);
         }
 
         static string[] GetDepends(string mainBundleName)
@@ -71,13 +81,13 @@ namespace AssetRuntime
         static LoadedBundle GetLoadedtBundle(string bundleName)
         {
             LoadedBundle bundle = null;
-            m_abCaches.TryGetValue(bundleName, out bundle);
+            m_loadedCache.TryGetValue(bundleName, out bundle);
             return bundle;
         }
 
         static AsyncRequest CreateLoadBundleRequest(string targetName, IRequestNote note)
         {
-            var operation = AssetBundle.LoadFromFileAsync(m_abPaths[targetName]);
+            var operation = AssetBundle.LoadFromFileAsync(m_CurrentVersion.GetFilePath(targetName));
 
             var loadBundleRequest = m_requestPool.Get();
             loadBundleRequest.SetAsynOperation(operation);
@@ -86,12 +96,17 @@ namespace AssetRuntime
             {
                 var loaded = new LoadedBundle();
                 loaded.SetBundle(loadBundleRequest.assetBundle);
-                m_abCaches.Add(targetName, loaded);
+                m_loadedCache.Add(targetName, loaded);
                 return loaded;
             };
 
             loadBundleRequest.SetLoadedCreater(loadedCreater);
             return loadBundleRequest;
+        }
+
+        static string GetHandlerName(string targetName)
+        {
+            return "b:" + targetName;
         }
 
     }

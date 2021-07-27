@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace AssetRuntime
 {
     public class RequestHandleDriver
     {
-        static Dictionary<string, AsyncRequest> m_requestHandlers;
+        static Dictionary<string, AsyncRequest> m_requestHandlers = new Dictionary<string, AsyncRequest>(15);
+
+        public static bool Runing => m_requestHandlers.Count != 0;
 
         public static void Drive()
         {

@@ -8,7 +8,11 @@ using UnityEngine;
 
 public class AssetUtils {
     public const string AppName = "";
-    
+    public const char AssetMapSplit = '|';
+    public const string FileDetail = "__fileDetail";
+    public const string AssetMap = "__assetmap";
+    public const string VersionFileName = "version";
+
     /// <summary>
     /// 计算字符串的MD5值
     /// </summary>
@@ -64,6 +68,44 @@ public class AssetUtils {
         Debug.LogErrorFormat("AssetBundle what's bundleName = {0} don't exist", bundleName);
     }
 
+    public static string GetPersistentFilePath(string file)
+    {
+        return string.Format("{0}/{1}", m_PersistentPath, file);
+    }
+
+    public static string GetStreamingFilePath(string file)
+    {
+#if UNITY_EDITOR
+        // 使用bunle模式并且但是不走下载模式,那么本地服务器资源路径就是steaming路径
+        if (AssetSimulate.USE_ASSET_BUNDLE && !AssetSimulate.USE_WEB_SERVER)
+        {
+            var simulateServer = GetWerServerBundlePath();
+            return string.Format("{0}/{1}", simulateServer, file);
+        }
+#endif
+        return string.Format("{0}/{1}", m_StreamAssetPath, file);
+    }
+
+    /// <summary>
+    /// 获取可用文件路径 优先persistentPath 其次 steamingAssetsPath, 如果文件都不存在则返回null
+    /// </summary>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
+    public static string GetValidFilePath(string fileName)
+    {
+        var persistentPath = AssetUtils.GetPersistentFilePath(fileName);
+        if (File.Exists(persistentPath))
+        {
+            return persistentPath;
+        }
+
+        var streamingPath = AssetUtils.GetStreamingFilePath(fileName);
+        if (File.Exists(streamingPath))
+        {
+            return streamingPath;
+        }
+        return null;
+    }
 
     public static void LogAssetEmpty(string assetName, string type)
     {
@@ -78,4 +120,19 @@ public class AssetUtils {
         Debug.Log("m_PersistentPath = " + m_PersistentPath);
         Debug.Log("m_StreamAssetPath = " + m_StreamAssetPath);
     }
+
+#if UNITY_EDITOR
+
+    public static string GetWerServerBundlePath()
+    {
+        var pre = Application.dataPath.Remove(Application.dataPath.Length - 7);
+        var plat = "android";
+#if UNITY_IOS
+        plat = "ios";
+#endif
+        return string.Format("{0}/Tools/WebServer/Assets/{1}", pre, plat);
+    }
+
+
+#endif
 }

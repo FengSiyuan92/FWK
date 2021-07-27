@@ -3,6 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CallFuncType
+{
+    Update,
+    FixedUpdate,
+    LateUpdate
+}
+
 internal class CallFuncAgent : MonoBehaviour
 {
     List<Action> updates = new List<Action>();
@@ -85,13 +92,6 @@ internal class CallFuncAgent : MonoBehaviour
 }
 
 
-public enum CallFuncType
-{
-    update,
-    fixedUpdate,
-    lateUpdate
-}
-
 public class CallFuncManager
 {
     private static CallFuncAgent m_Main;
@@ -108,13 +108,13 @@ public class CallFuncManager
             agent = new GameObject("CallFuncAgent").AddComponent<CallFuncAgent>();
         switch (type)
         {
-            case CallFuncType.update:
+            case CallFuncType.Update:
                 agent.AddUpdate(func);
                 break;
-            case CallFuncType.fixedUpdate:
+            case CallFuncType.FixedUpdate:
                 agent.AddFixedUpdate(func);
                 break;
-            case CallFuncType.lateUpdate:
+            case CallFuncType.LateUpdate :
                 agent.AddLateUpdate(func);
                 break;
             default:
@@ -126,15 +126,15 @@ public class CallFuncManager
     {
         switch (type)
         {
-            case CallFuncType.update:
+            case CallFuncType.Update:
                 if (!m_Main.RemoveUpdate(func) && m_Private != null)
                     m_Private.RemoveUpdate(func);
                 break;
-            case CallFuncType.fixedUpdate:
+            case CallFuncType.FixedUpdate:
                 if (!m_Main.RemoveFixedUpdate(func) && m_Private != null)
                     m_Private.RemoveFixedUpdate(func);
                 break;
-            case CallFuncType.lateUpdate:
+            case CallFuncType.LateUpdate:
                 if (!m_Main.RemoveLateUpdate(func) && m_Private != null)
                     m_Private.RemoveLateUpdate(func);
                 break;

@@ -19,4 +19,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/AssetBundles/testMat1.mat
 Dependencies:
-- F:/FWK/Tools/WebServer/AssetBundles/android/testimg1
+- F:/FWK//Tools/WebServer/Assets/android/testimg1

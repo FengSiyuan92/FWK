@@ -7,7 +7,7 @@ public class FMonoModule : MonoBehaviour, FModuleInterface
     public F_MODULE_STATE STATE
     {
         get;
-        private set;
+        set;
     }
 
     public virtual int RelativeOrder => 100;
@@ -38,4 +38,9 @@ public class FMonoModule : MonoBehaviour, FModuleInterface
     {
       
     } 
+
+    public virtual void Restart()
+    {
+
+    }
 }

@@ -17,7 +17,16 @@ namespace AssetRuntime
         LoadedCreater m_Creater;
         AsyncOperation m_Operation;
 
-        public bool isDone => m_Operation.isDone;
+        public bool isDone {
+            get
+            {
+                if (m_Operation == null)
+                {
+                    var a = 0;
+                }
+                return m_Operation.isDone;
+            }
+        }
         public bool IsID(string id) => m_Id == id;
 
         /// <summary>
