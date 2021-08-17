@@ -10,7 +10,7 @@ public class FMonoModule : MonoBehaviour, FModuleInterface
         set;
     }
 
-    public virtual int RelativeOrder => 100;
+    public virtual string Name => gameObject.name;
 
     public virtual IEnumerator OnPrepare()
     {
@@ -43,4 +43,6 @@ public class FMonoModule : MonoBehaviour, FModuleInterface
     {
 
     }
+
+   
 }

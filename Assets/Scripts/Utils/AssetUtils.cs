@@ -13,6 +13,10 @@ public class AssetUtils {
     public const string AssetMap = "__assetmap";
     public const string VersionFileName = "version";
 
+    public const string LuaFramework = "LuaFrameWork";
+    public const string LuaScripts = "LuaScripts";
+
+
     /// <summary>
     /// 计算字符串的MD5值
     /// </summary>

@@ -5,8 +5,12 @@ using UnityEditor;
 using System.Text;
 using System.IO;
 
+
+
 public class BuildAssetBundle
 {
+    const string LuaCodeDir = "LuaCode";
+
     static int BundleStartWith = 0;
 
     static string Combine(string str1, string str2)
@@ -21,13 +25,19 @@ public class BuildAssetBundle
         var outpath = Combine(GetWebServerPath(), GetPlatformPath(target));
         UpdateFileIndex(outpath);
 
+        //构建资源映射
         var assetMap = CollectAssetMap();
         WriteAssetMap(assetMap, outpath);
 
+        //导出环境检查
         CheckOutputPath(outpath);
         BuildBundle(outpath, target);
 
-        var map =  CollectBundleMap(outpath);
+        // 导出luazip包
+        GenLuaScript(outpath);
+
+        // 收集收集版本文件
+        var map =  CollectFileMap(outpath);
         WriteBundleMap(map, outpath);
     }
 
@@ -61,7 +71,7 @@ public class BuildAssetBundle
         return assetToBundleMap;
     }
 
-    static Dictionary<string, BundleInfo> CollectBundleMap(string outputPath)
+    static Dictionary<string, BundleInfo> CollectFileMap(string outputPath)
     {
         Dictionary<string, BundleInfo> map = new Dictionary<string, BundleInfo>();
         DirectoryInfo dir = new DirectoryInfo(outputPath);
@@ -72,7 +82,8 @@ public class BuildAssetBundle
             var fileName = Path.GetFileNameWithoutExtension(fullName);
             if (fullName.EndsWith(".manifest") || 
                 fileName == AssetUtils.FileDetail ||
-                fileName == AssetUtils.AssetMap) continue;
+                fileName == AssetUtils.AssetMap ||
+                fileName == AssetUtils.VersionFileName) continue;
 
             BundleInfo info = new BundleInfo();
             info.BundleName = GetBundleName(fullName);
@@ -106,13 +117,8 @@ public class BuildAssetBundle
     /// <returns></returns>
     static AssetBundleManifest BuildBundle(string outputPath, BuildTarget target)
     {
-        StringBuilder assetRecord = new StringBuilder();
-        StringBuilder bundlePathRecord = new StringBuilder();
         var manifist = BuildPipeline.BuildAssetBundles(
-            outputPath,
-            BuildAssetBundleOptions.UncompressedAssetBundle
-            |BuildAssetBundleOptions.DisableLoadAssetByFileNameWithExtension
-            , target);
+            outputPath,BuildAssetBundleOptions.ChunkBasedCompression, target);
         return manifist;
     }
 
@@ -193,7 +199,7 @@ public class BuildAssetBundle
     }
 
     /// <summary>
-    /// 写入资源和bundle的映射
+    /// 写入资源和对应bundle的映射
     /// </summary>
     /// <param name="map"></param>
     /// <param name="target"></param>
@@ -219,5 +225,20 @@ public class BuildAssetBundle
         stream.Write(sb.ToString());
         stream.Flush();
         stream.Close();
+    }
+
+    /// <summary>
+    /// 把lua代码打包并加密
+    /// </summary>
+    static void GenLuaScript(string outputDir)
+    {
+        var path = Application.dataPath + "/" + LuaCodeDir;
+        var frameWorkPath = path + "/Framework";
+        var logicPath = path + "/Scripts";
+
+
+        var frameWorkFile = outputDir + "/" + AssetUtils.GetStringMD5(AssetUtils.LuaFramework);
+        var logicFile = outputDir + "/" + AssetUtils.GetStringMD5(AssetUtils.LuaScripts);
+
     }
 }

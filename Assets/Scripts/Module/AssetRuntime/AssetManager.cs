@@ -17,7 +17,7 @@ using System.IO;
 
 public class AssetManager : FMonoModule
 {
-    public override int RelativeOrder => -1;
+  
 
     public override void OnInitialize()
     {

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-
+using UnityEngine;
 namespace AssetRuntime
 {
     public enum UpdateType
@@ -24,17 +24,14 @@ namespace AssetRuntime
 
     public class Version
     {
-
         int apk;
         int main;
         int minor;
         int last;
 
         List<FileList> fileMaps = new List<FileList>();
-
+ 
         public string VersionCode => string.Format("{0}-{1}.{2}.{3}", apk, main, minor, last);
-
-
 
         /// <summary>
         /// 计算两个版本的更新类型
@@ -119,6 +116,7 @@ namespace AssetRuntime
             if (File.Exists(persistentFileMapPath))
             {
                 FileList persistentFileList = new FileList(FileBelong.PERSISTENT);
+                Debug.Log("persistentFileList Path= " + persistentFileMapPath);
                 persistentFileList.FillInfoByFilePath(persistentFileMapPath);
                 clientVersion.fileMaps.Add(persistentFileList);
             }
@@ -126,6 +124,7 @@ namespace AssetRuntime
             // 构建StreamingAssets中的文件映射
             var streamingPath = AssetUtils.GetStreamingFilePath(AssetUtils.FileDetail);
             FileList steamigFileList = new FileList(FileBelong.STEAMING);
+            Debug.Log("steamigFileList Path= " + streamingPath);
             steamigFileList.FillInfoByFilePath(streamingPath);
             clientVersion.fileMaps.Add(steamigFileList);
 

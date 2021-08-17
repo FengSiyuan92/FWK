@@ -71,10 +71,6 @@ namespace Channel.Output.LuaOutput
 
         static void GenSingleObj(string objClassName)
         {
-            if (objClassName == "CustomTest")
-            {
-                var a = 0;
-            }
             var getter = Lookup.Datas[objClassName];
             if (!getter.KeyTable) return;
 

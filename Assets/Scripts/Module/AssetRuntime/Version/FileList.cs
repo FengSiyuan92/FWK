@@ -39,7 +39,7 @@ namespace AssetRuntime
             FileInfo file = new FileInfo(filePath);
             if (!file.Exists)
                 return false;
-
+        
             var reader = file.OpenText();
             while (true)
             {

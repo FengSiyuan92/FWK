@@ -29,6 +29,10 @@ namespace Channel
                 case CodeType.DevLua:
                     Output.LuaOutput.DevLuaWriter.Write(outputDir);
                     break;
+                case CodeType.Lua:
+                    Output.LuaOutput.LuaWriter.Write(outputDir);
+                    break;
+                
                 default:
                     break;
             }
