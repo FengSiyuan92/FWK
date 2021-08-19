@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace FAction
 {
     // 并发执行组合节点
-    public class SyncAction : GroupAction
+    public class SyncWaitFastAction : GroupAction
     {
-        public override ActionType ActionType => ActionType.Sync;
+        public override ActionType ActionType => ActionType.WaitFast;
         public override void ClearGroupInfo() { }
 
         public override void Replay()
@@ -36,7 +37,7 @@ namespace FAction
                 }
             }
 
-            if (finishCount == ChildCount)
+            if (finishCount > 0)
             {
                 this.IsFinish = true;
             }

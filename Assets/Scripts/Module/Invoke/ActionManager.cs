@@ -26,6 +26,9 @@ public class ActionManager : FMonoModule
 
     public override void OnRefresh()
     {
+#if UNITY_EDITOR
+        Test();
+#endif
         if (actions.Count == 0)
         {
             return;
@@ -51,14 +54,13 @@ public class ActionManager : FMonoModule
         } while (node != null && node != actions.First);
 
 
-#if UNITY_EDITOR
-        Test();
-#endif
+
     }
 
 #if UNITY_EDITOR
 
     FAction.FAction action;
+    GameObject testGo;
     void Test()
     {
         if (Input.GetKeyDown(KeyCode.W))
@@ -99,6 +101,33 @@ public class ActionManager : FMonoModule
                 action.Resume();
             }
 
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (testGo == null)
+            {
+                testGo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                testGo.name = "testTransform";
+                testGo.transform.position = Vector3.zero;
+            }
+            var testMoveAction = testGo.transform.MovePos(100, 100, 100, 10);
+            var testScale = testGo.transform.ScaleTo(10, 10, 10, 0.5f);
+            var testScale2 = testGo.transform.ScaleTo(1, 1, 1, 0.5f);
+
+
+            var compose = Action.Sequence(
+                 Action.WaitFast(
+                     testMoveAction,
+                     Action.Loop(testScale, testScale2)
+                 ),
+
+                 testGo.transform.ScaleTo(1, 1, 1, 0)
+               );
+
+            compose.Run();
+            action = compose;
         }
     }
 #endif

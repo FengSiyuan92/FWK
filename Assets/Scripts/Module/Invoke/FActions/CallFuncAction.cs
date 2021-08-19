@@ -11,13 +11,9 @@ namespace FAction
         // 需要调用的函数
         public System.Action action;
 
-        public override void Reset()
-        {
-            this.IsFinish = false;
-        }
-
         public override void Tick()
         {
+            base.Tick();
             SafeCall.Call(action);
             this.IsFinish = true;
         }

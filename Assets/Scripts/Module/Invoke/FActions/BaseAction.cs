@@ -4,25 +4,49 @@ using UnityEngine;
 
 namespace FAction
 {
-    public abstract class FAction : IReuseObject
+
+    public class FAction : IReuseObject
     {
         public bool IsPause { get; private set; }
 
         bool runing = false;
+        bool ticking = false;
+
+        // 执行一次后自动复用
+        public bool AutoReuse { get; set; } = false;
+        public bool IsFinish { get; protected set; } = false;
+
+        public virtual ActionType ActionType => ActionType.Default;
+        // action是否执行结束
+     
 
         // 更新action行为
-        public abstract void Tick();
+        public virtual void Tick()
+        {
+            if (!ticking)
+            {
+                OnStartTick();
+                ticking = true;
+            }
+        }
 
-        // action是否执行结束
-        public virtual bool IsFinish { get; protected set; } = false;
+        public virtual void OnStartTick()
+        {
 
-        // 行为复位,恢复参数为初始状态
-        public abstract void Reset();
+        }
+
+        // 行为复位,恢复运行参数为初始状态,但
+        public virtual void Replay()
+        {
+            this.IsFinish = false;
+            this.ticking = false;
+
+        }
 
         // 入池后清理残留数据的接口,不需要使用者调用
         public virtual void Clear()
         {
-            this.IsFinish = false;
+
         }
 
         // 销毁一个Action对象,在使用侧用完之后,应该调用Destroy
@@ -30,10 +54,9 @@ namespace FAction
         {
             ActionManager.RemoveAction(this);
             runing = false;
+            AutoReuse = false;
             ActionFactory.ReturnActionInstance(this);
         }
-
-        public virtual ActionType ActionType => ActionType.Default;
 
         public void Run()
         {
@@ -50,7 +73,11 @@ namespace FAction
         {
             ActionManager.RemoveAction(this);
             runing = false;
-            Reset();
+            Replay();
+            if (AutoReuse)
+            {
+                Destroy();
+            }
         }
 
         public void Pause()

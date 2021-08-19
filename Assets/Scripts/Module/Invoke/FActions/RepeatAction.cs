@@ -14,6 +14,7 @@ namespace FAction
         int overCount;
         public override void Tick()
         {
+            base.Tick();
             var child = childs[0];
             child.Tick();
             if (child.IsFinish)
@@ -26,19 +27,19 @@ namespace FAction
                 }
                 else
                 {
-                    child.Reset();
+                    child.Replay();
                 }
             }
         }
 
-        public override void Reset()
+        public override void Replay()
         {
+            base.Replay();
             foreach (var child in childs)
             {
-                child.Reset();
+                child.Replay();
             }
             overCount = 0;
-            this.IsFinish = false;
         }
 
         public override void ClearGroupInfo()

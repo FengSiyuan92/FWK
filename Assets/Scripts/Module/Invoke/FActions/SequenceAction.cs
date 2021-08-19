@@ -16,18 +16,19 @@ namespace FAction
             currentIndex = 0;
         }
 
-        public override void Reset()
+        public override void Replay()
         {
+            base.Replay();
             foreach (var child in childs)
             {
-                child.Reset();
+                child.Replay();
             }
             currentIndex = 0;
-            this.IsFinish = false;
         }
 
         public override void Tick()
         {
+            base.Tick();
             var targetAction = childs[currentIndex];
             if (!targetAction.IsFinish)
             {

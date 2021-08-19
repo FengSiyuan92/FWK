@@ -14,6 +14,7 @@ namespace FAction
 
         public override void Tick()
         {
+            base.Tick();
             if (remain < 0)
             {
                 remain = waitCount;
@@ -33,11 +34,10 @@ namespace FAction
             waitCount = 0;
         }
 
-
-        public override void Reset()
+        public override void Replay()
         {
+            base.Replay();
             remain = -1;
-            this.IsFinish = false;
         }
     }
 }
