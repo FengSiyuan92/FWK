@@ -24,7 +24,7 @@ public class ObjectPool<T> where T : new()
             T item = pool.Pop();
             if (_onPop != null)
             {
-                _onPop(item);
+                SafeCall.Call(_onPop, item);
             }
             return item;
         }
@@ -35,10 +35,12 @@ public class ObjectPool<T> where T : new()
     {
         if (instance != null)
         {
-            if (_onPush!= null)
+            if (pool.Contains(instance))
             {
-                _onPush(instance);
+                return;
             }
+            SafeCall.Call(_onPush, instance);
+ 
             pool.Push(instance);
         }
     }
@@ -67,10 +69,7 @@ public class ObjectPool<T> where T : new()
             for (int i = 0; i < pool.Count - _maximum; i++)
             {
                 T item = pool.Pop();
-                if (_onDispose != null)
-                {
-                    _onDispose(item);
-                }
+                SafeCall.Call(_onDispose, item);
             }
         }
     }

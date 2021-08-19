@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using FAction;
 public class TestCode : MonoBehaviour
 {
     public void Test()
@@ -15,4 +15,18 @@ public class TestCode : MonoBehaviour
 
     }
 
+
+    FAction.FAction action;
+     void Update()
+    {
+        if (!GameDrive.Executable)
+        {
+            return;
+        }
+
+       
+
+
+
+    }
 }

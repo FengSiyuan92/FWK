@@ -18,4 +18,19 @@ public class SafeCall
             }
         }
     }
+
+    public static void Call(System.Action action)
+    {
+        if (action != null)
+        {
+            try
+            {
+                action();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e.ToString());
+            }
+        }
+    }
 }

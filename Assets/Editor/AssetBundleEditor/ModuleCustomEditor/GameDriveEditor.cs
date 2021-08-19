@@ -110,7 +110,6 @@ public class GameDriverEditor : Editor
             EditorSceneManager.MarkAllScenesDirty();
         }
 
-
         if (EditorGUILayout.DropdownButton(new GUIContent("Sort"), FocusType.Keyboard))
         {
             List<TempInfo> temp = new List<TempInfo>();

@@ -21,7 +21,7 @@ public class GameDrive : MonoBehaviour {
     /// <summary>
     /// 驱动器是否可执行(只有在各个模块都成功初始化后,改字段才为true)
     /// </summary>
-    public bool Executable { get; private set; } = false;
+    public static bool Executable { get; private set; } = false;
     FModuleInterface[] modules;
 
     private IEnumerator Start()
@@ -29,8 +29,6 @@ public class GameDrive : MonoBehaviour {
         // 初始化旧AssetManager
         // 加载本地资源
         // 加载旧的登录场景=> 登录场景进行版本号比对,资源更新等逻辑
-        this.enabled = false;
-
         modules = GetComponentsInChildren<FModuleInterface>();
         SortModule(modules);
 
@@ -71,7 +69,7 @@ public class GameDrive : MonoBehaviour {
         {
             var module = modules[i];
             module.OnRefresh();
-            Debug.Log(module.Name + "刷新完成");
+            //Debug.Log(module.Name + "刷新完成");
         }
     }
 
@@ -83,7 +81,7 @@ public class GameDrive : MonoBehaviour {
             var module = modules[i];
             module.STATE = F_MODULE_STATE.PAUSE;
             module.OnPause();
-            Debug.Log(module.Name + "停止运行");
+            //Debug.Log(module.Name + "停止运行");
         }
         this.enabled = false;
     }
@@ -97,7 +95,7 @@ public class GameDrive : MonoBehaviour {
             var module = modules[i];
             module.STATE = F_MODULE_STATE.RUNNING;
             module.OnResume();
-            Debug.Log(module.Name + "恢复运行");
+            //Debug.Log(module.Name + "恢复运行");
         }
         this.enabled = true;
     }

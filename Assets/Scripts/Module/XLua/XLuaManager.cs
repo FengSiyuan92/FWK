@@ -21,15 +21,14 @@ public class XLuaManager : FMonoModule
         m_Global.AddBuildin("rapidjson", XLua.LuaDLL.Lua.LoadRapidJson);
     }
 
-
     public static byte[] CustomLoader(ref string filepath)
     {
         string scriptPath = string.Empty;
-        //        filepath = filepath.Replace(".", "/") + ".lua";
+   
 #if UNITY_EDITOR
         scriptPath = Path.Combine(Application.dataPath, LUA_SCRIPT_PATH);
         scriptPath = Path.Combine(scriptPath, filepath);
-        //Logger.Log("Load lua script : " + scriptPath);
+
         return FileUtil.SafeReadAllBytes(scriptPath);
 #endif
         //        string path = Path.GetFileName(filepath);
@@ -45,5 +44,4 @@ public class XLuaManager : FMonoModule
         //        }
         //        return null;
     }
-
 }
