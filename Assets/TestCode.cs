@@ -24,7 +24,12 @@ public class TestCode : MonoBehaviour
             return;
         }
 
-       
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            XLuaManager.DoString("(require 'Core.main').Test()");
+
+        }
 
 
 
