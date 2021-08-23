@@ -1,4 +1,3 @@
----------------------------------------------------------------------
 -- FWK (C) CompanyName, All Rights Reserved
 -- Created by: AuthorName
 -- Date: 2021-08-20 16:13:49
@@ -10,10 +9,24 @@
 ---@class class
 local arches = {}
 local instanceMap = {}
-local _getOrCreateArche
 local _initInstance
 local _isDestroyed
 local _modifyClassHook
+
+function clearclass(className)
+	if not arches[className] then
+		return
+	end
+	
+	arches[className] = nil
+	local instances = instanceMap[className]
+	if instances then
+		for k, instance in pairs(instances) do
+			instance:Destroy()
+		end
+	end
+	instanceMap[className] = {}
+end
 
 function class(className, base)
 	base = base or Object
@@ -36,6 +49,7 @@ function class(className, base)
 			local instance = {}
 			arche.__usedId = arche.__usedId + 1
 			instance.alive = true
+			instance.class = arche
 			instance.instanceId =  arche.__usedId
 			setmetatable(instance, {__index = arche})
 			-- 初始化对象
@@ -64,7 +78,9 @@ function _initInstance(instance, type, ...)
 	if super then
 		_initInstance(instance, super, ...)
 	end
-	type.OnCreate(instance, ...)
+	if type.OnCreate then
+		type.OnCreate(instance, ...)
+	end
 end
 
 function _releaseInstance(instance, type, ...)
@@ -72,7 +88,9 @@ function _releaseInstance(instance, type, ...)
 	if super then
 		_releaseInstance(instance, super, ...)
 	end
-	type.OnDestroy(instance, ...)
+	if type.OnDestroy then
+		type.OnDestroy(instance, ...)
+	end
 end
 
 function _isDestroyed(instance)

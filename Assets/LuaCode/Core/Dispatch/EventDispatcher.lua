@@ -11,18 +11,18 @@
 -- 4、支持在事件类型的某个监听中,移除任何一个监听,包括移除自身、移除下一个将要被调用的等
 --]]
 
-local EventDispatcher = class("EventDispatcher");
+local EventDispatcher = class("EventDispatcher")
 
 local _removeNode = nil
 local _createNode = nil
 
-function EventDispatcher:__init()
+function EventDispatcher:OnCreate()
 	self.listenerID_ = 0
 	self.listeners_ = {}
 	self.listenerKeys_ = {}
 end
 
-function EventDispatcher:__delete()
+function EventDispatcher:OnDestroy()
 	self.listenerID_ = 0
 	self.listeners_ = nil
 	self.listenerKeys_ = nil

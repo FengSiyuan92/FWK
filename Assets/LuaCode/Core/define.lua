@@ -10,9 +10,22 @@
 ---@class deine
 require('LuaDebuggee').StartDebug('127.0.0.1', 9826)
 
-
-require "Core.class"
+-- 全局工具类函数
+require "Core.Base.class"
 require "Core.gc"
+require "Core.Util.json"
+require "Core.Util.log"
+require "Core.Util.utf8"
+require "Core.Util.stringutil"
+require "Core.Util.tableutil"
 
+-- 全局工具类对象
+LocalData = require "Core.Util.LocalData"
+NumberUtil = require "Core.Util.NumberUtil"
+Time = require "Core.Util.Time"
 
+-- 模块组件
 Object = require "Core.Object"
+Game = require "Core.Game"
+Dispatch = require "Core.Dispatch.Dispatch"
+

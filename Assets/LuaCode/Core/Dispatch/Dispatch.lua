@@ -9,7 +9,7 @@
 
 ---@class Dispatch
 local Dispatch = {}
-local Dispatcher = require "Core.Modules.EventDispatcher"
+local Dispatcher = require "Core.Dispatch.EventDispatcher"
 local DispatcherCache = {}
 
 function Dispatch.RequestGameDispatcher(gameName)
@@ -21,8 +21,15 @@ function Dispatch.RequestGameDispatcher(gameName)
 	return old
 end
 
+function Dispatch.CloseDispatcher(gameName)
+	local old = DispatcherCache[gameName]
+	if old then
+		old:Destroy()
+		DispatcherCache[gameName] = nil
+	end
+end
 
-function Dispatch.Dispatch(etype, ...)
+function Dispatch.Send(etype, ...)
 	local gameName = Game.Current()
 	local dispatcher = DispatcherCache[gameName]
 	if dispatcher then
@@ -30,7 +37,7 @@ function Dispatch.Dispatch(etype, ...)
 	end
 end
 
-function Dispatch.SpanDispatch(gameName, etype, ...)
+function Dispatch.SpanSend(gameName, etype, ...)
 	local dispatcher = DispatcherCache[gameName]
 	if dispatcher then
 		dispatcher:Send(etype, ...)
@@ -41,14 +48,14 @@ function Dispatch.Add(etype, handler)
 	local gameName = Game.Current()
 	local dispatcher = DispatcherCache[gameName]
 	if dispatcher then
-		return dispatcher:Add(etype, ...)
+		return dispatcher:Add(etype, handler)
 	end
 end
 
 function Dispatch.SpanAdd(gameName, etype, handler)
 	local dispatcher = DispatcherCache[gameName]
 	if dispatcher then
-		return dispatcher:Add(etype, ...)
+		return dispatcher:Add(etype, handler)
 	end
 end
 

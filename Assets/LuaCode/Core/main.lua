@@ -10,6 +10,31 @@
 ---@class main
 local main = {}
 
-function main.Start() end
+Game.Open("hall")
+
+
+local t = class("Test")
+t.Mod = {Mod.event}
+function t:OnCreate()
+end
+
+function main.Start() 
+	local e = "Test"
+	local test = t.New()
+	test.event:Add(e, function(a)
+			local p = a
+		local b = 0	
+	end)
+	
+	test.event:Send(e, 10)
+	
+	
+	
+	Game.Back()
+	
+	test.event:Send(e, 10)
+end
+
+
 
 return main

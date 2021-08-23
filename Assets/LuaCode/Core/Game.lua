@@ -15,14 +15,15 @@ local gameStack = {}
 gameStack[1] = "hall"
 
 local _readConfig
-local _loadGame
+local _changeScene
 local _clearEnv
 
 function Game.Open(gameName)
 	table.insert(gameStack, gameName)
 	focusGameName = gameName
+	Dispatch.RequestGameDispatcher(gameName)
 	_readConfig(gameName)
-	_loadGame(gameName)
+	_changeScene(gameName)
 end
 
 function Game.Back()
@@ -32,9 +33,10 @@ function Game.Back()
 	end
 	local game = table.remove(gameStack, #gameStack)
 	_clearEnv(game)
-	focusGameName = game
+	local cur = gameStack[#gameStack]
+	_changeScene(cur)
+	focusGameName = cur
 end
-
 
 function Game.Current()
 	return focusGameName
@@ -44,13 +46,31 @@ function _readConfig()
 	
 end
 
-function _clearEnv()
+function _clearEnv(gameName)
+	Dispatch.CloseDispatcher(gameName)
+	local contains = string.contains
+	local split = string.split
+	local dirty = false
+	for path,_ in pairs(package.preload) do
+		if contains(path, gameName) then
+			package.preload[path] = nil
+			local files = split(path, '.')
+			local file = files[#files]
+			clearclass(file)
+			dirty = true
+		end
+	end
 	
+	if dirty then
+		collectgarbage("collect")
+	end
 end
 
-function _loadGame()
-	
+function _changeScene(gameName)
+	if gameName == "hall" then
+		-- TODO: 只激活大厅场景
+	end
+	-- 否则卸载当前场景进入下一个场景
 end
-
 
 return Game
