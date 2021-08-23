@@ -12,13 +12,21 @@ local Object = {}
 Object.className = "Object"
 
 Mod = {
+	-- 节点绑定
 	cs = "cs",
+	-- 事件派发
 	event = "event",
+	-- 资源存取
+	asset = "asset",
+	-- 行为托管
+	action = "action"
 }
 
 local ModuleType = {
 	[Mod.event] = require "Core.Modules.Event.EventModule",
 	[Mod.cs] = require "Core.Modules.CSBind.CSBindModule",
+	[Mod.asset] = require "Core.Modules.Asset.AssetUser",
+	[Mod.action] = require "Core.Modules.Action.ActionCollocation"
 }
 
 function Object:OnCreate()

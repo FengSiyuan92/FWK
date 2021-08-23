@@ -19,6 +19,13 @@ require "Core.Util.utf8"
 require "Core.Util.stringutil"
 require "Core.Util.tableutil"
 
+
+-- CS常用工具类
+Action = CS.FAction.Action
+
+
+
+
 -- 全局工具类对象
 LocalData = require "Core.Util.LocalData"
 NumberUtil = require "Core.Util.NumberUtil"
