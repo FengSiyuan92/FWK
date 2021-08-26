@@ -9,13 +9,14 @@ using UnityEngine;
 public class AssetUtils {
     public const string AppName = "";
     public const char AssetMapSplit = '|';
-    public const string FileDetail = "__fileDetail";
-    public const string AssetMap = "__assetmap";
-    public const string VersionFileName = "version";
+    public const string FileDetail = "___fileDetail";
+    public const string VersionFileName = "___version";
+
+    public const string AssetMap = "___assetmap";
+    public const string SpriteMap = "___spritesmap";
 
     public const string LuaFramework = "LuaFrameWork";
     public const string LuaScripts = "LuaScripts";
-
 
     /// <summary>
     /// 计算字符串的MD5值

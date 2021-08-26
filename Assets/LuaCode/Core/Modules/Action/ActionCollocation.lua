@@ -4,8 +4,8 @@
 -- Date: 2021-08-23 20:49:32
 ---------------------------------------------------------------------
 
--- To edit this template in: Data/Config/Template.lua
--- To disable this template, check off menuitem: Options-Enable Template File
+-- action托管器,调用Hold将创建的action托管进这里,在Object销毁的时候,会自动终止行为
+-- 防止调用某些无法继续执行的逻辑,也防止自己控制action的生命周期
 
 ---@class ActionCollocation
 local ActionCollocation = {}
@@ -30,6 +30,5 @@ function ActionCollocation:Hold(action)
 	
 	self.actions_[#self.actions_ + 1] = action
 end
-
 
 return ActionCollocation

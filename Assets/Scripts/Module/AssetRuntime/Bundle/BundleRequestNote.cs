@@ -9,23 +9,35 @@ namespace AssetRuntime
         class LoadBundleNote : IRequestNote
         {
             int m_currentLoadedCount;
-
+            public bool Valid { get; set; }
             public string mainBundleName;
             public int dependCount;
             public System.Action<LoadedBundle> onBundlesLoaded;
 
             public string TargetName => mainBundleName;
 
-            public void RequestOver(Loaded loaded)
+            public void OnRequestOver(Loaded loaded)
             {
                 m_currentLoadedCount++;
-                loaded.AddReferenceCount();
+
+                var bundle = loaded as LoadedBundle;
+                if (bundle.BundleName != mainBundleName)
+                {
+                    loaded.AddReferenceCount();
+                }
 
                 if (m_currentLoadedCount == dependCount + 1 && onBundlesLoaded != null)
                 {
-                    SafeCall.Call(onBundlesLoaded, GetLoadedtBundle(mainBundleName));
+                    var mainBundle = GetLoadedtBundle(mainBundleName);
+                    mainBundle.IsMain = true;
+                    SafeCall.Call(onBundlesLoaded, mainBundle);
                     m_notePool.Push(this);
                 }
+            }
+
+            public void OnInterrupt()
+            {
+
             }
 
             public void Clear()

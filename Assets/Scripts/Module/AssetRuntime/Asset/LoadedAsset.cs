@@ -5,7 +5,7 @@ namespace AssetRuntime
 {
     public class LoadedAsset : Loaded
     {
-        LoadedBundle m_belongBundle;
+        Bundle.LoadedBundle m_belongBundle;
         Object m_asset;
         public Object Asset => m_asset;
 
@@ -22,7 +22,7 @@ namespace AssetRuntime
             m_belongBundle = null;
         }
 
-        public void SetInfo(LoadedBundle bundle, UnityEngine.Object asset)
+        public void SetInfo(Bundle.LoadedBundle bundle, UnityEngine.Object asset)
         {
             m_belongBundle = bundle;
             m_asset = asset;

@@ -14,27 +14,20 @@ Game.Open("hall")
 
 
 local t = class("Test")
-t.Mod = {Mod.event}
+t.Mod = {Mod.cs, Mod.ui, Mod.asset}
 function t:OnCreate()
+	self.gameObject = CS.UnityEngine.GameObject.Find("RuntimeDebug")
 end
+
 
 function main.Start() 
-	local e = "Test"
-	local test = t.New()
-	test.event:Add(e, function(a)
-			local p = a
-		local b = 0	
-	end)
-	
-	test.event:Send(e, 10)
-	
-	
-	
-	Game.Back()
-	
-	test.event:Send(e, 10)
+	local ins = t.New()
+	local b = 0
+	ins.ui:SetSprite("TestImg", "activeequipment_img_ssr_1")
+	ins.ui:SetSprite("TestImg", "testimg1")
+
+	ins:Destroy()
+	--ins.cs.TestImg.sprite = ins.ui:GetSprite("activeequipment_img_ssr_1")
 end
-
-
 
 return main

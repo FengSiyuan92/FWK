@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using System.Text;
 using System.IO;
-
-
+using UnityEngine.U2D;
+using UnityEditor.U2D;
 
 public class BuildAssetBundle
 {
@@ -24,27 +24,32 @@ public class BuildAssetBundle
         var target = BuildTarget.Android;
         var outpath = Combine(GetWebServerPath(), GetPlatformPath(target));
         UpdateFileIndex(outpath);
+        //导出环境检查
+        CheckOutputPath(outpath);
+
+        //构建Sprite映射
+        var spriteMap = CollectSpriteMap();
+        WriteMap(spriteMap, Combine(outpath, AssetUtils.SpriteMap));
 
         //构建资源映射
         var assetMap = CollectAssetMap();
-        WriteAssetMap(assetMap, outpath);
+        WriteMap(assetMap, Combine(outpath, AssetUtils.AssetMap));
 
-        //导出环境检查
-        CheckOutputPath(outpath);
+        // 构建bundle包
         BuildBundle(outpath, target);
 
-        // 导出luazip包
+        // TODO:导出luazip包
         GenLuaScript(outpath);
 
         // 收集收集版本文件
-        var map =  CollectFileMap(outpath);
-        WriteBundleMap(map, outpath);
+        var map =  CollectFileInfos(outpath);
+        WriteFileInfos(map, outpath);
     }
 
     [MenuItem("AssetBundle/Test")]
     static void Test()
     {
-
+        CollectSpriteMap();
     }
 
 
@@ -52,6 +57,64 @@ public class BuildAssetBundle
     {
         BundleStartWith = outputPath.Length;
     }
+
+
+
+    static Dictionary<string, string> CollectSpriteMap()
+    {
+        var cache = new Dictionary<string, string>();
+
+        var all = AssetDatabase.FindAssets("t:spriteatlas");
+        foreach (var guid in all)
+        {
+
+            var path = AssetDatabase.GUIDToAssetPath(guid);
+            var import = AssetImporter.GetAtPath(path);
+            var abName = import.assetBundleName;
+            if (string.IsNullOrEmpty(abName)) continue;
+            var asset = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(path);
+            var packages = asset.GetPackables();
+            var atlasName = Path.GetFileNameWithoutExtension(path);
+
+            foreach (var inpack in packages)
+            {
+                var fullPath = GetFullPath(AssetDatabase.GetAssetPath(inpack));
+                // 文件夹需要取文件夹内的sprite
+                if (inpack is DefaultAsset)
+                {
+                    var director = Directory.CreateDirectory(fullPath);
+                    var filePath = director.GetFiles();
+                    foreach (var file in filePath)
+                    {
+                        if (file.FullName.EndsWith(".meta"))
+                        {
+                            continue;
+                        }
+                        var fileName = Path.GetFileNameWithoutExtension(file.FullName);
+                        if (!cache.ContainsKey(fileName))
+                        {
+                            cache.Add(fileName, atlasName);
+                        }
+                       
+                    }
+                }
+                else
+                {
+                    var fileName = Path.GetFileNameWithoutExtension(fullPath);
+                    if (!cache.ContainsKey(fileName))
+                    {
+                        cache.Add(fileName, atlasName);
+                    }
+               
+                }
+            }
+        }
+   
+        return cache;
+    }
+
+
+
     /// <summary>
     /// 搜集资源映射
     /// </summary>
@@ -71,23 +134,25 @@ public class BuildAssetBundle
         return assetToBundleMap;
     }
 
-    static Dictionary<string, BundleInfo> CollectFileMap(string outputPath)
+    static Dictionary<string, FileInfo> CollectFileInfos(string outputPath)
     {
-        Dictionary<string, BundleInfo> map = new Dictionary<string, BundleInfo>();
-        DirectoryInfo dir = new DirectoryInfo(outputPath);
-        var files = dir.GetFiles();
-        foreach (var file in files)
+        Dictionary<string, FileInfo> map = new Dictionary<string, FileInfo>();
+
+        var files = Directory.GetFiles(outputPath, "*.", SearchOption.AllDirectories);
+    
+        foreach (var filePath in files)
         {
+            if (Directory.Exists(filePath))
+            {
+                continue;
+            }
+            var file = new System.IO.FileInfo(filePath);
             var fullName = file.FullName;
             var fileName = Path.GetFileNameWithoutExtension(fullName);
-            if (fullName.EndsWith(".manifest") || 
-                fileName == AssetUtils.FileDetail ||
-                fileName == AssetUtils.AssetMap ||
-                fileName == AssetUtils.VersionFileName) continue;
+            if (fullName.EndsWith(".manifest") || fileName == AssetUtils.FileDetail ||fileName == AssetUtils.VersionFileName) continue;
 
-            BundleInfo info = new BundleInfo();
+            FileInfo info = new FileInfo();
             info.BundleName = GetBundleName(fullName);
-            Debug.Log(info.BundleName);
             info.md5 = AssetUtils.GetFileMD5ByPath(file.FullName);
             info.size = file.Length;
 
@@ -140,9 +205,14 @@ public class BuildAssetBundle
     /// <returns></returns>
     static string GetWebServerPath()
     {
+        return GetFullPath("/Tools/WebServer/Assets");
+    }
+
+    static string GetFullPath(string assetDataPath)
+    {
         var dataPath = Application.dataPath;
-        var projectPath = dataPath.Remove(dataPath.Length - "Assets".Length);
-        return Combine(projectPath, "Tools/WebServer/Assets");
+        var projectPath = dataPath.Remove(dataPath.Length - "Assets".Length - 1);
+        return Combine(projectPath, assetDataPath);
     }
 
     /// <summary>
@@ -168,17 +238,17 @@ public class BuildAssetBundle
         return bundlePath.Replace("\\", "/").Substring(BundleStartWith);
     }
 
-    class BundleInfo
+    class FileInfo
     {
         public string BundleName;
         public long size;
         public string md5;
     }
 
-    static void WriteBundleMap(Dictionary<string, BundleInfo> map, string outputPath)
+    static void WriteFileInfos(Dictionary<string, FileInfo> map, string outputPath)
     {
         var filePath = Combine(outputPath, AssetUtils.FileDetail);
-        FileInfo file = new FileInfo(filePath);
+        System.IO.FileInfo file = new System.IO.FileInfo(filePath);
         if (file.Exists)
         {
             file.Delete();
@@ -203,10 +273,10 @@ public class BuildAssetBundle
     /// </summary>
     /// <param name="map"></param>
     /// <param name="target"></param>
-    static void WriteAssetMap(Dictionary<string, string> map, string outputPath)
+    static void WriteMap(Dictionary<string, string> map, string filePath)
     {
-        var filePath = Combine(outputPath, AssetUtils.AssetMap);
-        FileInfo file = new FileInfo(filePath);
+
+        System.IO.FileInfo file = new System.IO.FileInfo(filePath);
         if (file.Exists)
         {
             file.Delete();
@@ -227,6 +297,11 @@ public class BuildAssetBundle
         stream.Close();
     }
 
+    static void WriteSpriteMap(Dictionary<string, string> map, string outputPath)
+    {
+
+    }
+
     /// <summary>
     /// 把lua代码打包并加密
     /// </summary>
@@ -235,7 +310,6 @@ public class BuildAssetBundle
         var path = Application.dataPath + "/" + LuaCodeDir;
         var frameWorkPath = path + "/Framework";
         var logicPath = path + "/Scripts";
-
 
         var frameWorkFile = outputDir + "/" + AssetUtils.GetStringMD5(AssetUtils.LuaFramework);
         var logicFile = outputDir + "/" + AssetUtils.GetStringMD5(AssetUtils.LuaScripts);

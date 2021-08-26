@@ -20,10 +20,6 @@ namespace AssetRuntime
         public bool isDone {
             get
             {
-                if (m_Operation == null)
-                {
-                    var a = 0;
-                }
                 return m_Operation.isDone;
             }
         }

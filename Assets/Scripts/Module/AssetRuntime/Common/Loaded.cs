@@ -6,10 +6,11 @@ namespace AssetRuntime
 {
     public abstract class Loaded
     {
-        uint m_referenceCount;
+        protected int m_referenceCount;
         public void AddReferenceCount()
         {
             m_referenceCount++;
+            Debug.Log("m_referenceCount = " + m_referenceCount);
         }
         public void TryUnload()
         {
@@ -18,6 +19,7 @@ namespace AssetRuntime
             {
                 OnUnload();
             }
+            Debug.Log("m_referenceCount = " + m_referenceCount);
         }
         protected abstract void OnUnload();
 

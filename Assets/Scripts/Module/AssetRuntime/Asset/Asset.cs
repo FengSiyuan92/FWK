@@ -6,13 +6,19 @@ using UnityEditor;
 #endif
 namespace AssetRuntime
 {
+    /// <summary>
+    /// 支持加载资源的4个时间点:(应该是任何时间节点了)
+    /// 1. 完全没有申请过加载时,第一次申请加载
+    /// 2. 第一申请异步,进行到加载bundle中,再次申请加载资源
+    /// 3. 已经加载完bundle,但是正在异步解压资源时,再次申请加载资源
+    /// 4. 已经解压好资源,再次申请
+    /// </summary>
     public partial class Asset : AsyncTemplate<LoadedAsset>
     {
 
         static ReuseObjectPool<MLoadAssetRequest> m_RequestPool;
-        static ReuseObjectPool<LoadAssetNote> m_LoadAssetNotePool;
+        static ReuseObjectPool<LoadBundleRequestNote> m_RequestBundleNotePool;
         static ReuseObjectPool<GetAssetNote> m_GetAssetNotePool;
-
         static AssetMap m_AssetMap;
 
         public static void Initialize()
@@ -20,7 +26,7 @@ namespace AssetRuntime
             m_AssetMap = new AssetMap();
             m_loadedCache = new Dictionary<string, LoadedAsset>(300);
             m_RequestPool = new ReuseObjectPool<MLoadAssetRequest>(100);
-            m_LoadAssetNotePool= new ReuseObjectPool<LoadAssetNote>();
+            m_RequestBundleNotePool= new ReuseObjectPool<LoadBundleRequestNote>();
             m_GetAssetNotePool = new ReuseObjectPool<GetAssetNote>();
         }
 
@@ -48,7 +54,7 @@ namespace AssetRuntime
 
         public void ReduceAssetReferenct()
         {
-
+          
         }
 
         static LoadedAsset GetLoadedAsset(string assetName)
@@ -64,15 +70,14 @@ namespace AssetRuntime
         /// <typeparam name="T">需要加载的资源类型</typeparam>
         /// <param name="assetName">资源名称</param>
         /// <param name="callback">当资源加载完毕之后的回调</param>
-        public static void GetAssetAsync(string assetName, System.Action<Object> callback)
+        public static InterruptNote GetAssetAsync(string assetName, System.Action<Object> callback)
         {
-          
 #if UNITY_EDITOR
             if (!AssetSimulate.USE_ASSET_BUNDLE)
             {
                 var asset = LoadAssetInEditor(assetName);
                 SafeCall.Call(callback, asset);
-                return;
+                return null;
             }
 #endif
             // 获取一个已经加载好的资源
@@ -81,7 +86,7 @@ namespace AssetRuntime
             {
                 loaded.AddReferenceCount();
                 SafeCall.Call(callback, loaded.Asset);
-                return;
+                return null;
             }
             
             //  开始异步加载asset
@@ -91,11 +96,12 @@ namespace AssetRuntime
                 throw new System.Exception("资源映射中没有找到所在bundle,检查是否生成过资源映射");
             }
 
-            var loadAssetNote = m_LoadAssetNotePool.Get();
-            loadAssetNote.onAssetLoaded = callback;
-            loadAssetNote.targetAssetName = assetName;
+            var loadBundleRequestNote = m_RequestBundleNotePool.Get();
+            loadBundleRequestNote.onAssetLoaded = callback;
+            loadBundleRequestNote.targetAssetName = assetName;
 
-            Bundle.LoadBundleAsync(bundlePath, loadAssetNote);
+            Bundle.LoadBundleAsync(bundlePath, loadBundleRequestNote);
+            return loadBundleRequestNote;
         }
 
         public static void ReturnAsset(string assetName)

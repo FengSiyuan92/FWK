@@ -34,8 +34,8 @@ local function init(mod)
 	local go = mod.owner_.gameObject
 	assert(go, "CS自动绑定模块,需要使用在有gameObject字段的对象中")
 	mod.binding_ = go:GetComponent(typeof(CS.LuaBinding))
-	assert(mod.binding_, "GameObject对象没有添加LuaBinding脚本")
 	mod.init_ = true
+	assert(mod.binding_, "GameObject对象没有添加LuaBinding脚本")
 end
 
 local CSBindModule = {}
@@ -43,6 +43,9 @@ local CSBindModule = {}
 function CSBindModule.Create(owner, mod)
 	mod.owner_ = owner
 	setmetatable(mod, {__index = function(t, k)
+		local raw = rawget(t, k)
+		if raw~= nil then return raw end
+
 		if not mod.init_ then init(mod) end
 		return findGO(mod, k) end
 	})

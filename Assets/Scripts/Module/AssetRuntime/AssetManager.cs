@@ -4,7 +4,7 @@ using UnityEngine;
 using AssetRuntime;
 using System;
 using System.IO;
-
+using XLua;
 
 /// <summary>
 /// 资源管理器,主要目的是为了对外界屏蔽assetbundle的概念
@@ -14,17 +14,27 @@ using System.IO;
 ///     在勾选模拟加载的前提先,并且勾选了部分模拟,则会使用assetpathmap以及assetdatabase来同时加载
 /// 当不勾选时,在编辑器下将直接使用AssetDataBase来加载对应资源
 /// </summary>
-
+[LuaCallCSharp]
 public class AssetManager : FMonoModule
 {
-  
+    static Dictionary<string, string> spriteMap = new Dictionary<string, string>(1000);
+    static AssetRuntime.Version ClientVersion;
+
+    public override IEnumerator OnPrepare()
+    {
+
+        ClientVersion = AssetRuntime.Version.GenClientVersion();
+        Bundle.Initialize(ClientVersion);
+        Asset.Initialize();
+        yield return null;
+
+        FillSpriteMap();
+        yield return null;
+    }
 
     public override void OnInitialize()
     {
         // 使用客户端版本初始化游戏
-        AssetRuntime.Version ClientVersion = AssetRuntime.Version.GenClientVersion();
-        Bundle.Initialize(ClientVersion);
-        Asset.Initialize();
     }
 
     public override void Restart()
@@ -49,60 +59,33 @@ public class AssetManager : FMonoModule
         return RequestHandleDriver.Runing;
     }
 
-    /// <summary>
-    /// 获取一个sprite
-    /// </summary>
-    /// <param name="imgAssetName"></param>
-    /// <param name="onLoad"></param>
-    public static void GetSprite(string imgAssetName, System.Action<Sprite> onLoad)
+
+    public static string GetAtlasName(string spriteName)
     {
-        Asset.GetAssetAsync(imgAssetName, (asset) => onLoad(asset as Sprite));
+        string atlas = "";
+        spriteMap.TryGetValue(spriteName, out atlas);
+        return atlas;
+
     }
 
-    /// <summary>
-    /// 获取一个texture
-    /// </summary>
-    /// <param name="imgAssetName"></param>
-    /// <param name="onLoad"></param>
-    public static void GetTexture(string imgAssetName, System.Action<Texture2D> onLoad)
+    static void FillSpriteMap()
     {
-        Asset.GetAssetAsync(imgAssetName, (asset) => onLoad(asset as Texture2D));
-    }
+        var filePath = ClientVersion.GetFilePath(AssetUtils.SpriteMap);
+        if (!File.Exists(filePath))
+        {
+            Debug.LogError("没有找到sprite映射文件,路径" + filePath);
+            return;
+        }
 
-    /// <summary>
-    /// 获取一个prefab
-    /// </summary>
-    /// <param name="prefabName"></param>
-    /// <param name="onLoad"></param>
-    public static void GetPrefab(string prefabName, System.Action<GameObject> onLoad)
-    {
-        Asset.GetAssetAsync(prefabName, (asset) => onLoad(asset as GameObject));
-    }
+        spriteMap.Clear();
+        var read = File.OpenText(filePath);
+        string line = read.ReadLine();
+        do
+        {
+            var splites = line.Split('|');
+            spriteMap.Add(splites[0], splites[1]);
 
-    /// <summary>
-    /// 归还Sprite,通知该资源可以释放
-    /// </summary>
-    /// <param name="imgAssetName"></param>
-    public static void ReturnSprite(string imgAssetName)
-    {
-        Asset.ReturnAsset(imgAssetName);
-    }
-
-    /// <summary>
-    /// 归还Texture通知该资源可以释放
-    /// </summary>
-    /// <param name="imgAssetName"></param>
-    public static void ReturnTexture(string imgAssetName)
-    {
-        Asset.ReturnAsset(imgAssetName);
-    }
-
-    /// <summary>
-    /// 归还GameObject通知该资源可以释放
-    /// </summary>
-    /// <param name="imgAssetName"></param>
-    public static void ReturnPrefab(string prefabName)
-    {
-        Asset.ReturnAsset(prefabName);
+            line = read.ReadLine();
+        } while (!string.IsNullOrEmpty(line));
     }
 }

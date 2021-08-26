@@ -51,6 +51,7 @@ public class XLuaManager : FMonoModule
         scriptPath = scriptPath.Replace(".", "/") + ".lua";
         return FileUtil.SafeReadAllBytes(scriptPath);
 #endif
+        return new byte[0];
         //        string path = Path.GetFileName(filepath);
 
         //        ZipEntry entry = gameLua.GetEntry(path);

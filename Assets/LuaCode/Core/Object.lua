@@ -19,14 +19,16 @@ Mod = {
 	-- 资源存取
 	asset = "asset",
 	-- 行为托管
-	action = "action"
+	action = "action",
+	ui = "ui",
 }
 
 local ModuleType = {
 	[Mod.event] = require "Core.Modules.Event.EventModule",
 	[Mod.cs] = require "Core.Modules.CSBind.CSBindModule",
 	[Mod.asset] = require "Core.Modules.Asset.AssetUser",
-	[Mod.action] = require "Core.Modules.Action.ActionCollocation"
+	[Mod.action] = require "Core.Modules.Action.ActionCollocation",
+	[Mod.ui] = require "Core.Modules.UI.UIHelper",
 }
 
 function Object:OnCreate()

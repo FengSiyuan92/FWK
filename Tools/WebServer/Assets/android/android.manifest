@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1153251673
+CRC: 1969086027
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -20,3 +20,10 @@ AssetBundleManifest:
       Name: sphera
       Dependencies:
         Dependency_0: testmat2
+    Info_5:
+      Name: sprite/test
+      Dependencies:
+        Dependency_0: testimg1
+    Info_6:
+      Name: testscene
+      Dependencies: {}

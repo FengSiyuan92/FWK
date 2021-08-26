@@ -18,7 +18,7 @@ namespace AssetRuntime
             // 已经加载完成，则直接返回票据
             if (m_loadedCache.TryGetValue(targetName, out loaded))
             {
-                note.RequestOver(loaded);
+                note.OnRequestOver(loaded);
                 return;
             }
 
@@ -33,7 +33,7 @@ namespace AssetRuntime
                 RequestHandleDriver.RegisterRequestHandler(handlerName, request);
             }
             // 往异步申请的结束回调上绑定note的签名
-            request.onRequestDone += note.RequestOver;
+            request.onRequestDone += note.OnRequestOver;
         }
 
     }

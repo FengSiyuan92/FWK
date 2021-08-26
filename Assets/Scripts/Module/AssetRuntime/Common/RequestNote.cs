@@ -11,7 +11,8 @@ namespace AssetRuntime
 
     interface IRequestNote : IReuseObject
     {
-        void RequestOver(Loaded loaded);
+        void OnRequestOver(Loaded loaded);
         string TargetName { get; }
+        void OnInterrupt();
     }
 }

@@ -78,8 +78,9 @@ function _initInstance(instance, type, ...)
 	if super then
 		_initInstance(instance, super, ...)
 	end
-	if type.OnCreate then
-		type.OnCreate(instance, ...)
+	local onCreate = rawget(type, "OnCreate")
+	if onCreate then
+		onCreate(instance, ...)
 	end
 end
 
@@ -88,8 +89,10 @@ function _releaseInstance(instance, type, ...)
 	if super then
 		_releaseInstance(instance, super, ...)
 	end
-	if type.OnDestroy then
-		type.OnDestroy(instance, ...)
+
+	local onDestroy = rawget(type, "OnDestroy")
+	if onDestroy then
+		onDestroy(instance, ...)
 	end
 end
 

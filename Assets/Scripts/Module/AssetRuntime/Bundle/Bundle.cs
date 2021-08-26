@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 namespace AssetRuntime
 {
-    public partial class Bundle : AsyncTemplate<LoadedBundle>
+    public partial class Bundle : AsyncTemplate<Bundle.LoadedBundle>
     {
         
         static ManifestHelper m_manifest;
@@ -58,7 +58,7 @@ namespace AssetRuntime
             var bundleNote = m_notePool.Get();
             bundleNote.mainBundleName = bundleName;
             bundleNote.dependCount = depCount;
-            bundleNote.onBundlesLoaded = note.RequestOver;
+            bundleNote.onBundlesLoaded = note.OnRequestOver;
 
             GetOrRequestLoaded(bundleName, bundleNote, CreateLoadBundleRequest, GetHandlerName);
             for (int i = 0; i < depCount; i++)
@@ -96,6 +96,7 @@ namespace AssetRuntime
             {
                 var loaded = new LoadedBundle();
                 loaded.SetBundle(loadBundleRequest.assetBundle);
+                loaded.BundleName = targetName;
                 m_loadedCache.Add(targetName, loaded);
                 return loaded;
             };
@@ -107,6 +108,12 @@ namespace AssetRuntime
         static string GetHandlerName(string targetName)
         {
             return "b:" + targetName;
+        }
+
+
+        public static AssetBundle GetSingleBundle(string assetbundlePath)
+        {
+            return AssetBundle.LoadFromFile(assetbundlePath);
         }
 
     }
