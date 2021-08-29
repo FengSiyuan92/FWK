@@ -645,12 +645,6 @@ namespace XLua
 #endif
 
         [MonoPInvokeCallback(typeof(LuaCSFunction))]
-        internal static int LoadSqlite3(RealStatePtr L)
-        {
-            return LuaAPI.luaopen_lsqlite3(L);
-        }
-
-        [MonoPInvokeCallback(typeof(LuaCSFunction))]
         internal static int LoadCS(RealStatePtr L)
         {
             LuaAPI.xlua_pushasciistring(L, LuaEnv.CSHARP_NAMESPACE);

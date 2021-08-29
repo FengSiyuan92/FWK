@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3361988675
+CRC: 1829891296
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6014f2504145c7c387679edb81627140
+    Hash: 8f987d846705f8a883f592ebf80bcb2b
   TypeTreeHash:
     serializedVersion: 2
     Hash: 22357172b8cea85847937e8f62d0c077
@@ -19,4 +19,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/AssetBundles/testMat1.mat
 Dependencies:
-- F:/FWK//Tools/WebServer/Assets/android/testimg1
+- D:/FWK//Tools/WebServer/Assets/android/testimg1

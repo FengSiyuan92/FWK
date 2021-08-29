@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3599281793
+CRC: 3864291503
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 85414877701ee56463eacf97e275f9f0
+    Hash: 439a74caaaab43fc2a276ad4973c4f81
   TypeTreeHash:
     serializedVersion: 2
     Hash: c4d5dee85f6c263eb0adbea350984ae1
@@ -19,4 +19,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/AssetBundles/test.spriteatlas
 Dependencies:
-- F:/FWK//Tools/WebServer/Assets/android/testimg1
+- D:/FWK//Tools/WebServer/Assets/android/testimg1

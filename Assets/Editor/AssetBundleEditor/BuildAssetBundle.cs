@@ -22,7 +22,7 @@ public class BuildAssetBundle
     static void BuildAndroid()
     {
         var target = BuildTarget.Android;
-        var outpath = Combine(GetWebServerPath(), GetPlatformPath(target));
+        var outpath = AssetUtils.GetWerServerBundlePath();
         UpdateFileIndex(outpath);
         //导出环境检查
         CheckOutputPath(outpath);
@@ -214,25 +214,6 @@ public class BuildAssetBundle
         var projectPath = dataPath.Remove(dataPath.Length - "Assets".Length - 1);
         return Combine(projectPath, assetDataPath);
     }
-
-    /// <summary>
-    /// 获取平台文件夹
-    /// </summary>
-    /// <param name="target"></param>
-    /// <returns></returns>
-    static string GetPlatformPath(BuildTarget target)
-    {
-        switch (target)
-        {
-            case BuildTarget.Android: return "android";
-            case BuildTarget.iOS:return "ios";
-            default:
-              
-                break;
-        }
-        return "";
-    }
-
     static string GetBundleName(string bundlePath)
     {
         return bundlePath.Replace("\\", "/").Substring(BundleStartWith);

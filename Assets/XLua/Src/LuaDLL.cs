@@ -462,9 +462,6 @@ namespace XLua.LuaDLL
 #endif
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int luaopen_lsqlite3(IntPtr L);
-
-        [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void lua_pushint64(IntPtr L, long n);//[,,m]
 
         [DllImport(LUADLL, CallingConvention = CallingConvention.Cdecl)]

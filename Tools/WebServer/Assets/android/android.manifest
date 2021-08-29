@@ -1,29 +1,29 @@
 ManifestFileVersion: 0
-CRC: 1969086027
+CRC: 2715842949
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: testmat2
+      Name: testscene
       Dependencies: {}
     Info_1:
+      Name: testimg1
+      Dependencies: {}
+    Info_2:
+      Name: testmat2
+      Dependencies: {}
+    Info_3:
       Name: testmat1
       Dependencies:
         Dependency_0: testimg1
-    Info_2:
-      Name: testimg1
-      Dependencies: {}
-    Info_3:
-      Name: cube1
-      Dependencies:
-        Dependency_0: testmat1
     Info_4:
-      Name: sphera
-      Dependencies:
-        Dependency_0: testmat2
-    Info_5:
       Name: sprite/test
       Dependencies:
         Dependency_0: testimg1
+    Info_5:
+      Name: sphera
+      Dependencies:
+        Dependency_0: testmat2
     Info_6:
-      Name: testscene
-      Dependencies: {}
+      Name: cube1
+      Dependencies:
+        Dependency_0: testmat1

@@ -3,7 +3,7 @@ CRC: 3768466987
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 076d8df2fb25045ccce8894553045d5d
+    Hash: d559638a6c5a812a5d87915cd9fc5fd7
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7652f69dff3dcd0741269161f69220a7
@@ -27,4 +27,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/AssetBundles/Cube1.prefab
 Dependencies:
-- F:/FWK//Tools/WebServer/Assets/android/testmat1
+- D:/FWK//Tools/WebServer/Assets/android/testmat1

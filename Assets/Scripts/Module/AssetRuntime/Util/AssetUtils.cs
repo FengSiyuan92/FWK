@@ -126,15 +126,39 @@ public class AssetUtils {
         Debug.Log("m_StreamAssetPath = " + m_StreamAssetPath);
     }
 
+    public static string GetAssetBundlesFolderName()
+    {
+        switch (Application.platform)
+        {
+            case RuntimePlatform.Android:
+                return "Android";
+            case RuntimePlatform.IPhonePlayer:
+                return "iOS";
+#if UNITY_TVOS
+                case RuntimePlatform.tvOS:
+                    return "tvOS";
+#endif
+            case RuntimePlatform.WebGLPlayer:
+                return "WebGL";
+            case RuntimePlatform.WindowsPlayer:
+            case RuntimePlatform.WindowsEditor:
+                return "Windows";
+            case RuntimePlatform.OSXPlayer:
+            case RuntimePlatform.OSXEditor:
+                return "OSX";
+            // Add more build targets for your own.
+            // If you add more targets, don't forget to add the same platforms to GetPlatformForAssetBundles(RuntimePlatform) function.
+            default:
+                return null;
+        }
+    }
+
 #if UNITY_EDITOR
 
     public static string GetWerServerBundlePath()
     {
         var pre = Application.dataPath.Remove(Application.dataPath.Length - 7);
-        var plat = "android";
-#if UNITY_IOS
-        plat = "ios";
-#endif
+        var plat = GetAssetBundlesFolderName();
         return string.Format("{0}/Tools/WebServer/Assets/{1}", pre, plat);
     }
 
