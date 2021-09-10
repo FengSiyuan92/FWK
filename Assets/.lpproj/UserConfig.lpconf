@@ -1,17 +1,15 @@
 <GlobalConfig CodeFontSize = "20"/>
 <BreakpointList>
   <Breakpoint State = "BreakpointActive" Filename = "LuaCode/Core/Modules/CSBindModule.lua" LineIndex = "45"/>
-  <Breakpoint State = "BreakpointActive" Filename = "LuaCode/Core/main.lua" LineIndex = "24"/>
-  <Breakpoint State = "BreakpointActive" Filename = "LuaCode/Core/Modules/UI/UIHelper.lua" LineIndex = "13"/>
-  <Breakpoint State = "BreakpointActive" Filename = "LuaCode/Core/Object.lua" LineIndex = "39"/>
+  <Breakpoint State = "BreakpointActive" Filename = "LuaCode/Core/Modules/UI/UIHelper.lua" LineIndex = "38"/>
 </BreakpointList>
 <WatchList>
   <Watch WatchString = "t"/>
 </WatchList>
 <ProjectUI>
-  <TreeState BaseX = "0" BaseY = "0" AlternativeItem = "LuaFolders#Assets#LuaCode#Scripts">
+  <TreeState BaseX = "0" BaseY = "0" AlternativeItem = "LuaFolders#Assets#LuaCode#Core#Modules#CSBind">
     <SelectedList>
-      <Selected Path = "LuaFolders#Assets#LuaCode#Core#Object.lua"/>
+      <Selected Path = "LuaFolders#Assets#LuaCode#Core#Modules#Asset#AssetUser.lua"/>
     </SelectedList>
     <ExpandedList>
       <Expanded Path = "LuaFolders"/>
@@ -21,7 +19,9 @@
       <Expanded Path = "LuaFolders#Assets#LuaCode#Core#Base"/>
       <Expanded Path = "LuaFolders#Assets#LuaCode#Core#Dispatch"/>
       <Expanded Path = "LuaFolders#Assets#LuaCode#Core#Modules"/>
+      <Expanded Path = "LuaFolders#Assets#LuaCode#Core#Modules#Action"/>
       <Expanded Path = "LuaFolders#Assets#LuaCode#Core#Modules#Asset"/>
+      <Expanded Path = "LuaFolders#Assets#LuaCode#Core#Modules#CSBind"/>
       <Expanded Path = "LuaFolders#Assets#LuaCode#Core#Modules#Event"/>
       <Expanded Path = "LuaFolders#Assets#LuaCode#Core#Modules#UI"/>
       <Expanded Path = "LuaFolders#Assets#ThirdParty"/>
@@ -30,23 +30,23 @@
   </TreeState>
 </ProjectUI>
 <FindAnReplaceUI
-  Pattern = "CanPrintLog"
+  Pattern = "CS.Logger"
   MatchCase = "false"
   MatchWholeWord = "false"
   UseRegEx = "false"
   Target = ""
   Replace = ""/>
 <MainWindow
-  X = "526"
-  Y = "262"
+  X = "678"
+  Y = "188"
   Width = "1280"
   Height = "721"
   Maximized = "true"
-  LastCodeFilename = "F:/FWK/Assets/LuaCode/Core/Object.lua">
+  LastCodeFilename = "F:/FWK/Assets/LuaCode/Core/Modules/Asset/AssetUser.lua">
   <DockingControl>
     <DockingNode DockingDirection = "Horizontal">
       <DockingNode DockingDirection = "None">
-        <DockingBlock Width = "455" Height = "923" DocumentStyle = "false">
+        <DockingBlock Width = "374" Height = "923" DocumentStyle = "false">
           <DockingCard
             Text = "Project"
             Tag = ""
@@ -60,61 +60,115 @@
         </DockingBlock>
       </DockingNode>
       <DockingNode DockingDirection = "None">
-        <DockingBlock Width = "1327" Height = "923" DocumentStyle = "true">
+        <DockingBlock Width = "1251" Height = "923" DocumentStyle = "true">
+          <DockingCard
+            Text = "class.lua"
+            Tag = "F:/FWK/Assets/LuaCode/Core/Base/class.lua"
+            ActivePage = "false"
+            ActivateTime = "545280176"
+            CaretLineIndex = "40"
+            CaretCodeCharIndex = "0"
+            BaseX = "0"
+            BaseY = "-381"/>
+          <DockingCard
+            Text = "AssetUser.lua"
+            Tag = "F:/FWK/Assets/LuaCode/Core/Modules/Asset/AssetUser.lua"
+            ActivePage = "true"
+            ActivateTime = "1456385993"
+            CaretLineIndex = "93"
+            CaretCodeCharIndex = "48"
+            BaseX = "0"
+            BaseY = "-1641"/>
+          <DockingCard
+            Text = "Object.lua"
+            Tag = "F:/FWK/Assets/LuaCode/Core/Object.lua"
+            ActivePage = "false"
+            ActivateTime = "545192641"
+            CaretLineIndex = "48"
+            CaretCodeCharIndex = "51"
+            BaseX = "0"
+            BaseY = "-420"/>
+          <DockingCard
+            Text = "main.lua"
+            Tag = "F:/FWK/Assets/LuaCode/Core/main.lua"
+            ActivePage = "false"
+            ActivateTime = "545717342"
+            CaretLineIndex = "32"
+            CaretCodeCharIndex = "11"
+            BaseX = "0"
+            BaseY = "-60"/>
           <DockingCard
             Text = "UIHelper.lua"
             Tag = "F:/FWK/Assets/LuaCode/Core/Modules/UI/UIHelper.lua"
             ActivePage = "false"
-            ActivateTime = "542244802"
-            CaretLineIndex = "22"
-            CaretCodeCharIndex = "23"
+            ActivateTime = "545720638"
+            CaretLineIndex = "37"
+            CaretCodeCharIndex = "47"
             BaseX = "0"
-            BaseY = "-60"/>
+            BaseY = "-360"/>
           <DockingCard
-            Text = "CSBindModule.lua"
-            Tag = "F:/FWK/Assets/LuaCode/Core/Modules/CSBind/CSBindModule.lua"
+            Text = "EventModule.lua"
+            Tag = "F:/FWK/Assets/LuaCode/Core/Modules/Event/EventModule.lua"
             ActivePage = "false"
-            ActivateTime = "531842459"
-            CaretLineIndex = "55"
-            CaretCodeCharIndex = "19"
+            ActivateTime = "545074488"
+            CaretLineIndex = "11"
+            CaretCodeCharIndex = "0"
             BaseX = "0"
-            BaseY = "-528"/>
+            BaseY = "-66"/>
           <DockingCard
-            Text = "CSBindMap.lua"
-            Tag = "F:/FWK/Assets/LuaCode/Core/Modules/CSBind/CSBindMap.lua"
+            Text = "EventDispatcher.lua"
+            Tag = "F:/FWK/Assets/LuaCode/Core/Dispatch/EventDispatcher.lua"
             ActivePage = "false"
-            ActivateTime = "531843214"
-            CaretLineIndex = "15"
-            CaretCodeCharIndex = "16"
+            ActivateTime = "545073515"
+            CaretLineIndex = "13"
+            CaretCodeCharIndex = "48"
             BaseX = "0"
-            BaseY = "-132"/>
+            BaseY = "-1020"/>
           <DockingCard
             Text = "ActionCollocation.lua"
             Tag = "F:/FWK/Assets/LuaCode/Core/Modules/Action/ActionCollocation.lua"
             ActivePage = "false"
-            ActivateTime = "542013051"
+            ActivateTime = "545071325"
             CaretLineIndex = "21"
             CaretCodeCharIndex = "18"
             BaseX = "0"
             BaseY = "-1"/>
           <DockingCard
-            Text = "AssetUser.lua"
-            Tag = "F:/FWK/Assets/LuaCode/Core/Modules/Asset/AssetUser.lua"
+            Text = "BuiltInTypes.lua"
+            Tag = "F:/FWK/Assets/.lpproj/Apis/BuiltInTypes.lua"
             ActivePage = "false"
-            ActivateTime = "542202481"
-            CaretLineIndex = "39"
-            CaretCodeCharIndex = "19"
+            ActivateTime = "544925628"
+            CaretLineIndex = "17"
+            CaretCodeCharIndex = "0"
             BaseX = "0"
-            BaseY = "-401"/>
+            BaseY = "0"/>
           <DockingCard
-            Text = "Object.lua"
-            Tag = "F:/FWK/Assets/LuaCode/Core/Object.lua"
-            ActivePage = "true"
-            ActivateTime = "542254865"
-            CaretLineIndex = "34"
-            CaretCodeCharIndex = "29"
+            Text = "log.lua"
+            Tag = "F:/FWK/Assets/LuaCode/Core/Util/log.lua"
+            ActivePage = "false"
+            ActivateTime = "543103634"
+            CaretLineIndex = "16"
+            CaretCodeCharIndex = "8"
             BaseX = "0"
-            BaseY = "-420"/>
+            BaseY = "0"/>
+          <DockingCard
+            Text = "CSBindModule.lua"
+            Tag = "F:/FWK/Assets/LuaCode/Core/Modules/CSBind/CSBindModule.lua"
+            ActivePage = "false"
+            ActivateTime = "545070193"
+            CaretLineIndex = "56"
+            CaretCodeCharIndex = "0"
+            BaseX = "0"
+            BaseY = "-468"/>
+          <DockingCard
+            Text = "CSBindMap.lua"
+            Tag = "F:/FWK/Assets/LuaCode/Core/Modules/CSBind/CSBindMap.lua"
+            ActivePage = "false"
+            ActivateTime = "545070522"
+            CaretLineIndex = "15"
+            CaretCodeCharIndex = "16"
+            BaseX = "0"
+            BaseY = "-132"/>
           <DockingCard
             Text = "Game.lua"
             Tag = "F:/FWK/Assets/LuaCode/Core/Game.lua"
@@ -125,15 +179,6 @@
             BaseX = "0"
             BaseY = "-660"/>
           <DockingCard
-            Text = "main.lua"
-            Tag = "F:/FWK/Assets/LuaCode/Core/main.lua"
-            ActivePage = "false"
-            ActivateTime = "542241684"
-            CaretLineIndex = "18"
-            CaretCodeCharIndex = "65"
-            BaseX = "0"
-            BaseY = "0"/>
-          <DockingCard
             Text = "define.lua"
             Tag = "F:/FWK/Assets/LuaCode/Core/define.lua"
             ActivePage = "false"
@@ -143,15 +188,6 @@
             BaseX = "0"
             BaseY = "0"/>
           <DockingCard
-            Text = "EventModule.lua"
-            Tag = "F:/FWK/Assets/LuaCode/Core/Modules/Event/EventModule.lua"
-            ActivePage = "false"
-            ActivateTime = "286831899"
-            CaretLineIndex = "11"
-            CaretCodeCharIndex = "0"
-            BaseX = "0"
-            BaseY = "-66"/>
-          <DockingCard
             Text = "Dispatch.lua"
             Tag = "F:/FWK/Assets/LuaCode/Core/Dispatch/Dispatch.lua"
             ActivePage = "false"
@@ -160,15 +196,6 @@
             CaretCodeCharIndex = "3"
             BaseX = "0"
             BaseY = "-66"/>
-          <DockingCard
-            Text = "class.lua"
-            Tag = "F:/FWK/Assets/LuaCode/Core/Base/class.lua"
-            ActivePage = "false"
-            ActivateTime = "286808674"
-            CaretLineIndex = "39"
-            CaretCodeCharIndex = "3"
-            BaseX = "0"
-            BaseY = "-462"/>
           <DockingCard
             Text = "utf8.lua"
             Tag = "F:/FWK/Assets/LuaCode/Core/Util/utf8.lua"
@@ -187,15 +214,6 @@
             CaretCodeCharIndex = "0"
             BaseX = "0"
             BaseY = "0"/>
-          <DockingCard
-            Text = "log.lua"
-            Tag = "F:/FWK/Assets/LuaCode/Core/Util/log.lua"
-            ActivePage = "false"
-            ActivateTime = "286412566"
-            CaretLineIndex = "0"
-            CaretCodeCharIndex = "0"
-            BaseX = "0"
-            BaseY = "-462"/>
           <DockingCard
             Text = "NumberUtil.lua"
             Tag = "F:/FWK/Assets/LuaCode/Core/Util/NumberUtil.lua"
@@ -256,9 +274,9 @@
             ActivePage = "false"
             ActivateTime = "285167447"
             CaretLineIndex = "21"
-            CaretCodeCharIndex = "26"
+            CaretCodeCharIndex = "24"
             BaseX = "0"
-            BaseY = "-858"/>
+            BaseY = "-421"/>
           <DockingCard
             Text = "lua53.lua"
             Tag = "F:/FWK/Assets/.lpproj/Apis/Lua/lua53.lua"
@@ -287,15 +305,6 @@
             BaseX = "0"
             BaseY = "0"/>
           <DockingCard
-            Text = "EventDispatcher.lua"
-            Tag = "F:/FWK/Assets/LuaCode/Core/Dispatch/EventDispatcher.lua"
-            ActivePage = "false"
-            ActivateTime = "282970202"
-            CaretLineIndex = "13"
-            CaretCodeCharIndex = "48"
-            BaseX = "0"
-            BaseY = "0"/>
-          <DockingCard
             Text = "GameObject.lua"
             Tag = "F:/FWK/Assets/.lpproj/Apis/Unity/CS/UnityEngine/GameObject.lua"
             ActivePage = "false"
@@ -303,11 +312,11 @@
             CaretLineIndex = "268"
             CaretCodeCharIndex = "45"
             BaseX = "0"
-            BaseY = "-5588"/>
+            BaseY = "-5380"/>
         </DockingBlock>
       </DockingNode>
       <DockingNode DockingDirection = "None">
-        <DockingBlock Width = "113" Height = "923" DocumentStyle = "false">
+        <DockingBlock Width = "269" Height = "923" DocumentStyle = "false">
           <DockingCard
             Text = "Output"
             Tag = ""
