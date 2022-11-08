@@ -16,10 +16,13 @@ namespace AssetRuntime
         AssetBundle m_manifestBundle;
         AssetBundleManifest m_manifest;
 
+
 #if UNITY_ANDROID
         string manifistName = "android";
 #elif UNITY_IOS
         string  manifistName = "ios"
+#else
+        string manifistName = "android";
 #endif
 
         public ManifestHelper()
