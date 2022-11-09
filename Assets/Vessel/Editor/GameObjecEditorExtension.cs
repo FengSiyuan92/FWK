@@ -113,7 +113,7 @@ namespace VesselTool
 
             if (VesselType == null)
             {
-                var vesselAssembly = Assembly.GetAssembly(typeof(Vessel));
+                var vesselAssembly = Assembly.Load("Assembly-CSharp");
                 var targetType = typeof(Vessel);
                 VesselType = vesselAssembly.GetTypes().Where(p => p.IsSubclassOf(targetType)).ToArray();
                 var lastAdd = EditorPrefs.GetString(LAST_ADD_KEY, "");
@@ -713,7 +713,7 @@ namespace VesselTool
             if (!tipRepeat && VesselType.Length == 1)
             {
                 // 父类中已经存在了
-                if (repeatIndexCollect.Count > 0)
+                if (repeatIndexCollect != null && repeatIndexCollect.Count > 0)
                 {
                     System.Action<float, float> drawCollected = (maxwidth, maxheight) =>
                     {
@@ -740,7 +740,7 @@ namespace VesselTool
            
             System.Action<float, float> draw = (maxWidth, maxHeight) =>
             {
-                if (repeatIndexCollect.Count > 0)
+                if (repeatIndexCollect != null && repeatIndexCollect.Count > 0)
                 {
                     DrawSerializedSimple(parentVesselEditor, repeatIndexCollect, maxWidth, maxHeight);
                     EditorGUILayout.Space();

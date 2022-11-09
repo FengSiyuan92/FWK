@@ -60,7 +60,7 @@ namespace VesselTool
 
         public static void DrawTexture(Rect r, Texture t, Color color, string tooptip = null)
         {
-            drawMat = drawMat ?? new Material(Shader.Find("Sprites/Default"));
+            drawMat = drawMat  == null? new Material(Shader.Find("Sprites/Default")):drawMat;
             drawMat.color = color;
             EditorGUI.DrawPreviewTexture(r, t, drawMat);
             if (!string.IsNullOrEmpty(tooptip))
