@@ -148,6 +148,7 @@ namespace VesselTool
                     {
                         EditorWindow.GetWindow<PopupWindow>().Close();
                         confirm();
+                        return;
                     }
                 }
 
@@ -157,6 +158,7 @@ namespace VesselTool
                     {
                         EditorWindow.GetWindow<PopupWindow>().Close();
                         cancel();
+                        return;
                     }
                 }
 

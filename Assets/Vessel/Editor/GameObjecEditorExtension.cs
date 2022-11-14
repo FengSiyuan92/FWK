@@ -761,7 +761,7 @@ namespace VesselTool
                 EditorPrefs.SetString(LAST_ADD_KEY, VesselType[selectIndex].FullName);
     
                 // 父类中已经存在了
-                if (repeatIndexCollect.Count > 0)
+                if (repeatIndexCollect!= null && repeatIndexCollect.Count > 0)
                 {
                     Undo.RecordObject(go, "ADD_VESSEL_COMPONENT");
                     Undo.RecordObject(parentVessel.gameObject, "MOVE_VESSEL_ITEM");
@@ -776,7 +776,7 @@ namespace VesselTool
                 }
             };
 
-            var tip = tipRepeat && repeatIndexCollect.Count>0 ? InsertTip : (tipRepeat?"父节点中已经存在容器,确定继续添加？": "请选择需要添加的容器");
+            var tip = tipRepeat && (repeatIndexCollect!= null &&repeatIndexCollect.Count>0) ? InsertTip : (tipRepeat?"父节点中已经存在容器,确定继续添加？": "请选择需要添加的容器");
             CustomUI.ShowFloatWindow(new Vector2(x, y), tip, draw, onconfirm, EmptyAction);
         }
 
